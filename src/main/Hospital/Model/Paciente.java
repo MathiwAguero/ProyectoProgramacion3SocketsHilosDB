@@ -1,4 +1,4 @@
-package Entities;
+package Model;
 
 public class Paciente {
     private int id;

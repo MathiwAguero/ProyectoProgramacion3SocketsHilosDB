@@ -1,4 +1,4 @@
-package Entities;
+package Model;
 
 public class RecipeDetails {
     private int cant;
