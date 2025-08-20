@@ -1,6 +1,9 @@
 package DataAccessObject;
 
+
 public class AdminDAO {
+
+
     /*
     insertar(objeto)
     obtenerPorId(id)

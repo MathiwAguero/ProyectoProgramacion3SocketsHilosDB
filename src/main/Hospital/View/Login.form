@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="Login" layout-manager="GridLayoutManager" row-count="6" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="449"/>
+      <xy x="20" y="20" width="580" height="449"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -42,7 +42,8 @@
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Button"/>
+              <icon value="iniciar-sesion.png"/>
+              <text value=""/>
             </properties>
           </component>
           <hspacer id="be613">
@@ -55,7 +56,8 @@
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Button"/>
+              <icon value="boton-eliminar.png"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="fc52a" class="javax.swing.JButton" binding="button3" default-binding="true">
@@ -63,7 +65,8 @@
               <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Button"/>
+              <icon value="restablecer-la-contrasena.png"/>
+              <text value=""/>
             </properties>
           </component>
           <hspacer id="7f49b">
@@ -109,7 +112,8 @@
           <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Button"/>
+          <icon value="administracion-de-empresas.png"/>
+          <text value=""/>
         </properties>
       </component>
       <vspacer id="acff6">
