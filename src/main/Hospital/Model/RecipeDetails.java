@@ -1,44 +1,30 @@
 package Model;
 
 public class RecipeDetails {
-    private int cant;
+    private String codigoMedicamento;
+    private int cantidad;
     private String indicaciones;
-    private String duracion;
+    private int duracionTratamiento; // en días
 
-    RecipeDetails(int cant, String indicaciones, String duracion) {
-        this.cant = cant;
+    public RecipeDetails() {}
+
+    public RecipeDetails(String codigoMedicamento, int cantidad, String indicaciones, int duracionTratamiento) {
+        this.codigoMedicamento = codigoMedicamento;
+        this.cantidad = cantidad;
         this.indicaciones = indicaciones;
-        this.duracion = duracion;
+        this.duracionTratamiento = duracionTratamiento;
     }
 
-    RecipeDetails() {
-        this.cant = 0;
-        this.indicaciones = "";
-        this.duracion = "";
-    }
+    public String getCodigoMedicamento() { return codigoMedicamento; }
+    public void setCodigoMedicamento(String codigoMedicamento) { this.codigoMedicamento = codigoMedicamento; }
 
-    public int getCant() {
-        return cant;
-    }
+    public int getCantidad() { return cantidad; }
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
 
-    public void setCant(int cant) {
-        this.cant = cant;
-    }
+    public String getIndicaciones() { return indicaciones; }
+    public void setIndicaciones(String indicaciones) { this.indicaciones = indicaciones; }
 
-    public String getIndicaciones() {
-        return indicaciones;
-    }
-
-    public void setIndicaciones(String indicaciones) {
-        this.indicaciones = indicaciones;
-    }
-
-    public String getDuracion() {
-        return duracion;
-    }
-
-    public void setDuracion(String duracion) {
-        this.duracion = duracion;
-    }
+    public int getDuracionTratamiento() { return duracionTratamiento; }
+    public void setDuracionTratamiento(int duracionTratamiento) { this.duracionTratamiento = duracionTratamiento; }
 }
 
