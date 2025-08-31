@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class UsuarioDAO extends BaseDAO<UsuarioBase> {
 
-    private static final String PATH = "resources/Data/usuarios.xml";
+    private static final String PATH = "resources/ArchivosXML/usuarios.xml";
     private List<UsuarioBase> usuarios = new ArrayList<>();
 
     public UsuarioDAO() {

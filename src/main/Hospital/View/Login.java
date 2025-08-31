@@ -13,32 +13,41 @@ public class Login {
     private JTextField textField1;
     private JTextField textField2;
 
-    public JPanel getPanel() {return Login;}
+    public Login() {
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textField1.setText("");
+                textField2.setText("");
+            }
+        });
+        button3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-    public void setPanel(JPanel Login) {this.Login = Login;}
+            }
+        });
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-    public JPanel getLogin() {return Login;}
+                Medicos ventanaMed = new Medicos(); //creacion
 
-    public JButton getButton1() {return button1;}
+                JFrame ventana = new JFrame("Medicos");
+                ventana.setContentPane(ventanaMed.getMedico());
+                ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                ventana.pack();
+                ventana.setLocationRelativeTo(null); //lo centra
+                ventana.setVisible(true);
 
-    public JButton getButton2() {return button2;}
+                java.awt.Window w = SwingUtilities.getWindowAncestor(Login);
+                if (w != null) w.dispose();
+            }
+        });
+    }
 
-    public void setButton2(JButton button2) {this.button2 = button2;}
-
-    public JButton getButton3() {return button3;}
-
-    public void setButton3(JButton button3) {this.button3 = button3;}
-
-    public JTextField getTextField1() {return textField1;}
-
-    public void setTextField1(JTextField textField1) {this.textField1 = textField1;}
-
-    public JTextField getTextField2() {return textField2;}
-
-    public void setTextField2(JTextField textField2) {this.textField2 = textField2;}
-
-    public void setButton1(JButton button1) {this.button1 = button1;}
-
-    public void setLogin(JPanel login) {Login = login;}
-
+    public JPanel getLogin() {
+        return Login;
+    }
 }
+

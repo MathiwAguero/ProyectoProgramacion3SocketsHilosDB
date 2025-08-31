@@ -11,7 +11,7 @@ import java.util.List;
 
 public class AdminDAO extends BaseDAO<Admin> {
 
-    private static final String PATH = "resources/Data/admins.xml";
+    private static final String PATH = "resources/ArchivosXML/admins.xml";
     private List<Admin> administradores = new ArrayList<>();
 
     public AdminDAO() {
@@ -98,3 +98,5 @@ public class AdminDAO extends BaseDAO<Admin> {
         }
     }
 }
+
+

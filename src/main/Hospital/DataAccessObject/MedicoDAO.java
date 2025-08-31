@@ -11,7 +11,7 @@ import java.util.List;
 
 public class MedicoDAO extends BaseDAO<Medico> {
     private List<Medico> medicos = new ArrayList<>();
-    private static final String PATH = "resources/Data/medicos.xml"; //final es como decir const, nunca va a cambair el path
+    private static final String PATH = "resources/ArchivosXML/medicos.xml"; //final es como decir const, nunca va a cambair el path
 
     public MedicoDAO() {
         try {
@@ -40,8 +40,12 @@ public class MedicoDAO extends BaseDAO<Medico> {
     @Override
     public void actualizar(Medico m) throws DataAccessException {
         if(m == null || m.getId() == null) throw new DataAccessException("Medico inexistente");
-        for (int i=0;i<medicos.size();i++){
-            if (medicos.get(i).getId().equals(m.getId())) { medicos.set(i, m); guardarEnXML(); return; }
+        for (int i=0; i<medicos.size(); i++) {
+            if (medicos.get(i).getId().equals(m.getId())) {
+                medicos.set(i, m);
+                guardarEnXML();
+                return;
+            }
         }
         throw new DataAccessException("Medico no encontrado: " + m.getId());
     }

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class RecetaDAO extends BaseDAO<Receta> {
 
-    private static final String PATH = "resources/Data/recetas.xml";
+    private static final String PATH = "resources/ArchivosXML/recetas.xml";
     private List<Receta> recetas = new ArrayList<>();
 
     public RecetaDAO() {

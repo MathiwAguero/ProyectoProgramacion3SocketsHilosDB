@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PacienteDAO extends BaseDAO<Paciente> {
 
-    private static final String PATH = "resources/Data/paciente.xml";
+    private static final String PATH = "resources/ArchivosXML/paciente.xml";
     private List<Paciente> pacientes = new ArrayList<>();
 
     public PacienteDAO() {

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FarmaceutaDAO extends BaseDAO<Farmaceuta> {
 
-    private static final String PATH = "resources/Data/farmaceuticos.xml";
+    private static final String PATH = "resources/ArchivosXML/farmaceuticos.xml";
     private List<Farmaceuta> farmaceutas = new ArrayList<>();
 
     public FarmaceutaDAO() {
