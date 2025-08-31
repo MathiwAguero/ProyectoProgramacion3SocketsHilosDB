@@ -20,6 +20,9 @@ public class CambioClave {
     private JPasswordField passwordField2;
     private JPasswordField passwordField3;
 
+    public JDialog ventana; //esto es para crear la ventana
+
+
     public void initialization(ServiceLogin service, UsuarioBase usuario) {
         this.usuario =  usuario;
         this.service = service;
@@ -58,9 +61,7 @@ public class CambioClave {
                     usuario.setClave(nueva);
                     JOptionPane.showMessageDialog(CambioClave, "Se cambio la clave correctamente");
 
-                    //Esto es para cerrar la ventana luego de y volver al de login
-                    java.awt.Window w = SwingUtilities.getWindowAncestor(CambioClave);
-                    if (w != null) w.dispose();
+                    ventana.dispose();
 
                 } catch (Exceptions.DataAccessException x) {
                     JOptionPane.showMessageDialog(CambioClave, x.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

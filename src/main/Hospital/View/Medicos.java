@@ -102,7 +102,7 @@ public class Medicos {
                 String q = textField4.getText().trim().toLowerCase();
                 List<Medico> lista = DAOFactory.get().medico().obtenerTodos();
                 if (!q.isEmpty()) {
-                    lista = lista.stream().filter(m -> m.getId()!=null && m.getId().toLowerCase().contains(q)).toList();
+                    lista = lista.stream().filter(m -> m.getNombre() != null && m.getNombre().toLowerCase().contains(q)).toList();
                 }
                 StringBuilder reporte = new StringBuilder("Reporte de Medicos\n\n");
                 for (Medico m : lista) {

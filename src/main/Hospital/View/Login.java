@@ -24,14 +24,23 @@ public class Login {
         button3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                CambioClave ventanaCambio = new CambioClave(); //llamada al panel de cambioClave
+
+                JFrame ventana = new JFrame("Medicos");
+                ventana.setContentPane(ventanaCambio.getPanel());
+                ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                ventana.pack();
+                ventana.setLocationRelativeTo(null);
+                ventana.setVisible(true);
 
             }
         });
+
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                Medicos ventanaMed = new Medicos(); //creacion
+                Medicos ventanaMed = new Medicos(); //llamada al panel de medico y de ahi agregar los demas como tabs
 
                 JFrame ventana = new JFrame("Medicos");
                 ventana.setContentPane(ventanaMed.getMedico());
