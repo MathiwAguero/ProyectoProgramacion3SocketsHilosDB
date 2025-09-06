@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="24.0.2" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="Entidades.RecipeDetails">
+    <void property="cantidad">
+     <int>5</int>
+    </void>
+    <void property="codigoMedicamento">
+     <string>001</string>
+    </void>
+    <void property="duracionTratamiento">
+     <int>15</int>
+    </void>
+    <void property="indicaciones">
+     <string>Tomar una cada 8 horas</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Entidades.RecipeDetails">
+    <void property="cantidad">
+     <int>10</int>
+    </void>
+    <void property="codigoMedicamento">
+     <string>002</string>
+    </void>
+    <void property="duracionTratamiento">
+     <int>10</int>
+    </void>
+    <void property="indicaciones">
+     <string>Tomar una cada al dia</string>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="24.0.2" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="Entidades.UsuarioBase">
+    <void property="clave">
+     <string>123456</string>
+    </void>
+    <void property="id">
+     <string>ADM-111</string>
+    </void>
+    <void property="nombre">
+     <string>Nestor Zamora</string>
+    </void>
+    <void property="tipo">
+     <object class="java.lang.Enum" id="TipoUsuario0" method="valueOf">
+      <class>Entidades.TipoUsuario</class>
+      <string>ADMINISTRADOR</string>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Entidades.UsuarioBase">
+    <void property="clave">
+     <string>1111</string>
+    </void>
+    <void property="id">
+     <string>ADM-222</string>
+    </void>
+    <void property="nombre">
+     <string>Jose Sanchez</string>
+    </void>
+    <void property="tipo">
+     <object idref="TipoUsuario0"/>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Entidades.UsuarioBase">
+    <void property="clave">
+     <string>111</string>
+    </void>
+    <void property="id">
+     <string>MED-111</string>
+    </void>
+    <void property="nombre">
+     <string>Mathiw Aguero</string>
+    </void>
+    <void property="tipo">
+     <object class="java.lang.Enum" id="TipoUsuario1" method="valueOf">
+      <class>Entidades.TipoUsuario</class>
+      <string>MEDICO</string>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Entidades.UsuarioBase">
+    <void property="clave">
+     <string>222</string>
+    </void>
+    <void property="id">
+     <string>MED-222</string>
+    </void>
+    <void property="nombre">
+     <string>Ignacio Bolanos</string>
+    </void>
+    <void property="tipo">
+     <object idref="TipoUsuario1"/>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Entidades.UsuarioBase">
+    <void property="clave">
+     <string>333</string>
+    </void>
+    <void property="id">
+     <string>MED-333</string>
+    </void>
+    <void property="nombre">
+     <string>Naara menjivar</string>
+    </void>
+    <void property="tipo">
+     <object idref="TipoUsuario1"/>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Entidades.UsuarioBase">
+    <void property="clave">
+     <string>123</string>
+    </void>
+    <void property="id">
+     <string>FAR-111</string>
+    </void>
+    <void property="nombre">
+     <string>Wilson Ramirez</string>
+    </void>
+    <void property="tipo">
+     <object class="java.lang.Enum" id="TipoUsuario2" method="valueOf">
+      <class>Entidades.TipoUsuario</class>
+      <string>FARMECEUTA</string>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Entidades.UsuarioBase">
+    <void property="clave">
+     <string>555</string>
+    </void>
+    <void property="id">
+     <string>FAR-222</string>
+    </void>
+    <void property="nombre">
+     <string>Carlos Loria</string>
+    </void>
+    <void property="tipo">
+     <object idref="TipoUsuario2"/>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Entidades.UsuarioBase">
+    <void property="clave">
+     <string>123456</string>
+    </void>
+    <void property="id">
+     <string>FAR-333</string>
+    </void>
+    <void property="nombre">
+     <string>Juan Pablo</string>
+    </void>
+    <void property="tipo">
+     <object idref="TipoUsuario2"/>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

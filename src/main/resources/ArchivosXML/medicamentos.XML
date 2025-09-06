@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="24.0.2" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="Entidades.Medicamento">
+    <void property="codigo">
+     <string>001</string>
+    </void>
+    <void property="nombre">
+     <string>Acetaminofen</string>
+    </void>
+    <void property="presentacion">
+     <string>100 mg</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Entidades.Medicamento">
+    <void property="codigo">
+     <string>002</string>
+    </void>
+    <void property="nombre">
+     <string>Panadol</string>
+    </void>
+    <void property="presentacion">
+     <string>500 mg</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Entidades.Medicamento">
+    <void property="codigo">
+     <string>003</string>
+    </void>
+    <void property="nombre">
+     <string>Cataflan</string>
+    </void>
+    <void property="presentacion">
+     <string>300 mg</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Entidades.Medicamento">
+    <void property="codigo">
+     <string>004</string>
+    </void>
+    <void property="nombre">
+     <string>Ibuprofeno</string>
+    </void>
+    <void property="presentacion">
+     <string>250 mg</string>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

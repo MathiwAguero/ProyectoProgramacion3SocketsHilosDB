@@ -1,18 +1,14 @@
 package View;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
-import java.awt.*;
+import Services.ServiceLogin;
+import Entidades.UsuarioBase;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import Exceptions.DataAccessException;
-import Services.ServiceLogin;
-import Model.UsuarioBase;
-
 
 public class CambioClave {
-    private UsuarioBase usuario;
-    private ServiceLogin service;
+
     private JPanel CambioClave;
     private JButton button1;
     private JButton button2;
@@ -20,13 +16,10 @@ public class CambioClave {
     private JPasswordField passwordField2;
     private JPasswordField passwordField3;
 
-    public JDialog ventana; //esto es para crear la ventana
-
-
-    public void initialization(ServiceLogin service, UsuarioBase usuario) {
-        this.usuario =  usuario;
-        this.service = service;
-    }
+    private JDialog dialog;
+    private ServiceLogin service;
+    private UsuarioBase usuario;
+    private boolean changed = false;
 
     public CambioClave() {
         button2.addActionListener(new ActionListener() {
@@ -40,10 +33,14 @@ public class CambioClave {
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String actual = new String(passwordField1.getPassword());
-                String nueva = new String(passwordField2.getPassword());
-                String confirmar = new String(passwordField3.getPassword());
+                String actual = new String(passwordField1.getPassword()).trim();
+                String nueva  = new String(passwordField2.getPassword()).trim();
+                String confirmar = new String(passwordField3.getPassword()).trim();
 
+                if (actual.isEmpty() || nueva.isEmpty() || confirmar.isEmpty()) {
+                    JOptionPane.showMessageDialog(CambioClave, "Complete todos los campos");
+                    return;
+                }
                 if (actual.equals(nueva)) {
                     JOptionPane.showMessageDialog(CambioClave, "La clave actual no puede ser igual a la nueva");
                     return;
@@ -53,25 +50,40 @@ public class CambioClave {
                     return;
                 }
                 try {
-
                     service.login(usuario.getId(), actual, usuario.getNombre(), usuario.getTipo());
-
-                    // Cambiar la clave
                     service.cambioClave(usuario.getId(), nueva);
                     usuario.setClave(nueva);
-                    JOptionPane.showMessageDialog(CambioClave, "Se cambio la clave correctamente");
 
-                    ventana.dispose();
+                    JOptionPane.showMessageDialog(CambioClave, "Se cambio la clave correctamente");
+                    changed = true;
+                    dialog.dispose();
 
                 } catch (Exceptions.DataAccessException x) {
                     JOptionPane.showMessageDialog(CambioClave, x.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-
     }
 
-    public JPanel getPanel() {
-        return CambioClave;
+    private void initialization(ServiceLogin service, UsuarioBase usuario) {
+        this.service = service;
+        this.usuario = usuario;
     }
+
+    public static boolean open(java.awt.Window parent, ServiceLogin service, UsuarioBase usuario) {
+        CambioClave cc = new CambioClave();
+        cc.initialization(service, usuario);
+
+        cc.dialog = new JDialog(parent, "Cambiar clave", java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        cc.dialog.setContentPane(cc.CambioClave);
+        cc.dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        cc.dialog.getRootPane().setDefaultButton(cc.button1);
+        cc.dialog.pack();
+        cc.dialog.setLocationRelativeTo(parent);
+        cc.dialog.setVisible(true);
+
+        return cc.changed;
+    }
+
+    public JPanel getPanel() { return CambioClave; }
 }

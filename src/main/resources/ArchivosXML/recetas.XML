@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="24.0.2" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="Entidades.Receta">
+    <void property="fechaConfeccion">
+     <string>1/08/2025</string>
+    </void>
+    <void property="fechaRetiro">
+     <string>2/08/2025</string>
+    </void>
+    <void property="id">
+     <string>004</string>
+    </void>
+    <void property="idPaciente">
+     <object class="Entidades.Paciente">
+      <void property="fechaNacimiento">
+       <string>2/06/2006</string>
+      </void>
+      <void property="id">
+       <string>P001</string>
+      </void>
+      <void property="nombre">
+       <string>Juan Perez</string>
+      </void>
+      <void property="numeroTelefonico">
+       <string>12345678</string>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>
