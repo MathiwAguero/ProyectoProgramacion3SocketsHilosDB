@@ -1,26 +1,35 @@
 package Controller;
 
-import Entidades.Medico;
-import Entidades.Receta;
 import ManejoListas.Factory;
-import Entidades.Paciente;
+import Entidades.Receta;
 import Exceptions.DataAccessException;
-import Model.ModelPaciente;
 import Model.ModelReceta;
 import View.Dashboard;
-import View.Pacientes;
+import View.Historial;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class RecetaController {
-    Dashboard view;
+    Dashboard viewDashboard;
+    Historial viewHistorial;
     ModelReceta model;
 
-    public RecetaController(Dashboard view, ModelReceta model) {
-        this.view = view;
+    // Constructor usado por Dashboard
+    public RecetaController(Dashboard viewDashboard, ModelReceta model) {
+        this.viewDashboard = viewDashboard;
         this.model = model;
-        view.setController(this);
-        view.setModel(model);
+        viewDashboard.setController(this);
+        viewDashboard.setModel(model);
+        cargarDatosIniciales();
+    }
+
+    // Constructor usado por Historial
+    public RecetaController(Historial viewHistorial, ModelReceta model) {
+        this.viewHistorial = viewHistorial;
+        this.model = model;
+        viewHistorial.setController(this);
+        viewHistorial.setModel(model);
         cargarDatosIniciales();
     }
 
@@ -36,7 +45,7 @@ public class RecetaController {
 
     public void create(Receta receta) throws DataAccessException {
         try {
-            if(Factory.get().receta().existeId(receta.getId())) {
+            if (Factory.get().receta().existeId(receta.getId())) {
                 Factory.get().receta().actualizar(receta);
             } else {
                 Factory.get().receta().insertar(receta);
@@ -50,7 +59,7 @@ public class RecetaController {
 
     public void read(String id) throws DataAccessException {
         try {
-            Receta encontrado =  Factory.get().receta().obtenerPorId(id);
+            Receta encontrado = Factory.get().receta().obtenerPorId(id);
             if (encontrado == null) {
                 throw new DataAccessException("Receta no encontrada");
             }
@@ -74,8 +83,9 @@ public class RecetaController {
         if (search == null || search.trim().isEmpty()) {
             model.setList(general);
         } else {
-            List<Receta> filtro = general.stream().filter(m -> m.getId() != null && m.getId()
-                    .equals(search)).collect(Collectors.toList());
+            List<Receta> filtro = general.stream()
+                    .filter(m -> m.getId() != null && m.getId().equals(search))
+                    .collect(Collectors.toList());
             model.setList(filtro);
         }
     }

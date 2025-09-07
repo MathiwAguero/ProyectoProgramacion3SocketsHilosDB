@@ -6,12 +6,16 @@ import Entidades.Medicamento;
 import Exceptions.DataAccessException;
 import Model.ModelMedicamentos;
 import View.Medicamentos;
+import View.PrescribirBuscarMedica;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MedicamentoController {
     Medicamentos view;
     ModelMedicamentos model;
+    PrescribirBuscarMedica panel;
+
 
     public MedicamentoController(Medicamentos view, ModelMedicamentos model) {
         this.view = view;
@@ -20,6 +24,13 @@ public class MedicamentoController {
         view.setModel(model);
         cargarDatosIniciales();
 
+    }
+
+    public MedicamentoController(PrescribirBuscarMedica view, ModelMedicamentos model) {
+        this.model = model;
+        view.setController(this);
+        view.setModel(model);
+        cargarDatosIniciales();
     }
 
     private void cargarDatosIniciales() {
@@ -75,6 +86,25 @@ public class MedicamentoController {
             List<Medicamento> filtro = general.stream().filter(m -> m.getNombre() != null && m.getNombre().toLowerCase()
                     .contains(search.toLowerCase())).collect(Collectors.toList());
             model.setList(filtro);
+        }
+    }
+
+    public void searchComboBox(String criterio, String search) throws DataAccessException {
+        List<Medicamento> general = Factory.get().medicamento().obtenerTodos();
+        if (search == null || search.trim().isEmpty()) {
+            model.setList(general);
+            return;
+        }
+        String q = search.toLowerCase();
+
+        if ("Código".equalsIgnoreCase(criterio)) {
+            model.setList(general.stream()
+                    .filter(p -> p.getCodigo() != null && p.getCodigo().toLowerCase().startsWith(q))
+                    .collect(Collectors.toList()));
+        } else {
+            model.setList(general.stream()
+                    .filter(p -> p.getNombre() != null && p.getNombre().toLowerCase().contains(q))
+                    .collect(Collectors.toList()));
         }
     }
 

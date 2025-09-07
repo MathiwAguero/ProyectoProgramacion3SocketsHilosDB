@@ -6,18 +6,29 @@ import Entidades.Paciente;
 import Exceptions.DataAccessException;
 import Model.ModelPaciente;
 import View.Pacientes;
+import View.PrescribirBuscarPacien;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PacienteController {
-    Pacientes view;
+    Pacientes panelview;
     ModelPaciente model;
+    PrescribirBuscarPacien panel;
 
-    public PacienteController(Pacientes view, ModelPaciente model) {
-        this.view = view;
+    public PacienteController(Pacientes panelview, ModelPaciente model) {
+        this.panelview = panelview;
         this.model = model;
-        view.setController(this);
-        view.setModel(model);
+        panelview.setController(this);
+        panelview.setModel(model);
+        cargarDatosIniciales();
+
+    }
+    public PacienteController(PrescribirBuscarPacien panel, ModelPaciente model) {
+        this.panel = panel;
+        this.model = model;
+        panel.setController(this);
+        panel.setModel(model);
         cargarDatosIniciales();
 
     }
@@ -75,6 +86,25 @@ public class PacienteController {
             List<Paciente> filtro = general.stream().filter(m -> m.getNombre() != null && m.getNombre().toLowerCase()
                     .contains(search.toLowerCase())).collect(Collectors.toList());
             model.setList(filtro);
+        }
+    }
+
+    public void searchComboBox(String criterio, String search) throws DataAccessException {
+        List<Paciente> general = Factory.get().paciente().obtenerTodos();
+        if (search == null || search.trim().isEmpty()) {
+            model.setList(general);
+            return;
+        }
+        String q = search.toLowerCase();
+
+        if ("ID".equalsIgnoreCase(criterio)) {
+            model.setList(general.stream()
+                    .filter(p -> p.getId() != null && p.getId().toLowerCase().startsWith(q))
+                    .collect(Collectors.toList()));
+        } else {
+            model.setList(general.stream()
+                    .filter(p -> p.getNombre() != null && p.getNombre().toLowerCase().contains(q))
+                    .collect(Collectors.toList()));
         }
     }
 

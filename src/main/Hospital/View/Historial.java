@@ -1,13 +1,11 @@
 package View;
 
-import Application.Main;
-import Controller.DetailsController;
-import Controller.FarmaceutaController;
+import Controller.RecetaController;
+import Entidades.Receta;
 import Entidades.RecipeDetails;
 import ManejoListas.Factory;
-import Model.ModelDetails;
-import Model.ModelFarmaceuta;
-import TableModel.TableModelDetails;
+import Model.ModelReceta;
+import TableModel.TableModelRecetas;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -23,13 +21,13 @@ public class Historial implements PropertyChangeListener {
     private JButton detallesButton;
     private JTextField textField1;
 
-    DetailsController controller;
-    ModelDetails model;
-
+    RecetaController controller;
+    ModelReceta model;
 
     public JPanel getHistorial() {
         return Historial;
     }
+
     public Historial() {
 
         buscarButton.addActionListener(new ActionListener() {
@@ -39,65 +37,72 @@ public class Historial implements PropertyChangeListener {
                 try {
                     controller.search(busqueda);
                 } catch (Exception x) {
-                    JOptionPane.showMessageDialog(Historial, "No se encontraron los detalles de esa receta");
-
+                    JOptionPane.showMessageDialog(Historial, "No se encontraron recetas");
                 }
-
             }
         });
+
         detallesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String busqueda = textField1.getText().trim().toLowerCase();
-                List<RecipeDetails> details = Factory.get().details().obtenerTodos();
                 if (busqueda.isEmpty()) {
-                    JOptionPane.showMessageDialog(Historial, "Debe buscar\n");
+                    JOptionPane.showMessageDialog(Historial, "Debe buscar");
+                    return;
                 }
-                for (RecipeDetails rd : details) {
-                    if (rd.getCodigoMedicamento() != null && rd.getCodigoMedicamento().equals(busqueda)) {
-                        String reporte = "Reporte de los detalles:\n\n" +
-                                "Codigo medicamento: " + rd.getCodigoMedicamento() + "\n" +
-                                "Duracion del tratamiento: " + rd.getDuracionTratamiento() + "dias\n" +
-                                "Cantidad: " + rd.getCantidad() + "\n" +
-                                "Indicaciones de consumo: " + rd.getIndicaciones() + "\n";
+
+                List<Receta> recetas = Factory.get().receta().obtenerTodos();
+                for (Receta rec : recetas) {
+                    if (rec.getId() != null && rec.getId().toLowerCase().equals(busqueda)) {
+                        String reporte = "Reporte de la receta:\n\n" +
+                                "ID: " + rec.getId() + "\n" +
+                                "Medico: " + (rec.getMedico() != null ? rec.getMedico().getNombre() : "") + "\n" +
+                                "Paciente: " + (rec.getPaciente() != null ? rec.getPaciente().getNombre() : "") + "\n" +
+                                "Estado: " + String.valueOf(rec.getEstado()) + "\n" +
+                                "Fecha confeccion: " + rec.getFechaConfeccion() + "\n" +
+                                "Fecha retiro: " + rec.getFechaRetiro() + "\n" +
+                                "Detalles (cantidad): " + (rec.getDetalles() != null ? rec.getDetalles().size() : 0) + "\n";
+
                         JOptionPane.showMessageDialog(Historial, reporte);
                         return;
                     }
                 }
-                JOptionPane.showMessageDialog(Historial, "No se encontraron a ese nombre");
-
+                JOptionPane.showMessageDialog(Historial, "No se encontraron");
             }
         });
-
     }
 
-    public void setModel(ModelDetails model) {
-
+    public void setModel(ModelReceta model) {
         this.model = model;
         model.addPropertyChangeListener(this);
     }
 
-    public void setController(DetailsController controller) {
+    public void setController(RecetaController controller) {
         this.controller = controller;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
-            case ModelDetails.LIST: {
-                int[] cols = {TableModelDetails.MEDICAMENTO,TableModelDetails.INDICACIONES,
-                              TableModelDetails.CANTIDAD,
-                              TableModelDetails.DURACION};
-                table1.setModel(new TableModelDetails(cols, model.getList()));
+            case ModelReceta.LIST: {
+                int[] cols = {
+                        TableModelRecetas.ID,
+                        TableModelRecetas.MEDICO,
+                        TableModelRecetas.PACIENTE,
+                        TableModelRecetas.ESTADO,
+                        TableModelRecetas.FECHARETIRO,
+                        TableModelRecetas.FECHACONFECC,
+                        TableModelRecetas.DETALLES
+                };
+                table1.setModel(new TableModelRecetas(cols, model.getList()));
                 break;
             }
-            case ModelDetails.CURRENT: {
-                RecipeDetails current = model.getCurrent();
+            case ModelReceta.CURRENT: {
                 break;
-        }
+            }
         }
         this.Historial.revalidate();
     }
-}
 
+}
 

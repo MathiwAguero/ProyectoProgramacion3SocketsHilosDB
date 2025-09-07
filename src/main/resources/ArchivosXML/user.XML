@@ -4,7 +4,7 @@
   <void method="add">
    <object class="Entidades.UsuarioBase">
     <void property="clave">
-     <string>123456</string>
+     <string>111</string>
     </void>
     <void property="id">
      <string>ADM-111</string>

@@ -2,12 +2,12 @@ package Application;
 
 import javax.swing.*;
 
-import Controller.MedicoController;
-import Model.ModelMedico;
-import TableModel.TableModelMedicos;
+import Controller.RecetaController;
+import Entidades.Receta;
+import Model.ModelMedicamentos;
+import Model.ModelReceta;
+import View.Historial;
 import View.Login;
-import Controller.LoginController;
-import View.Medicos;
 import HospitalData.HospitalData;
 
 import java.awt.*;
@@ -19,6 +19,7 @@ public class Main {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception e) {
         }
+
             SwingUtilities.invokeLater(() -> {
                 HospitalData.incializarDatos();
                 System.out.println("Datos del Hospital inicializados");

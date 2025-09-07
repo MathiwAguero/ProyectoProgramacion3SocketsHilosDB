@@ -4,6 +4,8 @@ import Entidades.*;
 import Exceptions.DataAccessException;
 import ManejoListas.Factory;
 
+import java.util.List;
+
 public class HospitalData {
 
     //Administrador
@@ -24,19 +26,18 @@ public class HospitalData {
     static Farmaceuta f2 =new Farmaceuta("FAR-222", "555", "Carlos Loria");
     static Farmaceuta f3 = new Farmaceuta("FAR-333", "123456", "Juan Pablo");
 
-    //Recetas
-    static Receta r1 = new Receta("004", p1, n1, "1/08/2025", "2/08/2025");
-    static Receta r2 = new Receta("005", p2, n1, "20/07/2025", "1/08/2025");
-
     //Medicamentos
     static Medicamento m1 = new Medicamento("001", "Acetaminofen", "100 mg");
     static Medicamento m2 = new Medicamento("002", "Panadol", "500 mg");
 
     //RecipeDetails
-    static RecipeDetails rcp1 = new RecipeDetails(m1.getCodigo(), 5, "Tomar una cada 8 horas", 15);
-    static RecipeDetails rcp2 = new RecipeDetails(m2.getCodigo(), 10, "Tomar una cada al dia", 10);
+    static RecipeDetails rcp1 = new RecipeDetails(m1.getNombre(), 5, "Tomar una cada 8 horas", 15);
+    static RecipeDetails rcp2 = new RecipeDetails(m2.getNombre(), 10, "Tomar una al dia", 10);
 
-
+    //Recetas
+    static Receta r1 = new Receta("004", p1, n1, "1/08/2025", "2/08/2025", EstadoReceta.ENTREGADA, new java.util.ArrayList<>());
+    static Receta r2 = new Receta("005", p2, n1, "20/07/2025", "1/08/2025", EstadoReceta.LISTA,      new java.util.ArrayList<>());
+    static { r1.agregarDetalle(rcp2); r2.agregarDetalle(rcp1); }
 
     public static void incializarDatos() {
         try {

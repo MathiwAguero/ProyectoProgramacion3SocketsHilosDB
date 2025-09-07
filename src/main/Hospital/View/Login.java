@@ -45,6 +45,7 @@ public class Login {
                 }
             }
         });
+
         button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -52,29 +53,40 @@ public class Login {
                 passwordField1.setText("");
             }
         });
+
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ServiceLogin service = new ServiceLogin(); //para llamar metodo de login (logica)
-                UsuarioBase user; //UsuarioBase porque no sabemos que tipo es
+                ServiceLogin service = new ServiceLogin();
+                UsuarioBase user;
 
                 String id = textField1.getText().trim();
                 String clave = new String(passwordField1.getPassword()).trim();
-                String leerCaracter = id.substring(0, 3).toUpperCase();
-                TipoUsuario tipo = TipoUsuario.ingreso(leerCaracter); //Esto va a devolver ADM, MED o FAR
 
                 if (id.isEmpty() || clave.isEmpty()) {
                     JOptionPane.showMessageDialog(Login, "Ingrese su ID completo (ADM-xxx / MED-xxx / FAR-xxx) y su clave");
                     return;
-                } else if (tipo == null) {
-                    JOptionPane.showMessageDialog(Login, "Rol invalido");
+                }
+                if (id.length() < 3) {
+                    JOptionPane.showMessageDialog(Login, "ID inválido. Debe iniciar con ADM / MED / FAR");
                     return;
                 }
 
                 try {
                     user = service.loginPorId(id, clave);
+                    if (user == null) {
+                        JOptionPane.showMessageDialog(Login, "ID o clave incorrectos.");
+                        return;
+                    }
                 } catch (Exceptions.DataAccessException ex) {
                     JOptionPane.showMessageDialog(Login, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                String leerCaracter = id.substring(0, 3).toUpperCase();
+                TipoUsuario tipo = TipoUsuario.ingreso(leerCaracter);
+                if (tipo == null) {
+                    JOptionPane.showMessageDialog(Login, "Rol invalido");
                     return;
                 }
 
@@ -102,8 +114,11 @@ public class Login {
                         ModelMedicamentos modelMedicam = new ModelMedicamentos();
                         new MedicamentoController(ventanaMedicamentos, modelMedicam);
 
-                        ModelDetails modelDetails = new ModelDetails();
-                        new DetailsController(ventanaHistorial, modelDetails);
+                        ModelReceta modelRecetaDashboard = new ModelReceta();
+                        new RecetaController(ventanaDashboard, modelRecetaDashboard);
+
+                        ModelReceta modelRecetaHistorial = new ModelReceta();
+                        new RecetaController(ventanaHistorial, modelRecetaHistorial);
 
                         tabs.addTab("Medicos", ventanaMed.getMedico());
                         tabs.addTab("Farmaceutas", ventanaFarmaceuta.getFarmaceutas());
@@ -115,33 +130,41 @@ public class Login {
                         break;
                     }
                     case "MED": {
-                        Dashboard ventanaDashboard2 = new Dashboard();
-                        Historial ventanaHistorial2 = new Historial();
-                        AcercaDe ventanaAcerdaDe2 = new AcercaDe();
-                        Prescripcion ventanaPrescribir = new Prescripcion();
+                        Dashboard ventanaDashboard = new Dashboard();
+                        PrescribirMed ventanaPrescribir = new PrescribirMed();
+                        Historial ventanaHistorial  = new Historial();
+                        AcercaDe ventanaAcercaDe = new AcercaDe();
 
-                        ModelDetails modelDetails = new ModelDetails();
-                        new DetailsController(ventanaHistorial2, modelDetails);
+                        ModelDetails modelDetailsPrescribir = new ModelDetails();
+                        ModelReceta  modelRecetaDashboard   = new ModelReceta();
+                        ModelReceta  modelRecetaHistorial   = new ModelReceta();
 
-                        tabs.addTab("Prescribir", ventanaPrescribir.getPrescrip());
-                        tabs.addTab("Dashboard", ventanaDashboard2.getDashboard());
-                        tabs.addTab("Historial", ventanaHistorial2.getHistorial());
-                        tabs.addTab("Acerca de", ventanaAcerdaDe2.getPanel());
+                        new PrescribirController(ventanaPrescribir, modelDetailsPrescribir);
+                        new RecetaController(ventanaHistorial, modelRecetaHistorial);
+                        new RecetaController(ventanaDashboard, modelRecetaDashboard);
+
+                        tabs.addTab("Prescribir", ventanaPrescribir.getPrescribirMed());
+                        tabs.addTab("Dashboard", ventanaDashboard.getDashboard());
+                        tabs.addTab("Historial", ventanaHistorial.getHistorial());
+                        tabs.addTab("Acerca de", ventanaAcercaDe.getPanel());
                         break;
                     }
                     case "FAR": {
-                        Dashboard ventanaDashboard3 = new Dashboard();
-                        Historial ventanaHistorial3 = new Historial();
-                        AcercaDe ventanaAcerdaDe3 = new AcercaDe();
                         Despacho ventanaDespacho = new Despacho();
+                        Dashboard ventanaDashboard = new Dashboard();
+                        Historial ventanaHistorial = new Historial();
+                        AcercaDe ventanaAcercaDe = new AcercaDe();
 
-                        ModelDetails modelDetails = new ModelDetails();
-                        new DetailsController(ventanaHistorial3, modelDetails);
+                        ModelReceta modelRecetaDashboard = new ModelReceta();
+                        new RecetaController(ventanaDashboard, modelRecetaDashboard);
+
+                        ModelReceta modelRecetaHist = new ModelReceta();
+                        new RecetaController(ventanaHistorial, modelRecetaHist); // (Historial, ModelReceta)
 
                         tabs.addTab("Despacho", ventanaDespacho.getDespacho());
-                        tabs.addTab("Dashboard", ventanaDashboard3.getDashboard());
-                        tabs.addTab("Historial", ventanaHistorial3.getHistorial());
-                        tabs.addTab("Acerca de", ventanaAcerdaDe3.getPanel());
+                        tabs.addTab("Dashboard", ventanaDashboard.getDashboard());
+                        tabs.addTab("Historial", ventanaHistorial.getHistorial());
+                        tabs.addTab("Acerca de", ventanaAcercaDe.getPanel());
                         break;
                     }
                     default:

@@ -1,61 +1,77 @@
 package Entidades;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Receta {
     private String id;
     private Paciente paciente;
-    private Medico medic;
+    private Medico medico;
     private String fechaConfeccion;
     private String fechaRetiro;
     private EstadoReceta estado;
     private List<RecipeDetails> detalles;
 
     public Receta() {
+        this.id = "";
+        this.paciente = null;
+        this.medico = null;
+        this.fechaConfeccion = "";
+        this.fechaRetiro = "";
+        this.estado = EstadoReceta.PROCESO;
         this.detalles = new ArrayList<>();
-        this.estado = EstadoReceta.CONFECCIONADA;
     }
 
-    public Receta(String id, Paciente paciente, Medico medic, String fechaConfeccion, String fechaRetiro) {
+    public Receta(String id, Paciente paciente, Medico medico, String fechaConfeccion,
+                  String fechaRetiro, EstadoReceta estado, List<RecipeDetails> detalles) {
+
         this.id = id;
         this.paciente = paciente;
-        this.medic = medic;
+        this.medico = medico;
         this.fechaConfeccion = fechaConfeccion;
         this.fechaRetiro = fechaRetiro;
-        this.estado = EstadoReceta.CONFECCIONADA;
-        this.detalles = new ArrayList<>();
+        this.estado = estado;
+        this.detalles = detalles;
     }
 
-    // Getters y Setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
-    public Paciente getIdPaciente() { return paciente; }
-    public void setIdPaciente(Paciente paciente) { this.paciente = paciente; }
+    public Paciente getPaciente() { return paciente; }
+    public void setPaciente(Paciente paciente) { this.paciente = paciente; }
 
-    public Medico getIdMedico() { return medic; }
-    public void setIdMedico(String idMedico) { this.medic = medic; }
+    public Medico getMedico() { return medico; }
+    public void setMedico(Medico medico) { this.medico = medico; }
 
     public String getFechaConfeccion() { return fechaConfeccion; }
-    public void setFechaConfeccion(String fechaConfeccion) { this.fechaConfeccion = fechaConfeccion; }
+    public void setFechaConfeccion(String fechaConfeccion) {
+        this.fechaConfeccion = (fechaConfeccion != null) ? fechaConfeccion : "";
+    }
 
     public String getFechaRetiro() { return fechaRetiro; }
-    public void setFechaRetiro(String fechaRetiro) { this.fechaRetiro = fechaRetiro; }
+    public void setFechaRetiro(String fechaRetiro) {
+        this.fechaRetiro = (fechaRetiro != null) ? fechaRetiro : "";
+    }
 
     public EstadoReceta getEstado() { return estado; }
-    public void setEstado(EstadoReceta estado) { this.estado = estado; }
+    public void setEstado(EstadoReceta estado) {
+        this.estado = (estado != null) ? estado : EstadoReceta.PROCESO;
+    }
 
     public List<RecipeDetails> getDetalles() { return detalles; }
-    public void setDetalles(List<RecipeDetails> detalles) { this.detalles = detalles; }
+    public void setDetalles(List<RecipeDetails> detalles) {
+        this.detalles = (detalles != null) ? detalles : new ArrayList<>();
+    }
 
     public void agregarDetalle(RecipeDetails detalle) {
+        if (detalle == null) return;
+        if (this.detalles == null) this.detalles = new ArrayList<>();
         this.detalles.add(detalle);
     }
 
     public void eliminarDetalle(int indice) {
-        if (indice >= 0 && indice < detalles.size()) {
+        if (this.detalles == null) return;
+        if (indice >= 0 && indice < this.detalles.size()) {
             this.detalles.remove(indice);
         }
     }

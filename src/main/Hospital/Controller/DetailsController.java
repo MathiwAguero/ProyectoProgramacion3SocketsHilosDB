@@ -1,28 +1,19 @@
 package Controller;
 
-import Entidades.Medico;
 import Entidades.RecipeDetails;
 import ManejoListas.Factory;
-import Entidades.Farmaceuta;
 import Exceptions.DataAccessException;
 import Model.ModelDetails;
-import Model.ModelFarmaceuta;
-import View.Farmaceutas;
 import View.Historial;
-import View.Prescripcion;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class DetailsController {
-    Historial view;
     ModelDetails model;
 
-    public DetailsController(Historial view, ModelDetails model) {
-        this.view = view;
+    public DetailsController(ModelDetails model) {
         this.model = model;
-        view.setController(this);
-        view.setModel(model);
         cargarDatosIniciales();
     }
 
