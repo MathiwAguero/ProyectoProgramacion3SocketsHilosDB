@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="24.0.2" class="java.beans.XMLDecoder">
+<java version="24.0.1" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="Entidades.Receta" id="Receta0">
+   <object class="Hospital.Entidades.Receta" id="Receta0">
     <void property="detalles">
      <void method="add">
-      <object class="Entidades.RecipeDetails">
+      <object class="Hospital.Entidades.RecipeDetails">
        <void property="cantidad">
         <int>10</int>
        </void>
@@ -23,7 +23,7 @@
     </void>
     <void property="estado">
      <object class="java.lang.Enum" method="valueOf">
-      <class>Entidades.EstadoReceta</class>
+      <class>Hospital.Entidades.EstadoReceta</class>
       <string>ENTREGADA</string>
      </object>
     </void>
@@ -37,7 +37,7 @@
      <string>004</string>
     </void>
     <void property="medico">
-     <object class="Entidades.Medico" id="Medico0">
+     <object class="Hospital.Entidades.Medico" id="Medico0">
       <void property="clave">
        <string>111</string>
       </void>
@@ -52,14 +52,14 @@
       </void>
       <void property="tipo">
        <object class="java.lang.Enum" method="valueOf">
-        <class>Entidades.TipoUsuario</class>
+        <class>Hospital.Entidades.TipoUsuario</class>
         <string>MEDICO</string>
        </object>
       </void>
      </object>
     </void>
     <void property="paciente">
-     <object class="Entidades.Paciente">
+     <object class="Hospital.Entidades.Paciente">
       <void property="fechaNacimiento">
        <string>2/06/2006</string>
       </void>
@@ -77,10 +77,10 @@
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.Receta" id="Receta1">
+   <object class="Hospital.Entidades.Receta" id="Receta1">
     <void property="detalles">
      <void method="add">
-      <object class="Entidades.RecipeDetails">
+      <object class="Hospital.Entidades.RecipeDetails">
        <void property="cantidad">
         <int>5</int>
        </void>
@@ -98,7 +98,7 @@
     </void>
     <void property="estado">
      <object class="java.lang.Enum" method="valueOf">
-      <class>Entidades.EstadoReceta</class>
+      <class>Hospital.Entidades.EstadoReceta</class>
       <string>LISTA</string>
      </object>
     </void>
@@ -115,7 +115,7 @@
      <object idref="Medico0"/>
     </void>
     <void property="paciente">
-     <object class="Entidades.Paciente">
+     <object class="Hospital.Entidades.Paciente">
       <void property="fechaNacimiento">
        <string>2/03/1989</string>
       </void>

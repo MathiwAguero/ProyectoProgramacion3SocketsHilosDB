@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="24.0.2" class="java.beans.XMLDecoder">
+<java version="24.0.1" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="Entidades.Farmaceuta">
+   <object class="Hospital.Entidades.Farmaceuta">
     <void property="clave">
      <string>123</string>
     </void>
     <void property="id">
-     <string>401310900</string>
+     <string>FAR-111</string>
     </void>
     <void property="nombre">
      <string>Wilson Ramirez</string>
     </void>
     <void property="tipo">
      <object class="java.lang.Enum" id="TipoUsuario0" method="valueOf">
-      <class>Entidades.TipoUsuario</class>
+      <class>Hospital.Entidades.TipoUsuario</class>
       <string>FARMECEUTA</string>
      </object>
     </void>
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.Farmaceuta">
+   <object class="Hospital.Entidades.Farmaceuta">
     <void property="clave">
      <string>555</string>
     </void>
     <void property="id">
-     <string>501310200</string>
+     <string>FAR-222</string>
     </void>
     <void property="nombre">
      <string>Carlos Loria</string>
@@ -37,12 +37,12 @@
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.Farmaceuta">
+   <object class="Hospital.Entidades.Farmaceuta">
     <void property="clave">
      <string>123456</string>
     </void>
     <void property="id">
-     <string>301884920</string>
+     <string>FAR-333</string>
     </void>
     <void property="nombre">
      <string>Juan Pablo</string>

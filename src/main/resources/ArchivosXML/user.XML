@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="24.0.2" class="java.beans.XMLDecoder">
+<java version="24.0.1" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="Entidades.UsuarioBase">
+   <object class="Hospital.Entidades.UsuarioBase">
     <void property="clave">
-     <string>111</string>
+     <string>1234</string>
     </void>
     <void property="id">
      <string>ADM-111</string>
@@ -14,14 +14,14 @@
     </void>
     <void property="tipo">
      <object class="java.lang.Enum" id="TipoUsuario0" method="valueOf">
-      <class>Entidades.TipoUsuario</class>
+      <class>Hospital.Entidades.TipoUsuario</class>
       <string>ADMINISTRADOR</string>
      </object>
     </void>
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.UsuarioBase">
+   <object class="Hospital.Entidades.UsuarioBase">
     <void property="clave">
      <string>1111</string>
     </void>
@@ -37,7 +37,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.UsuarioBase">
+   <object class="Hospital.Entidades.UsuarioBase">
     <void property="clave">
      <string>111</string>
     </void>
@@ -49,14 +49,14 @@
     </void>
     <void property="tipo">
      <object class="java.lang.Enum" id="TipoUsuario1" method="valueOf">
-      <class>Entidades.TipoUsuario</class>
+      <class>Hospital.Entidades.TipoUsuario</class>
       <string>MEDICO</string>
      </object>
     </void>
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.UsuarioBase">
+   <object class="Hospital.Entidades.UsuarioBase">
     <void property="clave">
      <string>222</string>
     </void>
@@ -72,7 +72,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.UsuarioBase">
+   <object class="Hospital.Entidades.UsuarioBase">
     <void property="clave">
      <string>333</string>
     </void>
@@ -88,7 +88,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.UsuarioBase">
+   <object class="Hospital.Entidades.UsuarioBase">
     <void property="clave">
      <string>123</string>
     </void>
@@ -100,14 +100,14 @@
     </void>
     <void property="tipo">
      <object class="java.lang.Enum" id="TipoUsuario2" method="valueOf">
-      <class>Entidades.TipoUsuario</class>
+      <class>Hospital.Entidades.TipoUsuario</class>
       <string>FARMECEUTA</string>
      </object>
     </void>
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.UsuarioBase">
+   <object class="Hospital.Entidades.UsuarioBase">
     <void property="clave">
      <string>555</string>
     </void>
@@ -123,7 +123,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.UsuarioBase">
+   <object class="Hospital.Entidades.UsuarioBase">
     <void property="clave">
      <string>123456</string>
     </void>

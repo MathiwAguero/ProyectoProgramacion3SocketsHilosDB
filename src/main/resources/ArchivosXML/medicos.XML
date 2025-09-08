@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="24.0.2" class="java.beans.XMLDecoder">
+<java version="24.0.1" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="Entidades.Medico">
+   <object class="Hospital.Entidades.Medico">
     <void property="clave">
      <string>111</string>
     </void>
@@ -10,21 +10,21 @@
      <string>Neurocirujano</string>
     </void>
     <void property="id">
-     <string>119338402</string>
+     <string>MED-111</string>
     </void>
     <void property="nombre">
      <string>Mathiw Aguero</string>
     </void>
     <void property="tipo">
      <object class="java.lang.Enum" id="TipoUsuario0" method="valueOf">
-      <class>Entidades.TipoUsuario</class>
+      <class>Hospital.Entidades.TipoUsuario</class>
       <string>MEDICO</string>
      </object>
     </void>
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.Medico">
+   <object class="Hospital.Entidades.Medico">
     <void property="clave">
      <string>222</string>
     </void>
@@ -32,7 +32,7 @@
      <string>Cardiologo</string>
     </void>
     <void property="id">
-     <string>129228301</string>
+     <string>MED-222</string>
     </void>
     <void property="nombre">
      <string>Ignacio Bolanos</string>
@@ -43,7 +43,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.Medico">
+   <object class="Hospital.Entidades.Medico">
     <void property="clave">
      <string>333</string>
     </void>
@@ -51,29 +51,13 @@
      <string>Pediatra</string>
     </void>
     <void property="id">
-     <string>330229890</string>
+     <string>MED-333</string>
     </void>
     <void property="nombre">
      <string>Naara menjivar</string>
     </void>
     <void property="tipo">
      <object idref="TipoUsuario0"/>
-    </void>
-   </object>
-  </void>
-  <void method="add">
-   <object class="Entidades.Medico">
-    <void property="clave">
-     <string>123445</string>
-    </void>
-    <void property="especialidad">
-     <string>Otorrino</string>
-    </void>
-    <void property="id">
-     <string>119660639</string>
-    </void>
-    <void property="nombre">
-     <string>Paulo Zamora</string>
     </void>
    </object>
   </void>

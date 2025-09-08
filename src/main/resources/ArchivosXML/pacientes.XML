@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="24.0.2" class="java.beans.XMLDecoder">
+<java version="24.0.1" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="Entidades.Paciente">
+   <object class="Hospital.Entidades.Paciente">
     <void property="fechaNacimiento">
      <string>2/06/2006</string>
     </void>
@@ -18,7 +18,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Entidades.Paciente">
+   <object class="Hospital.Entidades.Paciente">
     <void property="fechaNacimiento">
      <string>2/03/1989</string>
     </void>
@@ -30,22 +30,6 @@
     </void>
     <void property="numeroTelefonico">
      <string>87654321</string>
-    </void>
-   </object>
-  </void>
-  <void method="add">
-   <object class="Entidades.Paciente">
-    <void property="fechaNacimiento">
-     <string>3/05/2019</string>
-    </void>
-    <void property="id">
-     <string>P003</string>
-    </void>
-    <void property="nombre">
-     <string>Canelo Alvarez</string>
-    </void>
-    <void property="numeroTelefonico">
-     <string>83043843</string>
     </void>
    </object>
   </void>
