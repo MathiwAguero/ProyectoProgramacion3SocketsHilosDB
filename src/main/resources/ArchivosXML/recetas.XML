@@ -132,5 +132,55 @@
     </void>
    </object>
   </void>
+  <void method="add">
+   <object class="Hospital.Entidades.Receta" id="Receta2">
+    <void property="detalles">
+     <void method="add">
+      <object class="Hospital.Entidades.RecipeDetails">
+       <void property="cantidad">
+        <int>5</int>
+       </void>
+       <void property="codigoMedicamento">
+        <string>001</string>
+       </void>
+       <void property="duracionTratamiento">
+        <int>5</int>
+       </void>
+       <void property="indicaciones">
+        <string>Tomar una cada dia</string>
+       </void>
+      </object>
+     </void>
+    </void>
+    <void property="estado">
+     <object class="java.lang.Enum" method="valueOf">
+      <class>Hospital.Entidades.EstadoReceta</class>
+      <string>CONFECCIONADA</string>
+     </object>
+    </void>
+    <void property="fechaConfeccion">
+     <string>09/09/2025</string>
+    </void>
+    <void property="fechaRetiro">
+     <string>20/09/2025</string>
+    </void>
+    <void property="paciente">
+     <object class="Hospital.Entidades.Paciente">
+      <void property="fechaNacimiento">
+       <string>2/06/2006</string>
+      </void>
+      <void property="id">
+       <string>P001</string>
+      </void>
+      <void property="nombre">
+       <string>Juan Perez</string>
+      </void>
+      <void property="numeroTelefonico">
+       <string>12345678</string>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
  </object>
 </java>

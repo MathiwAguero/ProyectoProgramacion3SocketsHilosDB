@@ -13,14 +13,51 @@ public class Dashboard implements PropertyChangeListener  {
     private JPanel Dashboard;
     private JPanel DatosPanel;
     private JTable table1;
-    private JComboBox comboBox1;
-    private JButton button1;
+    private JComboBox DesdeAnnio;
+    private JComboBox DesdeMes;
+    private JComboBox HastaAnnio;
+    private JComboBox HastaMes;
+    private JComboBox Medicamento;
+    private JButton BusquedaUnica;
+    private JButton BusquedaTodos;
+
 
     RecetaController recetaController;
     ModelReceta model;
 
     public Dashboard() {
-        button1.addActionListener(new ActionListener() {
+
+        DesdeAnnio.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        DesdeMes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        HastaAnnio.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        HastaMes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        Medicamento.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        BusquedaUnica.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
