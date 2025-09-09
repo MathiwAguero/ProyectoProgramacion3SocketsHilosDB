@@ -118,7 +118,7 @@ public class Login {
                         ModelReceta modelRecetaDashboard = new ModelReceta();
                         new RecetaController(ventanaDashboard, modelRecetaDashboard);
 
-                        ModelReceta modelRecetaHistorial = new ModelReceta();
+                        ModelReceta modelRecetaHistorial =  new  ModelReceta();
                         new RecetaController(ventanaHistorial, modelRecetaHistorial);
 
                         tabs.addTab("Medicos", ventanaMed.getMedico());

@@ -21,19 +21,21 @@ public class TableModelRecetas extends AbstractTableModel<Receta> {
         if (rec == null) return "";
         switch (cols[col]) {
             case ID:
-                return rec.getId();
+                return rec.getId() != null ? rec.getId() : "";
             case MEDICO:
-                return rec.getMedico().getId() != null ? rec.getMedico().getId() : "";
+                return rec.getMedico() != null && rec.getMedico().getId() != null
+                        ? rec.getMedico().getId() : "No asignado";
             case PACIENTE:
-                return rec.getPaciente() != null ? rec.getPaciente().getNombre() : "";
+                return rec.getPaciente() != null && rec.getPaciente().getNombre() != null
+                        ? rec.getPaciente().getNombre() : "No asignado";
             case ESTADO:
-                return rec.getEstado() != null ? rec.getEstado() : "";
+                return rec.getEstado() != null ? rec.getEstado().toString() : "Sin estado";
             case FECHARETIRO:
-                return rec.getFechaRetiro();
+                return rec.getFechaRetiro() != null ? rec.getFechaRetiro() : "";
             case FECHACONFECC:
-                return rec.getFechaConfeccion();
+                return rec.getFechaConfeccion() != null ? rec.getFechaConfeccion() : "";
             case DETALLES:
-                return rec.getDetalles() != null ? rec.getDetalles() : 0;
+                return rec.getDetalles() != null ? rec.getDetalles().size() : 0;
             default:
                 return "";
         }

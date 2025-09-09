@@ -5,6 +5,7 @@ import  Hospital.Entidades.Receta;
 import Hospital.Exceptions.DataAccessException;
 import  Hospital.Model.ModelReceta;
 import  Hospital.View.Dashboard;
+import Hospital.View.Despacho;
 import  Hospital.View.Historial;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class RecetaController {
     Dashboard viewDashboard;
     Historial viewHistorial;
     ModelReceta model;
+    Despacho viewDespacho;
 
     // Constructor usado por Dashboard
     public RecetaController(Dashboard viewDashboard, ModelReceta model) {
@@ -32,6 +34,17 @@ public class RecetaController {
         viewHistorial.setModel(model);
         cargarDatosIniciales();
     }
+
+    //Constructor usado por despacho
+    public RecetaController(Despacho viewDespacho, ModelReceta model) {
+        this.viewDespacho = viewDespacho;
+        this.model = model;
+        viewDespacho.setController(this);
+        viewDespacho.setModel(model);
+        cargarDatosIniciales();
+    }
+
+
 
     private void cargarDatosIniciales() {
         try {

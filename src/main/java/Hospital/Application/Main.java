@@ -3,9 +3,12 @@ package Hospital.Application;
 import javax.swing.*;
 
 import Hospital.Controller.RecetaController;
+import Hospital.Entidades.Paciente;
 import  Hospital.Entidades.Receta;
 import  Hospital.Model.ModelMedicamentos;
+import Hospital.Model.ModelPaciente;
 import  Hospital.Model.ModelReceta;
+import Hospital.View.Despacho;
 import  Hospital.View.Historial;
 import  Hospital.View.Login;
 import Hospital.HospitalData.HospitalData;
@@ -32,6 +35,17 @@ public class Main {
                 ventana.setLocationRelativeTo(null);
                 ventana.setVisible(true);
             });
+
+        /*HospitalData.incializarDatos();
+
+        JFrame frame = new JFrame();
+        Despacho panel = new Despacho();
+        frame.setContentPane(panel.getDespacho());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.pack();
+        frame.setVisible(true);*/
+
 
     }
     public static final Color BACKGROUND_ERROR = new Color(255, 102, 102);
