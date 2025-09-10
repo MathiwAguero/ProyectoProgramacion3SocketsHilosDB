@@ -1,6 +1,7 @@
 package Hospital.View;
 
 import Hospital.Controller.RecetaController;
+import Hospital.Entidades.Medicamento;
 import Hospital.Entidades.Receta;
 import Hospital.Entidades.RecipeDetails;
 import Hospital.ManejoListas.Factory;
@@ -102,6 +103,12 @@ public class Historial implements PropertyChangeListener {
             }
         }
         this.Historial.revalidate();
+    }
+
+    public Receta getSelectedReceta() {
+        if (table1.getSelectedRow() < 0) return null;
+        int modelRow = table1.convertRowIndexToModel(table1.getSelectedRow());
+        return model.getList().get(modelRow);
     }
 
 }

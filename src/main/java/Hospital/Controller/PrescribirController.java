@@ -2,7 +2,6 @@ package Hospital.Controller;
 
 import Hospital.ManejoListas.Factory;
 import  Hospital.Entidades.Receta;
-import  Hospital.Entidades.RecipeDetails;
 import Hospital.Exceptions.DataAccessException;
 import  Hospital.Model.ModelDetails;
 import  Hospital.View.PrescribirMed;
@@ -31,7 +30,7 @@ public class PrescribirController {
         }
     }
 
-    public void create(Receta receta) throws DataAccessException {
+    public Receta create(Receta receta) throws DataAccessException {
         try {
             if (receta.getId() != null && Factory.get().receta().existeId(receta.getId())) {
                 Factory.get().receta().actualizar(receta);
@@ -42,6 +41,7 @@ public class PrescribirController {
         } catch (DataAccessException x) {
             throw new DataAccessException("Error al guardar la receta" + x.getMessage());
         }
+        return receta;
     }
 
     public void read(String id) throws DataAccessException {

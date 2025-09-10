@@ -2,9 +2,10 @@ package Hospital.View;
 
 import Hospital.Controller.PacienteController;
 import Hospital.Controller.RecetaController;
-import Hospital.Entidades.Medicamento;
+import Hospital.Entidades.EstadoReceta;
 import Hospital.Entidades.Paciente;
 import Hospital.Entidades.Receta;
+import Hospital.ManejoListas.Factory;
 import Hospital.Model.ModelPaciente;
 import Hospital.Model.ModelReceta;
 import Hospital.TableModel.TableModelRecetas;
@@ -15,6 +16,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Despacho implements PropertyChangeListener  {
     private JPanel despacho;
@@ -27,20 +30,14 @@ public class Despacho implements PropertyChangeListener  {
     RecetaController controller;
     private Paciente pacienteSeleccionado;
 
-    public RecetaController getController() {
-        return controller;
-    }
+    public RecetaController getController() { return controller; }
+    public void setController(RecetaController controller) { this.controller = controller; }
 
-    public void setController(RecetaController controller) {
-        this.controller = controller;
-    }
-
-    public ModelReceta getModel() {
-        return model;
-    }
-
+    public ModelReceta getModel() { return model; }
     public void setModel(ModelReceta model) {
         this.model = model;
+        this.model.addPropertyChangeListener(this);
+        table1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     public Despacho() {
@@ -49,7 +46,7 @@ public class Despacho implements PropertyChangeListener  {
             public void actionPerformed(ActionEvent e) {
                 PrescribirBuscarPacien panel = new PrescribirBuscarPacien();
                 ModelPaciente model = new ModelPaciente();
-                PacienteController controller = new PacienteController(panel, model);
+                new PacienteController(panel, model);
 
                 JDialog d = new JDialog(SwingUtilities.getWindowAncestor(despacho),
                         "Buscar paciente", Dialog.ModalityType.APPLICATION_MODAL);
@@ -59,50 +56,99 @@ public class Despacho implements PropertyChangeListener  {
                 d.setVisible(true);
 
                 Paciente seleccionado = panel.getPacienteSeleccionado();
-                if(seleccionado!=null){
+                if (seleccionado != null) {
                     pacienteSeleccionado = seleccionado;
                     textField1.setText(seleccionado.getNombre());
+                    cargarRecetasPaciente(pacienteSeleccionado);
                 }
-
             }
         });
+
         cambiarEstadoRecetaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(getSelectedReceta() == null) {
+                Receta sel = getSelectedReceta();
+                if (sel == null) {
                     JOptionPane.showMessageDialog(despacho, "Debe seleccionar una receta antes");
+                    return;
                 }
 
+                String id = sel.getId();
+                EstadoReceta nuevo = nextEstado(sel.getEstado());
+
+                try {
+                    controller.actualizarEstado(id, nuevo);
+
+                    if (pacienteSeleccionado != null) {
+                        cargarRecetasPaciente(pacienteSeleccionado);
+                    }
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(despacho, "Error al actualizar: " + ex.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
 
     public JPanel getDespacho() {
-
         return despacho;
     }
-
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch(evt.getPropertyName()){
             case ModelReceta.LIST: {
-                int[] cols = {TableModelRecetas.ID, TableModelRecetas.MEDICO, TableModelRecetas.PACIENTE, TableModelRecetas.ESTADO,
-                        TableModelRecetas.FECHARETIRO, TableModelRecetas.FECHACONFECC, TableModelRecetas.DETALLES};
+                int[] cols = {
+                        TableModelRecetas.ID,
+                        TableModelRecetas.MEDICO,
+                        TableModelRecetas.PACIENTE,
+                        TableModelRecetas.ESTADO,
+                        TableModelRecetas.FECHARETIRO,
+                        TableModelRecetas.FECHACONFECC,
+                        TableModelRecetas.DETALLES
+                };
                 table1.setModel(new TableModelRecetas(cols, model.getList()));
                 break;
             }
             case ModelReceta.CURRENT: {
-                Receta current = model.getCurrent();
                 break;
             }
         }
         this.despacho.revalidate();
+        this.despacho.repaint();
     }
+
     public Receta getSelectedReceta() {
-        if (table1.getSelectedRow() < 0) return null;
-        int modelRow = table1.convertRowIndexToModel(table1.getSelectedRow());
+        int viewRow = table1.getSelectedRow();
+        if (viewRow < 0) return null;
+        int modelRow = table1.convertRowIndexToModel(viewRow);
         return model.getList().get(modelRow);
     }
 
+    private EstadoReceta nextEstado(EstadoReceta e) {
+        if (e == null) return EstadoReceta.CONFECCIONADA;
+        if (e == EstadoReceta.CONFECCIONADA) return EstadoReceta.LISTA;
+        if (e == EstadoReceta.LISTA)         return EstadoReceta.ENTREGADA;
+        if (e == EstadoReceta.ENTREGADA)         return EstadoReceta.PROCESO;
+        if (e == EstadoReceta.PROCESO)         return EstadoReceta.CONFECCIONADA;
+        return EstadoReceta.CONFECCIONADA;
+    }
+
+    private void cargarRecetasPaciente(Paciente p) {
+        try {
+            List<Receta> todas = Factory.get().receta().obtenerTodos();
+            List<Receta> filtradas = new ArrayList<>();
+            for (Receta r : todas) {
+                if (r.getPaciente() != null && r.getPaciente().getId() != null
+                        && r.getPaciente().getId().equalsIgnoreCase(p.getId())) {
+                    filtradas.add(r);
+                }
+            }
+            model.setList(filtradas);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(despacho, "Error cargando recetas: " + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

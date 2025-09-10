@@ -24,7 +24,7 @@ public class PrescribirBuscarPacien implements PropertyChangeListener  {
     PacienteController controller;
     ModelPaciente model;
 
-    //guardamos aquí el resultado al dar OK
+    //guardamos aquI el resultado al dar OK en busqueda de pacientes
     private Paciente pacienteSeleccionado;
 
     public JPanel getPanel() { return busquedaPaciente; }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="24.0.1" class="java.beans.XMLDecoder">
+<java version="24.0.2" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
    <object class="Hospital.Entidades.Receta" id="Receta0">
@@ -51,7 +51,7 @@
        <string>Mathiw Aguero</string>
       </void>
       <void property="tipo">
-       <object class="java.lang.Enum" method="valueOf">
+       <object class="java.lang.Enum" id="TipoUsuario0" method="valueOf">
         <class>Hospital.Entidades.TipoUsuario</class>
         <string>MEDICO</string>
        </object>
@@ -138,16 +138,32 @@
      <void method="add">
       <object class="Hospital.Entidades.RecipeDetails">
        <void property="cantidad">
-        <int>5</int>
+        <int>6</int>
        </void>
        <void property="codigoMedicamento">
         <string>001</string>
        </void>
        <void property="duracionTratamiento">
-        <int>5</int>
+        <int>6</int>
        </void>
        <void property="indicaciones">
-        <string>Tomar una cada dia</string>
+        <string>Una al dia</string>
+       </void>
+      </object>
+     </void>
+     <void method="add">
+      <object class="Hospital.Entidades.RecipeDetails">
+       <void property="cantidad">
+        <int>8</int>
+       </void>
+       <void property="codigoMedicamento">
+        <string>002</string>
+       </void>
+       <void property="duracionTratamiento">
+        <int>4</int>
+       </void>
+       <void property="indicaciones">
+        <string>Una cada 12 horas</string>
        </void>
       </object>
      </void>
@@ -162,21 +178,43 @@
      <string>09/09/2025</string>
     </void>
     <void property="fechaRetiro">
-     <string>20/09/2025</string>
+     <string>18/09/2025</string>
+    </void>
+    <void property="id">
+     <string>007</string>
+    </void>
+    <void property="medico">
+     <object class="Hospital.Entidades.Medico">
+      <void property="clave">
+       <string>111</string>
+      </void>
+      <void property="especialidad">
+       <string>Neurocirujano</string>
+      </void>
+      <void property="id">
+       <string>MED-111</string>
+      </void>
+      <void property="nombre">
+       <string>Mathiw Aguero</string>
+      </void>
+      <void property="tipo">
+       <object idref="TipoUsuario0"/>
+      </void>
+     </object>
     </void>
     <void property="paciente">
      <object class="Hospital.Entidades.Paciente">
       <void property="fechaNacimiento">
-       <string>2/06/2006</string>
+       <string>2/03/1989</string>
       </void>
       <void property="id">
-       <string>P001</string>
+       <string>P002</string>
       </void>
       <void property="nombre">
-       <string>Juan Perez</string>
+       <string>Maria Gonzalez</string>
       </void>
       <void property="numeroTelefonico">
-       <string>12345678</string>
+       <string>87654321</string>
       </void>
      </object>
     </void>

@@ -36,16 +36,6 @@ public class Main {
                 ventana.setVisible(true);
             });
 
-        /*HospitalData.incializarDatos();
-
-        JFrame frame = new JFrame();
-        Despacho panel = new Despacho();
-        frame.setContentPane(panel.getDespacho());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.pack();
-        frame.setVisible(true);*/
-
 
     }
     public static final Color BACKGROUND_ERROR = new Color(255, 102, 102);

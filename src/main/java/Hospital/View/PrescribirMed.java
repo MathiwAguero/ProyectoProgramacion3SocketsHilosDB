@@ -3,10 +3,7 @@ package Hospital.View;
 import Hospital.Controller.MedicamentoController;
 import Hospital.Controller.PacienteController;
 import Hospital.Controller.PrescribirController;
-import Hospital.Entidades.EstadoReceta;
-import Hospital.Entidades.Paciente;
-import Hospital.Entidades.Receta;
-import Hospital.Entidades.RecipeDetails;
+import Hospital.Entidades.*;
 import Hospital.Model.ModelDetails;
 import Hospital.Model.ModelMedicamentos;
 import Hospital.Model.ModelPaciente;
@@ -38,6 +35,7 @@ public class PrescribirMed implements PropertyChangeListener {
     private Paciente pacienteSeleccionado;
     private PrescribirController controller;
     private ModelDetails model;
+    private Medico medicoActual;
 
     public PrescribirMed() {
         buscarPacienteButton.addActionListener(new ActionListener() {
@@ -92,18 +90,19 @@ public class PrescribirMed implements PropertyChangeListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!validarParaGuardar()) return;
-
+                String id = JOptionPane.showInputDialog(prescribir, "Ingrese ID de la receta:", JOptionPane.QUESTION_MESSAGE);
                 try {
 
                     Receta r = new Receta();
-
+                    r.setId(id);
                     r.setPaciente(pacienteSeleccionado);
+                    r.setMedico(medicoActual);
                     r.setFechaConfeccion(new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date()));
                     r.setDetalles(new ArrayList<>(model.getList()));
                     r.setFechaRetiro(new java.text.SimpleDateFormat("dd/MM/yyyy").format(JDateChooser1.getDate()));
                     r.setEstado(EstadoReceta.CONFECCIONADA);
 
-                    controller.create(r);
+                    Receta guardada = controller.create(r);
 
                     JOptionPane.showMessageDialog(prescribir, "Receta guardada correctamente.",
                             "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -236,4 +235,10 @@ public class PrescribirMed implements PropertyChangeListener {
         JDateChooser1 = new JDateChooser();
         JDateChooser1.setDateFormatString("dd/MM/yyyy");
     }
+
+    public void setMedicoActual(Medico medico) {
+        this.medicoActual = medico;
+    }
+
+
 }

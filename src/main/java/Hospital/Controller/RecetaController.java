@@ -1,5 +1,6 @@
 package Hospital.Controller;
 
+import Hospital.Entidades.EstadoReceta;
 import Hospital.ManejoListas.Factory;
 import  Hospital.Entidades.Receta;
 import Hospital.Exceptions.DataAccessException;
@@ -107,4 +108,17 @@ public class RecetaController {
         model.setCurrent(new Receta());
         model.setList(Factory.get().receta().obtenerTodos());
     }
+    public void actualizarEstado(String idReceta, EstadoReceta nuevo) throws DataAccessException {
+        if (idReceta == null) {
+            throw new DataAccessException("ID de receta inválido.");
+        }
+
+        Receta rec = Factory.get().receta().obtenerPorId(idReceta);
+
+        rec.setEstado(nuevo);
+        Factory.get().receta().actualizar(rec);
+        model.setCurrent(rec);
+        model.setList(Factory.get().receta().obtenerTodos());
+    }
+
 }

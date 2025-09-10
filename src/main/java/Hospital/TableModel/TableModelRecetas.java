@@ -21,7 +21,7 @@ public class TableModelRecetas extends AbstractTableModel<Receta> {
         if (rec == null) return "";
         switch (cols[col]) {
             case ID:
-                return rec.getId() != null ? rec.getId() : "";
+                return rec.getId() != null ? rec.getId() : "Sin ID";
             case MEDICO:
                 return rec.getMedico() != null && rec.getMedico().getId() != null
                         ? rec.getMedico().getId() : "No asignado";

@@ -1,6 +1,7 @@
 package Hospital.View;
 
 import  Hospital.Controller.*;
+import Hospital.Entidades.Medico;
 import Hospital.Exceptions.DataAccessException;
 import  Hospital.Model.*;
 import Hospital.Services.ServiceLogin;
@@ -23,6 +24,7 @@ public class Login {
 
     UsuariosController controller;
     ModelUsuarios model;
+    UsuarioBase usuarioLogged;
 
     public Login() {
 
@@ -59,8 +61,6 @@ public class Login {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ServiceLogin service = new ServiceLogin();
-                UsuarioBase user;
-
                 String id = textField1.getText().trim();
                 String clave = new String(passwordField1.getPassword()).trim();
 
@@ -74,8 +74,8 @@ public class Login {
                 }
 
                 try {
-                    user = service.loginPorId(id, clave);
-                    if (user == null) {
+                    usuarioLogged = service.loginPorId(id, clave);
+                    if (usuarioLogged == null) {
                         JOptionPane.showMessageDialog(Login, "ID o clave incorrectos.");
                         return;
                     }
@@ -131,6 +131,8 @@ public class Login {
                         break;
                     }
                     case "MED": {
+
+                        Medico ingresado = Factory.get().medico().obtenerPorId(usuarioLogged.getId());
                         Dashboard ventanaDashboard = new Dashboard();
                         PrescribirMed ventanaPrescribir = new PrescribirMed();
                         Historial ventanaHistorial  = new Historial();
@@ -143,6 +145,8 @@ public class Login {
                         new PrescribirController(ventanaPrescribir, modelDetailsPrescribir);
                         new RecetaController(ventanaHistorial, modelRecetaHistorial);
                         new RecetaController(ventanaDashboard, modelRecetaDashboard);
+
+                        ventanaPrescribir.setMedicoActual(ingresado);
 
                         tabs.addTab("Prescribir", ventanaPrescribir.getPrescribirMed());
                         tabs.addTab("Dashboard", ventanaDashboard.getDashboard());
@@ -160,7 +164,10 @@ public class Login {
                         new RecetaController(ventanaDashboard, modelRecetaDashboard);
 
                         ModelReceta modelRecetaHist = new ModelReceta();
-                        new RecetaController(ventanaHistorial, modelRecetaHist); // (Historial, ModelReceta)
+                        new RecetaController(ventanaHistorial, modelRecetaHist);
+
+                        ModelReceta modelRecetaDespacho = new ModelReceta();
+                        new RecetaController(ventanaDespacho, modelRecetaDespacho);
 
                         tabs.addTab("Despacho", ventanaDespacho.getDespacho());
                         tabs.addTab("Dashboard", ventanaDashboard.getDashboard());
@@ -172,7 +179,7 @@ public class Login {
                         JOptionPane.showMessageDialog(Login, "Rol invalido. ADM / MED / FAR");
                         return;
                 }
-
+                //usuarioLogged = //medico logueado
                 JFrame ventanaPrincipal = new JFrame("Hospital - " + leerCaracter);
                 ventanaPrincipal.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 ventanaPrincipal.setContentPane(tabs);

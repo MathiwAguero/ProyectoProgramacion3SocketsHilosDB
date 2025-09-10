@@ -69,10 +69,4 @@ public class Receta {
         this.detalles.add(detalle);
     }
 
-    public void eliminarDetalle(int indice) {
-        if (this.detalles == null) return;
-        if (indice >= 0 && indice < this.detalles.size()) {
-            this.detalles.remove(indice);
-        }
-    }
 }

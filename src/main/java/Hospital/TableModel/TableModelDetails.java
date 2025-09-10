@@ -16,7 +16,7 @@ public class TableModelDetails extends AbstractTableModel<RecipeDetails> {
 
     @Override
     protected void initColNames() {
-        colNames = new String[4]; // ¡OJO! eran 5, debe ser 4
+        colNames = new String[4];
         colNames[MEDICAMENTO] = "MEDICAMENTO";
         colNames[CANTIDAD]    = "CANTIDAD";
         colNames[INDICACIONES]= "INDICACIONES";
