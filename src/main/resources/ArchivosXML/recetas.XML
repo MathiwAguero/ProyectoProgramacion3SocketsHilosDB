@@ -97,7 +97,7 @@
      </void>
     </void>
     <void property="estado">
-     <object class="java.lang.Enum" method="valueOf">
+     <object class="java.lang.Enum" id="EstadoReceta0" method="valueOf">
       <class>Hospital.Entidades.EstadoReceta</class>
       <string>LISTA</string>
      </object>
@@ -153,10 +153,7 @@
      </void>
     </void>
     <void property="estado">
-     <object class="java.lang.Enum" id="EstadoReceta0" method="valueOf">
-      <class>Hospital.Entidades.EstadoReceta</class>
-      <string>CONFECCIONADA</string>
-     </object>
+     <object idref="EstadoReceta0"/>
     </void>
     <void property="fechaConfeccion">
      <string>10/09/2025</string>
@@ -225,7 +222,10 @@
      </void>
     </void>
     <void property="estado">
-     <object idref="EstadoReceta0"/>
+     <object class="java.lang.Enum" method="valueOf">
+      <class>Hospital.Entidades.EstadoReceta</class>
+      <string>CONFECCIONADA</string>
+     </object>
     </void>
     <void property="fechaConfeccion">
      <string>09/09/2025</string>

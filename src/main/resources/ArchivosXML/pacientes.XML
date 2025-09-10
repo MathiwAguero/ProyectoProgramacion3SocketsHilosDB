@@ -33,5 +33,21 @@
     </void>
    </object>
   </void>
+  <void method="add">
+   <object class="Hospital.Entidades.Paciente">
+    <void property="fechaNacimiento">
+     <string>03/03/2006</string>
+    </void>
+    <void property="id">
+     <string>P003</string>
+    </void>
+    <void property="nombre">
+     <string>Scoth Alvarado</string>
+    </void>
+    <void property="numeroTelefonico">
+     <string>60614430</string>
+    </void>
+   </object>
+  </void>
  </object>
 </java>

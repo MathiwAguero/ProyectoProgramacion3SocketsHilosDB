@@ -10,6 +10,11 @@ import Hospital.View.Despacho;
 import  Hospital.View.Historial;
 import com.toedter.calendar.JDateChooser;
 
+import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +50,6 @@ public class RecetaController {
         viewDespacho.setModel(model);
         cargarDatosIniciales();
     }
-
 
 
     private void cargarDatosIniciales() {
@@ -109,6 +113,7 @@ public class RecetaController {
         model.setCurrent(new Receta());
         model.setList(Factory.get().receta().obtenerTodos());
     }
+
     public void actualizarEstado(String idReceta, EstadoReceta nuevo) throws DataAccessException {
         if (idReceta == null) {
             throw new DataAccessException("ID de receta inválido.");
@@ -121,18 +126,61 @@ public class RecetaController {
         model.setCurrent(rec);
         model.setList(Factory.get().receta().obtenerTodos());
     }
-   public List<Receta>  RecetasPorFecha(JDateChooser Desde, JDateChooser Hasta) {
-        if(Desde!=null && Hasta!=null) {
 
-            if(Hasta.getDate().compareTo(Desde.getDate()) > 0) {
-                List<Receta> recetas = model.getList();
-                List<Receta> filtro= recetas.stream().filter(x->x.getFechaRetiro() != null &&
-                        (Desde.getDate().before(x.getFechaRecoleccion().getDate()) &&
-                                Hasta.getDate().after(x.getFechaRecoleccion().getDate()))).collect(Collectors.toList());
-                return filtro;
-            }
-        }
-        return null;
+    public List<Receta> RecetasPorFecha(JDateChooser Desde, JDateChooser Hasta) {
+        if (Desde == null || Hasta == null) return new ArrayList<>();
+
+        Date fechaDesde = Desde.getDate();
+        Date fechaHasta = Hasta.getDate();
+        if (fechaDesde == null || fechaHasta == null) return new ArrayList<>();
+
+        if (fechaHasta.compareTo(fechaDesde) < 0) return new ArrayList<>();
+
+        List<Receta> recetas = model.getList();
+
+        List<Receta> filtro = recetas.stream()
+                .filter(x -> x.getFechaConfeccion() != null) // Solo recetas con fecha de entrega
+                .filter(x -> {
+                    try {
+                        Date fechaEntrega = parsearFecha(x.getFechaConfeccion());
+
+                        return fechaEntrega != null &&
+                                !fechaEntrega.before(fechaDesde) &&
+                                !fechaEntrega.after(fechaHasta);
+
+                    } catch (Exception e) {
+                        System.err.println("Error procesando fecha entrega para receta " + x.getId() + ": " + e.getMessage());
+                        return false;
+                    }
+                })
+                .collect(Collectors.toList());
+
+        return filtro;
     }
 
+    private Date parsearFecha(Object fechaObj) {
+        if (fechaObj == null) return null;
+
+        if (fechaObj instanceof Date) {
+            return (Date) fechaObj;
+        } else if (fechaObj instanceof String) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                return sdf.parse((String) fechaObj);
+            } catch (ParseException e) {
+                System.err.println("Error parseando fecha string: " + fechaObj);
+                return null;
+            }
+        } else if (fechaObj instanceof JDateChooser) {
+            return ((JDateChooser) fechaObj).getDate();
+        }
+
+        try {
+            Method getDateMethod = fechaObj.getClass().getMethod("getDate");
+            return (Date) getDateMethod.invoke(fechaObj);
+        } catch (Exception e) {
+            System.err.println("No se pudo obtener fecha de: " + fechaObj.getClass());
+            return null;
+        }
+    }
 }

@@ -1,7 +1,9 @@
 package Hospital.View;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import Hospital.Controller.RecetaController;
 import Hospital.Entidades.*;
+import Hospital.Exceptions.DataAccessException;
 import Hospital.ManejoListas.Factory;
 import Hospital.ManejoListas.MedicamentosResumenList;
 import Hospital.Model.ModelFarmaceuta;
@@ -36,10 +38,10 @@ public class Dashboard implements PropertyChangeListener  {
     private JDateChooser DesdeFecha;
     private JDateChooser HastaFecha;
 
-
+    ModelMedicamentosResumen modelR;
     RecetaController recetaController;
     ModelReceta model;
-
+    private boolean actualizandoModelo = false;
     public Dashboard() {
         MedicamentoCombo.addItem("Selecione un medicamento...");
         for (String m : Factory.get().medicamento().obtenerNombres()) {
@@ -60,12 +62,36 @@ public class Dashboard implements PropertyChangeListener  {
         BusquedaUnica.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                actualizarTabla();
+
                 limpiar();
             }
         });
         DesdeFecha.addComponentListener(new ComponentAdapter() {
         });
+        Dashboard.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                MedicamentoCombo.removeAllItems();
+                MedicamentoCombo.addItem("Seleccione un medicamento...");
+                for (String m : Factory.get().medicamento().obtenerNombres()) {
+                    MedicamentoCombo.addItem(m);
+                }
+            }
+        });
+        DesdeFecha.addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
 
+            }
+        });
+
+        HastaFecha.addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+
+            }
+        });
     }
 
     public JPanel getDashboard() {
@@ -75,38 +101,59 @@ public class Dashboard implements PropertyChangeListener  {
 
     public void setController(RecetaController recetaController) {
         this.recetaController = recetaController;
-
     }
-
     public void setModel(ModelReceta model) {
         this.model = model;
         model.addPropertyChangeListener(this);
     }
-
+    public void setModelR(ModelMedicamentosResumen model) {
+        this.modelR = model;
+        this.modelR.addPropertyChangeListener(this); // para que propertyChange funcione
+    }
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+
+        if (actualizandoModelo) return;
+
         switch (evt.getPropertyName()) {
-            case ModelMedicamentosResumen.LIST:{
-                ModelMedicamentosResumen model = new ModelMedicamentosResumen();
-                int []cols= {TableModelDashboard.NOMBRE_MEDICAMENTO, TableModelDashboard.NUMERO_MEDICAMENTO};
-                tabla1.setModel(new TableModelDashboard(cols,model.getList()));
+            case ModelMedicamentosResumen.LIST:
+
+
+                System.out.println("Modelo actualizado externamente: " + evt.getPropertyName());
+
+
+                SwingUtilities.invokeLater(() -> {
+                    try {
+                        int[] cols = {TableModelDashboard.NOMBRE_MEDICAMENTO, TableModelDashboard.NUMERO_MEDICAMENTO};
+                        tabla1.setModel(new TableModelDashboard(cols, modelR.getList()));
+                        System.out.println("Tabla actualizada desde cambio externo del modelo");
+                    } catch (Exception ex) {
+                        System.err.println("Error al actualizar tabla desde propertyChange: " + ex.getMessage());
+                    }
+                });
                 break;
-            }
-            case ModelMedicamentosResumen.CURRENT:{
-                ModelMedicamentosResumen model = new ModelMedicamentosResumen();
-                MedicamentosResumen current = model.getCurrent();
-                if(current != null) {
-                    MedicamentoCombo.setSelectedItem(current.getNombreMedicamento() != null ?
-                            current.getNombreMedicamento() : "Selecione un medicamento...");
-                }
-                MedicamentoCombo.setBackground(null);
-                MedicamentoCombo.setToolTipText(null);
 
+            case ModelMedicamentosResumen.CURRENT:
+
+                if (modelR != null) {
+                    MedicamentosResumen current = modelR.getCurrent();
+                    if (current != null && current.getNombreMedicamento() != null) {
+                        SwingUtilities.invokeLater(() -> {
+                            String nombreMed = current.getNombreMedicamento();
+                            if (!nombreMed.isEmpty()) {
+                                MedicamentoCombo.setSelectedItem(nombreMed);
+                                System.out.println("ComboBox actualizado desde CURRENT: " + nombreMed);
+                            }
+                        });
+                    }
+                }
                 break;
 
-                }
+            default:
 
-            }
+                System.out.println("Property change no manejado: " + evt.getPropertyName());
+                break;
+        }
     }
     private void createUIComponents() {
         HastaFecha = new JDateChooser();
@@ -121,6 +168,7 @@ public class Dashboard implements PropertyChangeListener  {
         HastaFecha.setDate(null);
 
     }
+
     /*public void generarResumenMedicamentos(JDateChooser Desde, JDateChooser Hasta) {
         try {
             List<Receta> recetasFiltradas = recetaController.RecetasPorFecha(Hasta, Desde);
@@ -150,5 +198,69 @@ public class Dashboard implements PropertyChangeListener  {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }*/
+    private void actualizarTabla() {
+        if (recetaController == null || modelR == null || actualizandoModelo) {
+            return;
+        }
 
+        try {
+            actualizandoModelo = true;
+
+
+            if (DesdeFecha.getDate() == null || HastaFecha.getDate() == null) {
+                JOptionPane.showMessageDialog(Dashboard,
+                        "Por favor, seleccione ambas fechas (Desde y Hasta)",
+                        "Fechas requeridas", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+
+            String medicamentoSeleccionado = (String) MedicamentoCombo.getSelectedItem();
+
+
+            if (medicamentoSeleccionado == null || medicamentoSeleccionado.equals("Seleccione un medicamento...")) {
+                JOptionPane.showMessageDialog(Dashboard,
+                        "Por favor, seleccione un medicamento",
+                        "Medicamento requerido", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+
+            List<Receta> rec = recetaController.RecetasPorFecha(DesdeFecha, HastaFecha);
+            MedicamentosResumenList list = new MedicamentosResumenList();
+            list.insertarLista(rec);
+
+
+            boolean medicamentoExiste = false;
+            for (MedicamentosResumen mr : list.obtenerTodos()) {
+                if (mr.getNombreMedicamento().equals(medicamentoSeleccionado)) {
+                    medicamentoExiste = true;
+                    break;
+                }
+            }
+
+
+            if (!medicamentoExiste) {
+                list.insertarConCantidad(medicamentoSeleccionado, 0);
+            }
+
+            modelR.setList(list.obtenerTodos());
+
+
+            int[] cols = {TableModelDashboard.NOMBRE_MEDICAMENTO, TableModelDashboard.NUMERO_MEDICAMENTO};
+            tabla1.setModel(new TableModelDashboard(cols, modelR.getList()));
+
+
+            JOptionPane.showMessageDialog(Dashboard,
+                    "Tabla actualizada correctamente",
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (DataAccessException e) {
+            JOptionPane.showMessageDialog(Dashboard,
+                    "Error al obtener datos: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            actualizandoModelo = false;
+        }
+    }
 }

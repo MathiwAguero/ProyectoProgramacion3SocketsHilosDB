@@ -27,5 +27,44 @@
     </void>
    </object>
   </void>
+  <void method="add">
+   <object class="Hospital.Entidades.Medicamento">
+    <void property="codigo">
+     <string>003</string>
+    </void>
+    <void property="nombre">
+     <string>Loratadina</string>
+    </void>
+    <void property="presentacion">
+     <string>5 mg</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Hospital.Entidades.Medicamento">
+    <void property="codigo">
+     <string>004</string>
+    </void>
+    <void property="nombre">
+     <string>Clorofenamina</string>
+    </void>
+    <void property="presentacion">
+     <string>5 mg</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="Hospital.Entidades.Medicamento">
+    <void property="codigo">
+     <string>005</string>
+    </void>
+    <void property="nombre">
+     <string>Fluxetina</string>
+    </void>
+    <void property="presentacion">
+     <string>20 mg</string>
+    </void>
+   </object>
+  </void>
  </object>
 </java>

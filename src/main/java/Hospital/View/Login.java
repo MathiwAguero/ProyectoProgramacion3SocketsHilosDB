@@ -116,8 +116,10 @@ public class Login {
                         new MedicamentoController(ventanaMedicamentos, modelMedicam);
 
                         ModelReceta modelRecetaDashboard = new ModelReceta();
-                        new RecetaController(ventanaDashboard, modelRecetaDashboard);
-
+                        ModelMedicamentosResumen modelMedicamentosResumen = new ModelMedicamentosResumen();
+                        ventanaDashboard.setModelR(modelMedicamentosResumen);
+                        RecetaController rc =new RecetaController(ventanaDashboard, modelRecetaDashboard);
+                        ventanaDashboard.setController(rc);
                         ModelReceta modelRecetaHistorial =  new  ModelReceta();
                         new RecetaController(ventanaHistorial, modelRecetaHistorial);
 
@@ -141,10 +143,12 @@ public class Login {
                         ModelDetails modelDetailsPrescribir = new ModelDetails();
                         ModelReceta modelRecetaDashboard = new ModelReceta();
                         ModelReceta modelRecetaHistorial = new ModelReceta();
-
+                        ModelMedicamentosResumen modelMedicamentosResumen = new ModelMedicamentosResumen();
                         new PrescribirController(ventanaPrescribir, modelDetailsPrescribir);
                         new RecetaController(ventanaHistorial, modelRecetaHistorial);
-                        new RecetaController(ventanaDashboard, modelRecetaDashboard);
+                        ventanaDashboard.setModelR(modelMedicamentosResumen);
+                        RecetaController rc =new RecetaController(ventanaDashboard, modelRecetaDashboard);
+                        ventanaDashboard.setController(rc);
 
                         ventanaPrescribir.setMedicoActual(ingresado);
 
@@ -163,8 +167,10 @@ public class Login {
                         AcercaDe ventanaAcercaDe = new AcercaDe();
 
                         ModelReceta modelRecetaDashboard = new ModelReceta();
-                        new RecetaController(ventanaDashboard, modelRecetaDashboard);
-
+                        ModelMedicamentosResumen modelMedicamentosResumen = new ModelMedicamentosResumen();
+                        ventanaDashboard.setModelR(modelMedicamentosResumen);
+                        RecetaController rc =new RecetaController(ventanaDashboard, modelRecetaDashboard);
+                        ventanaDashboard.setController(rc);
                         ModelReceta modelRecetaHist = new ModelReceta();
                         new RecetaController(ventanaHistorial, modelRecetaHist);
 
