@@ -12,7 +12,7 @@ public final class Factory {
     private final AdminList adminList = new AdminList();
     private final FarmaceutaList farmaceutaList = new FarmaceutaList();
     private final DetailsList detailsList = new DetailsList();
-
+    private final MedicamentosResumenList medicamentosResumenList = new MedicamentosResumenList();
     private Factory() {}
 
     public static Factory get() {
@@ -30,5 +30,5 @@ public final class Factory {
     public ListUsers usuario() { return listUsers; }
     public AdminList admin() { return adminList; }
     public FarmaceutaList farmaceuta() { return farmaceutaList; }
-
+    public MedicamentosResumenList medicamentosResumen() { return medicamentosResumenList; }
 }

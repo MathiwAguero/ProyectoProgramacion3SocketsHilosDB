@@ -1,68 +1,71 @@
 package Hospital.View;
-
+import java.util.ArrayList;
 import Hospital.Controller.RecetaController;
+import Hospital.Entidades.*;
+import Hospital.ManejoListas.Factory;
+import Hospital.ManejoListas.MedicamentosResumenList;
+import Hospital.Model.ModelFarmaceuta;
+import Hospital.Model.ModelMedicamentos;
+import Hospital.Model.ModelMedicamentosResumen;
 import Hospital.Model.ModelReceta;
-
+import Hospital.TableModel.TableModelDashboard;
+import Hospital.TableModel.TableModelFarmaceutas;
+import Hospital.TableModel.TableModelMedicos;
+import Hospital.TableModel.TableModelRecetas;
+import com.toedter.calendar.JDateChooser;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Dashboard implements PropertyChangeListener  {
     private JPanel Dashboard;
     private JPanel DatosPanel;
-    private JTable table1;
-    private JComboBox DesdeAnnio;
-    private JComboBox DesdeMes;
-    private JComboBox HastaAnnio;
-    private JComboBox HastaMes;
-    private JComboBox Medicamento;
+    private JTable tabla1;
+
+    private JComboBox MedicamentoCombo;
     private JButton BusquedaUnica;
-    private JButton BusquedaTodos;
+    private JPanel Medicamentos;
+    private JPanel Recetas;
+    private JDateChooser DesdeFecha;
+    private JDateChooser HastaFecha;
 
 
     RecetaController recetaController;
     ModelReceta model;
 
     public Dashboard() {
+        MedicamentoCombo.addItem("Selecione un medicamento...");
+        for (String m : Factory.get().medicamento().obtenerNombres()) {
+            MedicamentoCombo.addItem(m);
 
-        DesdeAnnio.addActionListener(new ActionListener() {
+        }
+        MedicamentoCombo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-            }
-        });
-        DesdeMes.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+                if (recetaController == null) return;
+                if (MedicamentoCombo.getSelectedItem() == null) return;
 
-            }
-        });
-        HastaAnnio.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        HastaMes.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        Medicamento.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+                String seleccionado = (String) MedicamentoCombo.getSelectedItem();
+                System.out.println("Medicamento seleccionado: " + seleccionado);
             }
         });
         BusquedaUnica.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                limpiar();
             }
         });
+        DesdeFecha.addComponentListener(new ComponentAdapter() {
+        });
+
     }
 
     public JPanel getDashboard() {
@@ -72,6 +75,7 @@ public class Dashboard implements PropertyChangeListener  {
 
     public void setController(RecetaController recetaController) {
         this.recetaController = recetaController;
+
     }
 
     public void setModel(ModelReceta model) {
@@ -81,6 +85,70 @@ public class Dashboard implements PropertyChangeListener  {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        switch (evt.getPropertyName()) {
+            case ModelMedicamentosResumen.LIST:{
+                ModelMedicamentosResumen model = new ModelMedicamentosResumen();
+                int []cols= {TableModelDashboard.NOMBRE_MEDICAMENTO, TableModelDashboard.NUMERO_MEDICAMENTO};
+                tabla1.setModel(new TableModelDashboard(cols,model.getList()));
+                break;
+            }
+            case ModelMedicamentosResumen.CURRENT:{
+                ModelMedicamentosResumen model = new ModelMedicamentosResumen();
+                MedicamentosResumen current = model.getCurrent();
+                if(current != null) {
+                    MedicamentoCombo.setSelectedItem(current.getNombreMedicamento() != null ?
+                            current.getNombreMedicamento() : "Selecione un medicamento...");
+                }
+                MedicamentoCombo.setBackground(null);
+                MedicamentoCombo.setToolTipText(null);
+
+                break;
+
+                }
+
+            }
+    }
+    private void createUIComponents() {
+        HastaFecha = new JDateChooser();
+        HastaFecha.setDateFormatString("dd/MM/yyyy");
+
+        DesdeFecha = new JDateChooser();
+        DesdeFecha.setDateFormatString("dd/MM/yyyy");
+    }
+    public void limpiar() {
+        MedicamentoCombo.setSelectedIndex(0);
+        DesdeFecha.setDate(null);
+        HastaFecha.setDate(null);
 
     }
+    /*public void generarResumenMedicamentos(JDateChooser Desde, JDateChooser Hasta) {
+        try {
+            List<Receta> recetasFiltradas = recetaController.RecetasPorFecha(Hasta, Desde);
+
+            if (recetasFiltradas == null || recetasFiltradas.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No se encontraron recetas en el rango de fechas seleccionado");
+                return;
+            }
+            MedicamentosResumenList resumenList = new MedicamentosResumenList();
+            for (Receta receta : recetasFiltradas) {
+                String nombreMedicamento = receta.getDetalles().get().getCodigoMedicamento();
+                int cantidad = receta.getDetalles().get().getCantidad();
+
+                resumenList.insertarConCantidad(nombreMedicamento, cantidad);
+            }
+
+            // 4. Actualizar el modelo con los resultados
+            ModelMedicamentosResumen modelResumen = new ModelMedicamentosResumen();
+            modelResumen.setList(resumenList.obtenerTodos()); // Necesitarás implementar este método
+
+            if (!resumenList.obtenerTodos().isEmpty()) {
+                modelResumen.setCurrent(resumenList.obtenerTodos().get(0));
+            }
+
+        } catch (DataAccessException e) {
+            JOptionPane.showMessageDialog(null, "Error al generar resumen: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }*/
+
 }

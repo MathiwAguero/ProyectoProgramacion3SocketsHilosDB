@@ -31,9 +31,17 @@ public class MedicamentoList extends Base<Medicamento> {
         if (codigo == null) return null;
         return medicamentos.stream().filter(x -> codigo.equals(x.getCodigo())).findFirst().orElse(null);
     }
-
+    public Medicamento obtenerMedicamento(String Nombre) {
+        if (Nombre == null) return null;
+        return medicamentos.stream().filter(x -> Nombre.equals(x.getNombre())).findFirst().orElse(null);
+    }
     @Override
     public List<Medicamento> obtenerTodos() { return medicamentos; }
+    public List<String> obtenerNombres() {
+        List<String> nombres = new ArrayList<>();
+        for (Medicamento m : medicamentos) nombres.add(m.getNombre());
+        return nombres;
+    }
 
     @Override
     public void actualizar(Medicamento m) throws DataAccessException {

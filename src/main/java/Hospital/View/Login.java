@@ -135,12 +135,12 @@ public class Login {
                         Medico ingresado = Factory.get().medico().obtenerPorId(usuarioLogged.getId());
                         Dashboard ventanaDashboard = new Dashboard();
                         PrescribirMed ventanaPrescribir = new PrescribirMed();
-                        Historial ventanaHistorial  = new Historial();
+                        Historial ventanaHistorial = new Historial();
                         AcercaDe ventanaAcercaDe = new AcercaDe();
 
                         ModelDetails modelDetailsPrescribir = new ModelDetails();
-                        ModelReceta  modelRecetaDashboard   = new ModelReceta();
-                        ModelReceta  modelRecetaHistorial   = new ModelReceta();
+                        ModelReceta modelRecetaDashboard = new ModelReceta();
+                        ModelReceta modelRecetaHistorial = new ModelReceta();
 
                         new PrescribirController(ventanaPrescribir, modelDetailsPrescribir);
                         new RecetaController(ventanaHistorial, modelRecetaHistorial);
@@ -152,6 +152,8 @@ public class Login {
                         tabs.addTab("Dashboard", ventanaDashboard.getDashboard());
                         tabs.addTab("Historial", ventanaHistorial.getHistorial());
                         tabs.addTab("Acerca de", ventanaAcercaDe.getPanel());
+
+
                         break;
                     }
                     case "FAR": {

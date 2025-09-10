@@ -8,6 +8,7 @@ import  Hospital.Entidades.Receta;
 import  Hospital.Model.ModelMedicamentos;
 import Hospital.Model.ModelPaciente;
 import  Hospital.Model.ModelReceta;
+import Hospital.View.Dashboard;
 import Hospital.View.Despacho;
 import  Hospital.View.Historial;
 import  Hospital.View.Login;
@@ -23,10 +24,9 @@ public class Main {
         } catch (Exception e) {
         }
 
-            SwingUtilities.invokeLater(() -> {
+           SwingUtilities.invokeLater(() -> {
                 HospitalData.incializarDatos();
                 System.out.println("Datos del Hospital inicializados");
-
                 JFrame ventana = new JFrame("Login");
                 Login loginView = new Login();
                 ventana.setContentPane(loginView.getLogin());
@@ -35,6 +35,8 @@ public class Main {
                 ventana.setLocationRelativeTo(null);
                 ventana.setVisible(true);
             });
+
+
 
 
     }

@@ -35,7 +35,7 @@ public class TableModelRecetas extends AbstractTableModel<Receta> {
             case FECHACONFECC:
                 return rec.getFechaConfeccion() != null ? rec.getFechaConfeccion() : "";
             case DETALLES:
-                return rec.getDetalles() != null ? rec.getDetalles().size() : 0;
+                return rec.getCantidad() ;
             default:
                 return "";
         }

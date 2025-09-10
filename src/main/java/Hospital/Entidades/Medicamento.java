@@ -25,4 +25,8 @@ public class Medicamento {
     public String getDescripcion() {
         return nombre + " - " + presentacion;
     }
+    public String toStringName() {
+        return nombre;
+    }
+
 }

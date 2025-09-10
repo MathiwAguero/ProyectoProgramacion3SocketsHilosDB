@@ -8,6 +8,7 @@ import  Hospital.Model.ModelReceta;
 import  Hospital.View.Dashboard;
 import Hospital.View.Despacho;
 import  Hospital.View.Historial;
+import com.toedter.calendar.JDateChooser;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -119,6 +120,19 @@ public class RecetaController {
         Factory.get().receta().actualizar(rec);
         model.setCurrent(rec);
         model.setList(Factory.get().receta().obtenerTodos());
+    }
+   public List<Receta>  RecetasPorFecha(JDateChooser Desde, JDateChooser Hasta) {
+        if(Desde!=null && Hasta!=null) {
+
+            if(Hasta.getDate().compareTo(Desde.getDate()) > 0) {
+                List<Receta> recetas = model.getList();
+                List<Receta> filtro= recetas.stream().filter(x->x.getFechaRetiro() != null &&
+                        (Desde.getDate().before(x.getFechaRecoleccion().getDate()) &&
+                                Hasta.getDate().after(x.getFechaRecoleccion().getDate()))).collect(Collectors.toList());
+                return filtro;
+            }
+        }
+        return null;
     }
 
 }

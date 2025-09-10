@@ -1,5 +1,7 @@
 package Hospital.Entidades;
 
+import com.toedter.calendar.JDateChooser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +13,7 @@ public class Receta {
     private String fechaRetiro;
     private EstadoReceta estado;
     private List<RecipeDetails> detalles;
-
+    private JDateChooser fechaRecoleccion;
     public Receta() {
         this.id = "";
         this.paciente = null;
@@ -20,6 +22,7 @@ public class Receta {
         this.fechaRetiro = "";
         this.estado = EstadoReceta.PROCESO;
         this.detalles = new ArrayList<>();
+
     }
 
     public Receta(String id, Paciente paciente, Medico medico, String fechaConfeccion,
@@ -47,6 +50,8 @@ public class Receta {
     public void setFechaConfeccion(String fechaConfeccion) {
         this.fechaConfeccion = (fechaConfeccion != null) ? fechaConfeccion : "";
     }
+    public JDateChooser getFechaRecoleccion() { return fechaRecoleccion; }
+    public void setFechaRecoleccion(JDateChooser fechaRecoleccion) {}
 
     public String getFechaRetiro() { return fechaRetiro; }
     public void setFechaRetiro(String fechaRetiro) {
@@ -57,12 +62,24 @@ public class Receta {
     public void setEstado(EstadoReceta estado) {
         this.estado = (estado != null) ? estado : EstadoReceta.PROCESO;
     }
-
+    public int getCantidad() {
+        int cantidad = 0;
+        for(int i=0;i<detalles.size();i++) {
+            cantidad += detalles.get(i).getCantidad();
+        }
+        return cantidad;
+    }
     public List<RecipeDetails> getDetalles() { return detalles; }
     public void setDetalles(List<RecipeDetails> detalles) {
         this.detalles = (detalles != null) ? detalles : new ArrayList<>();
     }
-
+    public String mostarListaDetalles() {
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<detalles.size();i++) {
+            sb.append(detalles.get(i).toString());
+        }
+        return sb.toString();
+    }
     public void agregarDetalle(RecipeDetails detalle) {
         if (detalle == null) return;
         if (this.detalles == null) this.detalles = new ArrayList<>();

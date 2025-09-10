@@ -1,5 +1,6 @@
 package Hospital.Model;
 import Hospital.Entidades.Receta;
+import com.toedter.calendar.JDateChooser;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -41,4 +42,5 @@ public class ModelReceta extends AbstractModel {
         this.list = list;
         firePropertyChange(LIST);
     }
+
 }

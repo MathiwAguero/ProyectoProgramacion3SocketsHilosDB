@@ -26,5 +26,8 @@ public class RecipeDetails {
 
     public int getDuracionTratamiento() { return duracionTratamiento; }
     public void setDuracionTratamiento(int duracionTratamiento) { this.duracionTratamiento = duracionTratamiento; }
+    public String toString() {
+        return "\n"+"Medicamento: "+codigoMedicamento+"\n"+"Cantidad Medicamento: "+cantidad+"\n"+"Indicaciones: "+indicaciones+"\n";
+    }
 }
 
