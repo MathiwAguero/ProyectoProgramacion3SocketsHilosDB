@@ -244,7 +244,7 @@ public class Dashboard implements PropertyChangeListener  {
                 list.insertarConCantidad(medicamentoSeleccionado, 0);
             }
 
-            modelR.setList(list.obtenerTodos());
+            modelR.setList(list.obtenerElementosFiltrados(medicamentoSeleccionado));
 
 
             int[] cols = {TableModelDashboard.NOMBRE_MEDICAMENTO, TableModelDashboard.NUMERO_MEDICAMENTO};
@@ -263,4 +263,7 @@ public class Dashboard implements PropertyChangeListener  {
             actualizandoModelo = false;
         }
     }
+
+
+
 }

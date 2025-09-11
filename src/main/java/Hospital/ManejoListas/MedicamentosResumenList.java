@@ -7,6 +7,7 @@ import Hospital.Exceptions.DataAccessException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MedicamentosResumenList extends Base<MedicamentosResumen> {
     private List<MedicamentosResumen> medicamentos = new ArrayList<>();
@@ -34,7 +35,10 @@ public class MedicamentosResumenList extends Base<MedicamentosResumen> {
     public List<MedicamentosResumen> obtenerTodos() throws DataAccessException {
         return new ArrayList<>(medicamentos); // Retornar copia para evitar modificaciones externas
     }
-
+    public List<MedicamentosResumen> obtenerElementosFiltrados(String nombreMedicamento) throws DataAccessException {
+        if (nombreMedicamento == null) return null;
+        return medicamentos.stream().filter(x -> nombreMedicamento.equals(x.getNombreMedicamento())).collect(Collectors.toList());
+    }
     @Override
     public void actualizar(MedicamentosResumen objeto) throws DataAccessException {
         // Implementar si es necesario
