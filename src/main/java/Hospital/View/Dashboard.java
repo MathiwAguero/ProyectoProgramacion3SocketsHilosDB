@@ -155,6 +155,7 @@ public class Dashboard implements PropertyChangeListener  {
                 break;
         }
     }
+
     private void createUIComponents() {
         HastaFecha = new JDateChooser();
         HastaFecha.setDateFormatString("dd/MM/yyyy");
