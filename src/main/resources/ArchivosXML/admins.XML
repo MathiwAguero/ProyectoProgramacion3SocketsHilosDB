@@ -2,7 +2,7 @@
 <java version="24.0.1" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="Hospital.Entidades.Admin">
+   <object class="Logic.Entities.Admin">
     <void property="clave">
      <string>1234</string>
     </void>
@@ -14,14 +14,14 @@
     </void>
     <void property="tipo">
      <object class="java.lang.Enum" id="TipoUsuario0" method="valueOf">
-      <class>Hospital.Entidades.TipoUsuario</class>
+      <class>Logic.Entities.TipoUsuario</class>
       <string>ADMINISTRADOR</string>
      </object>
     </void>
    </object>
   </void>
   <void method="add">
-   <object class="Hospital.Entidades.Admin">
+   <object class="Logic.Entities.Admin">
     <void property="clave">
      <string>1111</string>
     </void>

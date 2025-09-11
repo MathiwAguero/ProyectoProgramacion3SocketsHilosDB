@@ -2,7 +2,7 @@
 <java version="24.0.1" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="Hospital.Entidades.RecipeDetails">
+   <object class="Logic.Entities.RecipeDetails">
     <void property="cantidad">
      <int>5</int>
     </void>
@@ -18,7 +18,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Hospital.Entidades.RecipeDetails">
+   <object class="Logic.Entities.RecipeDetails">
     <void property="cantidad">
      <int>10</int>
     </void>

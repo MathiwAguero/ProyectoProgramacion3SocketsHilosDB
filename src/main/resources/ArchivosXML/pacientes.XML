@@ -2,7 +2,7 @@
 <java version="24.0.1" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="Hospital.Entidades.Paciente">
+   <object class="Logic.Entities.Paciente">
     <void property="fechaNacimiento">
      <string>2/06/2006</string>
     </void>
@@ -18,7 +18,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Hospital.Entidades.Paciente">
+   <object class="Logic.Entities.Paciente">
     <void property="fechaNacimiento">
      <string>2/03/1989</string>
     </void>
@@ -34,7 +34,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Hospital.Entidades.Paciente">
+   <object class="Logic.Entities.Paciente">
     <void property="fechaNacimiento">
      <string>03/03/2006</string>
     </void>

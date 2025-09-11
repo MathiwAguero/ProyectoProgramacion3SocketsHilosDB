@@ -2,7 +2,7 @@
 <java version="24.0.1" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="Hospital.Entidades.Medicamento">
+   <object class="Logic.Entities.Medicamento">
     <void property="codigo">
      <string>001</string>
     </void>
@@ -15,7 +15,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Hospital.Entidades.Medicamento">
+   <object class="Logic.Entities.Medicamento">
     <void property="codigo">
      <string>002</string>
     </void>
@@ -28,7 +28,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Hospital.Entidades.Medicamento">
+   <object class="Logic.Entities.Medicamento">
     <void property="codigo">
      <string>003</string>
     </void>
@@ -41,7 +41,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Hospital.Entidades.Medicamento">
+   <object class="Logic.Entities.Medicamento">
     <void property="codigo">
      <string>004</string>
     </void>
@@ -54,7 +54,7 @@
    </object>
   </void>
   <void method="add">
-   <object class="Hospital.Entidades.Medicamento">
+   <object class="Logic.Entities.Medicamento">
     <void property="codigo">
      <string>005</string>
     </void>
