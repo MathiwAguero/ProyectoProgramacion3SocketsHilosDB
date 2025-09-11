@@ -87,6 +87,7 @@ public class PrescribirBuscarMedica implements PropertyChangeListener  {
 
                 PrescribirIndicaciones panelIndicaciones = new PrescribirIndicaciones();
                 panelIndicaciones.setCodigoMedicamento(seleccionado.getCodigo());
+                panelIndicaciones.setNombreMedicamento(seleccionado.getNombre());
 
                 JDialog d = new JDialog(SwingUtilities.getWindowAncestor(busquedaMedica),
                         "Datos de prescripción", Dialog.ModalityType.APPLICATION_MODAL);

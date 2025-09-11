@@ -141,7 +141,7 @@
         <int>10</int>
        </void>
        <void property="codigoMedicamento">
-        <string>001</string>
+        <string>Acetaminofen</string>
        </void>
        <void property="duracionTratamiento">
         <int>5</int>
@@ -210,7 +210,7 @@
         <int>1</int>
        </void>
        <void property="codigoMedicamento">
-        <string>001</string>
+        <string>Acetaminofen</string>
        </void>
        <void property="duracionTratamiento">
         <int>1</int>

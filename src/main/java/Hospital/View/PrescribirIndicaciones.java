@@ -23,7 +23,7 @@ public class PrescribirIndicaciones implements PropertyChangeListener  {
     ModelDetails modelDetails;
     private RecipeDetails detalle;
     private String codigoMedicamento;
-
+    private String nombreMedicamento;
     public RecipeDetails getDetalle() {
         return detalle;
     }
@@ -41,6 +41,7 @@ public class PrescribirIndicaciones implements PropertyChangeListener  {
                 detalle.setCantidad(cantidad);
                 detalle.setDuracionTratamiento(dias);
                 detalle.setCodigoMedicamento(codigoMedicamento);
+                detalle.setNombre(nombreMedicamento);
                 detalle.setIndicaciones(indic);
 
                 Window w = SwingUtilities.getWindowAncestor(Prescrip);
@@ -62,6 +63,9 @@ public class PrescribirIndicaciones implements PropertyChangeListener  {
     }
     public void setCodigoMedicamento(String codigo) {
         this.codigoMedicamento = codigo;
+    }
+    public void setNombreMedicamento(String nombreMedicamento) {
+        this.nombreMedicamento = nombreMedicamento;
     }
 
     public void setController(DetailsController detailsController) {

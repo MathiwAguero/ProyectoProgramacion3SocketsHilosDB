@@ -1,6 +1,7 @@
 package Hospital.Entidades;
 
 public class RecipeDetails {
+    private String nombre;
     private String codigoMedicamento;
     private int cantidad;
     private String indicaciones;
@@ -29,5 +30,8 @@ public class RecipeDetails {
     public String toString() {
         return "\n"+"Medicamento: "+codigoMedicamento+"\n"+"Cantidad Medicamento: "+cantidad+"\n"+"Indicaciones: "+indicaciones+"\n";
     }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 }
+
 
