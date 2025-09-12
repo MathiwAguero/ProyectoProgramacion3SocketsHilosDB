@@ -1,90 +1,58 @@
 package Logic.Listas;
 
 import Logic.Entities.RecipeDetails;
-import  Logic.Exceptions.DataAccessException;
+import Logic.Exceptions.DataAccessException;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DetailsList extends Base<RecipeDetails> {
 
-    private static final String PATH = System.getProperty("user.dir") + "/src/main/resources/ArchivosXML/details.XML";
-    private List<RecipeDetails> details = new ArrayList<>();
-
-    public DetailsList() {
-        try {
-            cargarDesdeXML();
-        } catch (DataAccessException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
     @Override
-    public void insertar(RecipeDetails m) throws DataAccessException {
-        if (m == null || m.getCodigoMedicamento() == null) throw new DataAccessException("Detalle invalido");
-        if (existeId(m.getCodigoMedicamento())) throw new DataAccessException("Ya existe: " + m.getCodigoMedicamento());
-        details.add(m);
+    public void insertar(RecipeDetails d) throws DataAccessException {
+        if (d == null || d.getCodigoMedicamento() == null)
+            throw new DataAccessException("Detalle inválido");
+        if (existeId(d.getCodigoMedicamento()))
+            throw new DataAccessException("Detalle ya existe para: " + d.getCodigoMedicamento());
+        data.getDetalles().add(d);
         guardarEnXML();
     }
 
     @Override
-    public RecipeDetails obtenerPorId(String codigo) {
-        if (codigo == null) return null;
-        return details.stream().filter(x -> codigo.equals(x.getCodigoMedicamento())).findFirst().orElse(null);
+    public RecipeDetails obtenerPorId(String codigoMedicamento) {
+        if (codigoMedicamento == null) return null;
+        return data.getDetalles().stream()
+                .filter(x -> codigoMedicamento.equals(x.getCodigoMedicamento()))
+                .findFirst().orElse(null);
     }
 
     @Override
-    public List<RecipeDetails> obtenerTodos() { return details; }
+    public List<RecipeDetails> obtenerTodos() { return data.getDetalles(); }
 
     @Override
-    public void actualizar(RecipeDetails m) throws DataAccessException {
-        if (m == null || m.getCodigoMedicamento() == null) throw new DataAccessException("Detalle de receta invalido");
-        for (int i = 0; i < details.size(); i++) {
-            if (details.get(i).getCodigoMedicamento().equals(m.getCodigoMedicamento())) {
-                details.set(i, m);
+    public void actualizar(RecipeDetails d) throws DataAccessException {
+        if (d == null || d.getCodigoMedicamento() == null)
+            throw new DataAccessException("Detalle inválido");
+        for (int i = 0; i < data.getDetalles().size(); i++) {
+            if (data.getDetalles().get(i).getCodigoMedicamento().equals(d.getCodigoMedicamento())) {
+                data.getDetalles().set(i, d);
                 guardarEnXML();
                 return;
             }
         }
-        throw new DataAccessException("Detalle de la receta no encontrado: " + m.getCodigoMedicamento());
+        throw new DataAccessException("Detalle no encontrado: " + d.getCodigoMedicamento());
     }
 
     @Override
-    public void eliminar(String codigo) throws DataAccessException {
-        boolean ok = details.removeIf(x -> x.getCodigoMedicamento().equals(codigo));
-        if (!ok) throw new DataAccessException("No existe detalle de receta a codigo de: " + codigo);
+    public void eliminar(String codigoMedicamento) throws DataAccessException {
+        boolean ok = data.getDetalles().removeIf(x -> x.getCodigoMedicamento().equals(codigoMedicamento));
+        if (!ok) throw new DataAccessException("No existe detalle para: " + codigoMedicamento);
         guardarEnXML();
     }
 
     @Override
-    public boolean existeId(String codigo) {
-        return codigo != null && details.stream().anyMatch(x -> codigo.equals(x.getCodigoMedicamento()));
-    }
-
-    @Override
-    protected void guardarEnXML() throws DataAccessException {
-        try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(PATH));
-             XMLEncoder enc = new XMLEncoder(out)) {
-            enc.writeObject(details);
-        } catch (Exception e) {
-            throw new DataAccessException("No se pudo guardar " + PATH + ": " + e.getMessage());
-        }
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    protected void cargarDesdeXML() throws DataAccessException {
-        File f = new File(PATH);
-        if (!f.exists() || f.length() == 0) { details = new ArrayList<>(); return; }
-        try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(f));
-             XMLDecoder dec = new XMLDecoder(in)) {
-            details = (List<RecipeDetails>) dec.readObject();
-        } catch (Exception e) {
-            throw new DataAccessException("No se pudo cargar " + PATH + ": " + e.getMessage());
-        }
+    public boolean existeId(String codigoMedicamento) {
+        return codigoMedicamento != null &&
+                data.getDetalles().stream().anyMatch(x -> codigoMedicamento.equals(x.getCodigoMedicamento()));
     }
 }
 

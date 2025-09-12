@@ -1,5 +1,11 @@
 package Logic.Entities;
 
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso({Admin.class, Medico.class, Farmaceuta.class})
 public class UsuarioBase {
     private String id;
     private String clave;
@@ -14,29 +20,13 @@ public class UsuarioBase {
         this.nombre = nombre;
         this.tipo = tipo;
     }
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
 
-    public String getClave() {
-        return clave;
-    }
-    public void setClave(String clave) {
-        this.clave = clave;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public TipoUsuario getTipo() { return tipo;
-    }
-    public void setTipo(TipoUsuario tipo) { this.tipo = tipo;
-    }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getClave() { return clave; }
+    public void setClave(String clave) { this.clave = clave; }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public TipoUsuario getTipo() { return tipo; }
+    public void setTipo(TipoUsuario tipo) { this.tipo = tipo; }
 }

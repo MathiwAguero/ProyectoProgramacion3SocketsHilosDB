@@ -33,9 +33,9 @@ public class HospitalData {
     static RecipeDetails rcp2 = new RecipeDetails(m2.getNombre(), 10, "Tomar una al dia", 10);
 
     //Recetas
-    static Receta r1 = new Receta("004", p1, n1, "1/08/2025", "2/08/2025", EstadoReceta.ENTREGADA, new java.util.ArrayList<>());
-    static Receta r2 = new Receta("005", p2, n1, "20/07/2025", "1/08/2025", EstadoReceta.LISTA,      new java.util.ArrayList<>());
-    static { r1.agregarDetalle(rcp2); r2.agregarDetalle(rcp1); }
+    //static Receta r1 = new Receta("004", p1, n1, "1/08/2025", "2/08/2025", EstadoReceta.ENTREGADA, new java.util.ArrayList<>());
+    //static Receta r2 = new Receta("005", p2, n1, "20/07/2025", "1/08/2025", EstadoReceta.LISTA,      new java.util.ArrayList<>());
+    //static { r1.agregarDetalle(rcp2); r2.agregarDetalle(rcp1); }
 
     public static void incializarDatos() {
         try {
@@ -51,9 +51,9 @@ public class HospitalData {
                 if(Factory.get().medicamento().obtenerTodos().isEmpty()){
                 crearDatosMedicamentos();
                 }
-                if(Factory.get().receta().obtenerTodos().isEmpty()){
-                crearDatosRecetas();
-                }
+                /*if(Factory.get().receta().obtenerTodos().isEmpty()){
+                //crearDatosRecetas();
+                }*/
                 if(Factory.get().farmaceuta().obtenerTodos().isEmpty()){
                 crearDatosFarmaceutas();
                 }
@@ -97,10 +97,10 @@ public class HospitalData {
 
     }
 
-    private static void crearDatosRecetas() throws DataAccessException {
+    /*private static void crearDatosRecetas() throws DataAccessException {
         Factory.get().receta().insertar(r1);
         Factory.get().receta().insertar(r2);
-    }
+    }*/
 
     private static void crearDatosMedicamentos() throws DataAccessException {
         Factory.get().medicamento().insertar(m1);

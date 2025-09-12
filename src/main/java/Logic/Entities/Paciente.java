@@ -1,5 +1,9 @@
 package Logic.Entities;
 
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Paciente {
     private String id;
     private String nombre;
@@ -17,13 +21,10 @@ public class Paciente {
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
-
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
-
     public String getFechaNacimiento() { return fechaNacimiento; }
     public void setFechaNacimiento(String fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
-
     public String getNumeroTelefonico() { return numeroTelefonico; }
     public void setNumeroTelefonico(String numeroTelefonico) { this.numeroTelefonico = numeroTelefonico; }
 }

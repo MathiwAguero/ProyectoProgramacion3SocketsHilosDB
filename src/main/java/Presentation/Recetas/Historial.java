@@ -58,7 +58,7 @@ public class Historial implements PropertyChangeListener {
                                 "Estado: " + String.valueOf(rec.getEstado()) + "\n" +
                                 "Fecha confeccion: " + rec.getFechaConfeccion() + "\n" +
                                 "Fecha retiro: " + rec.getFechaRetiro() + "\n" +
-                                "Detalles : " + (rec.mostarListaDetalles());
+                                "Detalles : " + "\n" + (rec.mostarListaDetalles());
 
                         JOptionPane.showMessageDialog(Historial, reporte);
                         return;

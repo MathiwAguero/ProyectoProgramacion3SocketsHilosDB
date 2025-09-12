@@ -1,27 +1,33 @@
+// src/main/java/Logic/Listas/Base.java
 package Logic.Listas;
 
-import  Logic.Exceptions.DataAccessException;
+import Data.XMLPersister;
+import Logic.Exceptions.DataAccessException;
 
 import java.util.List;
 
-
- //Clase abstracta base para todas las operaciones CRUD (create, read, update, delete)
-
-
 public abstract class Base<T> {
+
+    protected static XMLPersister xmlPersister = XMLPersister.instance();
+    protected static XMLPersister.Data data;
+
+    public Base() {
+        if (data == null) {
+            try {
+                data = xmlPersister.load();
+            } catch (DataAccessException e) {
+                data = new XMLPersister.Data();
+            }
+        }
+    }
 
     public abstract void insertar(T objeto) throws DataAccessException;
     public abstract T obtenerPorId(String id) throws DataAccessException;
     public abstract List<T> obtenerTodos() throws DataAccessException;
     public abstract void actualizar(T objeto) throws DataAccessException;
     public abstract void eliminar(String id) throws DataAccessException;
-
-    //agregue este para que sea mas facil la busqueda
     public abstract boolean existeId(String id) throws DataAccessException;
 
-    //Esto es para el XML
-    protected abstract void guardarEnXML() throws DataAccessException;
-    protected abstract void cargarDesdeXML() throws DataAccessException;
-
+    protected void guardarEnXML() throws DataAccessException { xmlPersister.store(data); }
+    protected void cargarDesdeXML() throws DataAccessException { data = xmlPersister.load(); }
 }
-

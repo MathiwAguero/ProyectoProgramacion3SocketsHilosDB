@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hospital>
+    <admins>
+        <admin>
+            <id>ADM-111</id>
+            <clave>1234</clave>
+            <nombre>Nestor Zamora</nombre>
+            <tipo>ADMINISTRADOR</tipo>
+        </admin>
+        <admin>
+            <id>ADM-222</id>
+            <clave>1111</clave>
+            <nombre>Jose Sanchez</nombre>
+            <tipo>ADMINISTRADOR</tipo>
+        </admin>
+    </admins>
+    <medicos>
+        <medico>
+            <id>MED-111</id>
+            <clave>111</clave>
+            <nombre>Mathiw Aguero</nombre>
+            <tipo>MEDICO</tipo>
+            <especialidad>Neurocirujano</especialidad>
+        </medico>
+        <medico>
+            <id>MED-222</id>
+            <clave>222</clave>
+            <nombre>Ignacio Bolanos</nombre>
+            <tipo>MEDICO</tipo>
+            <especialidad>Cardiologo</especialidad>
+        </medico>
+        <medico>
+            <id>MED-333</id>
+            <clave>333</clave>
+            <nombre>Naara menjivar</nombre>
+            <tipo>MEDICO</tipo>
+            <especialidad>Pediatra</especialidad>
+        </medico>
+    </medicos>
+    <pacientes>
+        <paciente>
+            <id>P001</id>
+            <nombre>Juan Perez</nombre>
+            <fechaNacimiento>2/06/2006</fechaNacimiento>
+            <numeroTelefonico>12345678</numeroTelefonico>
+        </paciente>
+        <paciente>
+            <id>P002</id>
+            <nombre>Maria Gonzalez</nombre>
+            <fechaNacimiento>2/03/1989</fechaNacimiento>
+            <numeroTelefonico>87654321</numeroTelefonico>
+        </paciente>
+    </pacientes>
+    <medicamentos>
+        <medicamento>
+            <codigo>001</codigo>
+            <nombre>Acetaminofen</nombre>
+            <presentacion>100 mg</presentacion>
+        </medicamento>
+        <medicamento>
+            <codigo>002</codigo>
+            <nombre>Panadol</nombre>
+            <presentacion>500 mg</presentacion>
+        </medicamento>
+        <medicamento>
+            <codigo>003</codigo>
+            <nombre>Viagra</nombre>
+            <presentacion>50 mg</presentacion>
+        </medicamento>
+        <medicamento>
+            <codigo>005</codigo>
+            <nombre>Cataflan</nombre>
+            <presentacion>230 mg</presentacion>
+        </medicamento>
+        <medicamento>
+            <codigo>007</codigo>
+            <nombre>Enantyum</nombre>
+            <presentacion>700 mg</presentacion>
+        </medicamento>
+    </medicamentos>
+    <recetas>
+        <receta>
+            <id>1010</id>
+            <paciente>
+                <id>P001</id>
+                <nombre>Juan Perez</nombre>
+                <fechaNacimiento>2/06/2006</fechaNacimiento>
+                <numeroTelefonico>12345678</numeroTelefonico>
+            </paciente>
+            <medico>
+                <id>MED-111</id>
+                <clave>111</clave>
+                <nombre>Mathiw Aguero</nombre>
+                <tipo>MEDICO</tipo>
+                <especialidad>Neurocirujano</especialidad>
+            </medico>
+            <fechaConfeccion>11/09/2025</fechaConfeccion>
+            <fechaRetiro>29/09/2025</fechaRetiro>
+            <estado>CONFECCIONADA</estado>
+            <detalles>
+                <detalle>
+                    <nombre>Panadol</nombre>
+                    <codigoMedicamento>002</codigoMedicamento>
+                    <cantidad>6</cantidad>
+                    <indicaciones>una cada 8 horas</indicaciones>
+                    <duracionTratamiento>3</duracionTratamiento>
+                </detalle>
+                <detalle>
+                    <nombre>Acetaminofen</nombre>
+                    <codigoMedicamento>001</codigoMedicamento>
+                    <cantidad>3</cantidad>
+                    <indicaciones>Una al dia</indicaciones>
+                    <duracionTratamiento>3</duracionTratamiento>
+                </detalle>
+            </detalles>
+        </receta>
+        <receta>
+            <id>2020</id>
+            <paciente>
+                <id>P002</id>
+                <nombre>Maria Gonzalez</nombre>
+                <fechaNacimiento>2/03/1989</fechaNacimiento>
+                <numeroTelefonico>87654321</numeroTelefonico>
+            </paciente>
+            <medico>
+                <id>MED-111</id>
+                <clave>111</clave>
+                <nombre>Mathiw Aguero</nombre>
+                <tipo>MEDICO</tipo>
+                <especialidad>Neurocirujano</especialidad>
+            </medico>
+            <fechaConfeccion>11/09/2025</fechaConfeccion>
+            <fechaRetiro>20/09/2025</fechaRetiro>
+            <estado>CONFECCIONADA</estado>
+            <detalles>
+                <detalle>
+                    <nombre>Cataflan</nombre>
+                    <codigoMedicamento>005</codigoMedicamento>
+                    <cantidad>10</cantidad>
+                    <indicaciones>2 pastillas al dia</indicaciones>
+                    <duracionTratamiento>5</duracionTratamiento>
+                </detalle>
+                <detalle>
+                    <nombre>Enantyum</nombre>
+                    <codigoMedicamento>007</codigoMedicamento>
+                    <cantidad>3</cantidad>
+                    <indicaciones>Un sobre por 3 dias</indicaciones>
+                    <duracionTratamiento>3</duracionTratamiento>
+                </detalle>
+            </detalles>
+        </receta>
+    </recetas>
+    <usuarios>
+        <usuario>
+            <id>ADM-111</id>
+            <clave>1234</clave>
+            <nombre>Nestor Zamora</nombre>
+            <tipo>ADMINISTRADOR</tipo>
+        </usuario>
+        <usuario>
+            <id>ADM-222</id>
+            <clave>1111</clave>
+            <nombre>Jose Sanchez</nombre>
+            <tipo>ADMINISTRADOR</tipo>
+        </usuario>
+        <usuario>
+            <id>MED-111</id>
+            <clave>111</clave>
+            <nombre>Mathiw Aguero</nombre>
+            <tipo>MEDICO</tipo>
+        </usuario>
+        <usuario>
+            <id>MED-222</id>
+            <clave>222</clave>
+            <nombre>Ignacio Bolanos</nombre>
+            <tipo>MEDICO</tipo>
+        </usuario>
+        <usuario>
+            <id>MED-333</id>
+            <clave>333</clave>
+            <nombre>Naara menjivar</nombre>
+            <tipo>MEDICO</tipo>
+        </usuario>
+        <usuario>
+            <id>FAR-111</id>
+            <clave>123</clave>
+            <nombre>Wilson Ramirez</nombre>
+            <tipo>FARMECEUTA</tipo>
+        </usuario>
+        <usuario>
+            <id>FAR-222</id>
+            <clave>555</clave>
+            <nombre>Carlos Loria</nombre>
+            <tipo>FARMECEUTA</tipo>
+        </usuario>
+        <usuario>
+            <id>FAR-333</id>
+            <clave>123456</clave>
+            <nombre>Juan Pablo</nombre>
+            <tipo>FARMECEUTA</tipo>
+        </usuario>
+    </usuarios>
+    <farmaceutas>
+        <farmaceuta>
+            <id>FAR-111</id>
+            <clave>123</clave>
+            <nombre>Wilson Ramirez</nombre>
+            <tipo>FARMECEUTA</tipo>
+        </farmaceuta>
+        <farmaceuta>
+            <id>FAR-222</id>
+            <clave>555</clave>
+            <nombre>Carlos Loria</nombre>
+            <tipo>FARMECEUTA</tipo>
+        </farmaceuta>
+        <farmaceuta>
+            <id>FAR-333</id>
+            <clave>123456</clave>
+            <nombre>Juan Pablo</nombre>
+            <tipo>FARMECEUTA</tipo>
+        </farmaceuta>
+    </farmaceutas>
+    <detalles>
+        <detalle>
+            <codigoMedicamento>Acetaminofen</codigoMedicamento>
+            <cantidad>5</cantidad>
+            <indicaciones>Tomar una cada 8 horas</indicaciones>
+            <duracionTratamiento>15</duracionTratamiento>
+        </detalle>
+        <detalle>
+            <codigoMedicamento>Panadol</codigoMedicamento>
+            <cantidad>10</cantidad>
+            <indicaciones>Tomar una al dia</indicaciones>
+            <duracionTratamiento>10</duracionTratamiento>
+        </detalle>
+    </detalles>
+</hospital>
