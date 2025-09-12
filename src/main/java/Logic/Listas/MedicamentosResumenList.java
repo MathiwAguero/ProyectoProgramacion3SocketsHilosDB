@@ -99,7 +99,7 @@ public class MedicamentosResumenList extends Base<MedicamentosResumen> {
 
             if (detalles != null) {
                 for (RecipeDetails detalle : detalles) {
-                    String codigoMedicamento = detalle.getCodigoMedicamento();
+                    String codigoMedicamento = detalle.getNombre();
                     int cantidad = detalle.getCantidad();
 
                     if (codigoMedicamento != null && !codigoMedicamento.isEmpty() && cantidad > 0) {

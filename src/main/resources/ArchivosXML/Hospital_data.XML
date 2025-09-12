@@ -149,6 +149,146 @@
                 </detalle>
             </detalles>
         </receta>
+        <receta>
+            <id>0011</id>
+            <paciente>
+                <id>P001</id>
+                <nombre>Juan Perez</nombre>
+                <fechaNacimiento>2/06/2006</fechaNacimiento>
+                <numeroTelefonico>12345678</numeroTelefonico>
+            </paciente>
+            <medico>
+                <id>MED-111</id>
+                <clave>111</clave>
+                <nombre>Mathiw Aguero</nombre>
+                <tipo>MEDICO</tipo>
+                <especialidad>Neurocirujano</especialidad>
+            </medico>
+            <fechaConfeccion>12/09/2025</fechaConfeccion>
+            <fechaRetiro>15/07/2025</fechaRetiro>
+            <estado>CONFECCIONADA</estado>
+            <detalles>
+                <detalle>
+                    <nombre>Acetaminofen</nombre>
+                    <codigoMedicamento>001</codigoMedicamento>
+                    <cantidad>15</cantidad>
+                    <indicaciones>DCC</indicaciones>
+                    <duracionTratamiento>1</duracionTratamiento>
+                </detalle>
+            </detalles>
+        </receta>
+        <receta>
+            <id>1100</id>
+            <paciente>
+                <id>P002</id>
+                <nombre>Maria Gonzalez</nombre>
+                <fechaNacimiento>2/03/1989</fechaNacimiento>
+                <numeroTelefonico>87654321</numeroTelefonico>
+            </paciente>
+            <medico>
+                <id>MED-111</id>
+                <clave>111</clave>
+                <nombre>Mathiw Aguero</nombre>
+                <tipo>MEDICO</tipo>
+                <especialidad>Neurocirujano</especialidad>
+            </medico>
+            <fechaConfeccion>12/09/2025</fechaConfeccion>
+            <fechaRetiro>04/11/2025</fechaRetiro>
+            <estado>CONFECCIONADA</estado>
+            <detalles>
+                <detalle>
+                    <nombre>Acetaminofen</nombre>
+                    <codigoMedicamento>001</codigoMedicamento>
+                    <cantidad>23</cantidad>
+                    <indicaciones></indicaciones>
+                    <duracionTratamiento>1</duracionTratamiento>
+                </detalle>
+            </detalles>
+        </receta>
+        <receta>
+            <id>201</id>
+            <paciente>
+                <id>P002</id>
+                <nombre>Maria Gonzalez</nombre>
+                <fechaNacimiento>2/03/1989</fechaNacimiento>
+                <numeroTelefonico>87654321</numeroTelefonico>
+            </paciente>
+            <medico>
+                <id>MED-111</id>
+                <clave>111</clave>
+                <nombre>Mathiw Aguero</nombre>
+                <tipo>MEDICO</tipo>
+                <especialidad>Neurocirujano</especialidad>
+            </medico>
+            <fechaConfeccion>12/09/2025</fechaConfeccion>
+            <fechaRetiro>10/03/2026</fechaRetiro>
+            <estado>CONFECCIONADA</estado>
+            <detalles>
+                <detalle>
+                    <nombre>Acetaminofen</nombre>
+                    <codigoMedicamento>001</codigoMedicamento>
+                    <cantidad>5</cantidad>
+                    <indicaciones></indicaciones>
+                    <duracionTratamiento>1</duracionTratamiento>
+                </detalle>
+            </detalles>
+        </receta>
+        <receta>
+            <id>090</id>
+            <paciente>
+                <id>P001</id>
+                <nombre>Juan Perez</nombre>
+                <fechaNacimiento>2/06/2006</fechaNacimiento>
+                <numeroTelefonico>12345678</numeroTelefonico>
+            </paciente>
+            <medico>
+                <id>MED-111</id>
+                <clave>111</clave>
+                <nombre>Mathiw Aguero</nombre>
+                <tipo>MEDICO</tipo>
+                <especialidad>Neurocirujano</especialidad>
+            </medico>
+            <fechaConfeccion>12/09/2025</fechaConfeccion>
+            <fechaRetiro>10/12/2024</fechaRetiro>
+            <estado>CONFECCIONADA</estado>
+            <detalles>
+                <detalle>
+                    <nombre>Acetaminofen</nombre>
+                    <codigoMedicamento>001</codigoMedicamento>
+                    <cantidad>10</cantidad>
+                    <indicaciones></indicaciones>
+                    <duracionTratamiento>1</duracionTratamiento>
+                </detalle>
+            </detalles>
+        </receta>
+        <receta>
+            <id>1001</id>
+            <paciente>
+                <id>P001</id>
+                <nombre>Juan Perez</nombre>
+                <fechaNacimiento>2/06/2006</fechaNacimiento>
+                <numeroTelefonico>12345678</numeroTelefonico>
+            </paciente>
+            <medico>
+                <id>MED-111</id>
+                <clave>111</clave>
+                <nombre>Mathiw Aguero</nombre>
+                <tipo>MEDICO</tipo>
+                <especialidad>Neurocirujano</especialidad>
+            </medico>
+            <fechaConfeccion>12/09/2025</fechaConfeccion>
+            <fechaRetiro>12/11/2025</fechaRetiro>
+            <estado>CONFECCIONADA</estado>
+            <detalles>
+                <detalle>
+                    <nombre>Enantyum</nombre>
+                    <codigoMedicamento>007</codigoMedicamento>
+                    <cantidad>10</cantidad>
+                    <indicaciones>EEDED</indicaciones>
+                    <duracionTratamiento>7</duracionTratamiento>
+                </detalle>
+            </detalles>
+        </receta>
     </recetas>
     <usuarios>
         <usuario>

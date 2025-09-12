@@ -124,6 +124,17 @@ public class RecetaController {
         model.setCurrent(rec);
         model.setList(Factory.get().receta().obtenerTodos());
     }
+    public List<Receta> FiltradasPorNombre(String nombre, List<Receta> recetas) throws DataAccessException {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return recetas.stream()
+                .filter(receta -> receta.getDetalles().stream()
+                        .anyMatch(d -> d.getNombre() != null &&
+                                d.getNombre().equalsIgnoreCase(nombre)))
+                .toList();
+    }
 
     public List<Receta> RecetasPorFecha(JDateChooser Desde, JDateChooser Hasta) {
         if (Desde == null || Hasta == null) return new ArrayList<>();

@@ -1,297 +1,441 @@
 package Logic.Entities;
 
+import Logic.Entities.*;
+import Logic.Exceptions.DataAccessException;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Line2D;
+import java.awt.geom.Ellipse2D;
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 
 public class Grafica extends JPanel {
-    private Map<Date, Integer> datosGrafica;
+    private List<DataPoint> dataPoints;
     private String medicamentoSeleccionado;
-    private Date fechaInicio;
-    private Date fechaFin;
+    private String titulo;
+    private Color colorLinea = new Color(52, 152, 219);
+    private Color colorPunto = new Color(231, 76, 60);
+    private Color colorFondo = Color.WHITE;
+    private Color colorEjes = Color.BLACK;
+    private Color colorGrid = new Color(200, 200, 200);
 
-    // Configuración visual
-    private final int MARGEN_IZQUIERDO = 70;
-    private final int MARGEN_DERECHO = 50;
-    private final int MARGEN_SUPERIOR = 50;
-    private final int MARGEN_INFERIOR = 70;
-    private final Color COLOR_LINEA = new Color(0, 123, 255);
-    private final Color COLOR_PUNTOS = new Color(220, 53, 69);
-    private final Color COLOR_EJES = Color.BLACK;
-    private final Color COLOR_GRILLA = new Color(221, 221, 221);
+    // Márgenes del gráfico
+    private static final int MARGIN_LEFT = 80;
+    private static final int MARGIN_RIGHT = 40;
+    private static final int MARGIN_TOP = 60;
+    private static final int MARGIN_BOTTOM = 80;
+
+    // Clase interna para representar un punto de datos
+    public static class DataPoint {
+        public final Date fecha;
+        public final int cantidad;
+        public final String medicamento;
+
+        public DataPoint(Date fecha, int cantidad, String medicamento) {
+            this.fecha = fecha;
+            this.cantidad = cantidad;
+            this.medicamento = medicamento;
+        }
+    }
 
     public Grafica() {
-        this.datosGrafica = new HashMap<>();
+        this.dataPoints = new ArrayList<>();
         this.medicamentoSeleccionado = "";
-        setBackground(Color.WHITE);
+        this.titulo = "Cantidad de Mecicamentos por recenta \n evaluado mensualmente";
+
+        setBackground(colorFondo);
         setPreferredSize(new Dimension(600, 400));
+        setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
     }
 
     /**
-     * Actualiza los datos de la gráfica con las recetas filtradas
-     * @param recetas Lista de recetas del medicamento seleccionado
-     * @param medicamento Nombre del medicamento
+     * Actualiza los datos del gráfico basándose en las recetas filtradas
      */
     public void actualizarDatos(List<Receta> recetas, String medicamento) {
         this.medicamentoSeleccionado = medicamento;
-        this.datosGrafica.clear();
+        this.dataPoints.clear();
 
-        if (recetas == null || recetas.isEmpty()) {
+        if (recetas == null || recetas.isEmpty() || medicamento == null || medicamento.equals("Seleccione un medicamento...")) {
+            System.out.println("No hay datos válidos para actualizar la gráfica");
             repaint();
             return;
         }
 
-        // Procesar recetas y agrupar por fecha
+        // Mapa para agrupar cantidades por fecha
+        Map<String, Integer> cantidadPorFecha = new TreeMap<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
+        System.out.println("Procesando " + recetas.size() + " recetas para medicamento: " + medicamento);
+
+        // Procesar todas las recetas
         for (Receta receta : recetas) {
-            //Date fecha = receta.getFechaConfeccion();
-            // Obtener cantidad del medicamento específico
-            int cantidad = obtenerCantidadMedicamento(receta, medicamento);
+            try {
+                // Validar que la receta tenga fecha
+                Date fechaReceta = obtenerFechaValida(receta);
+                if (fechaReceta == null) {
+                    System.out.println("Receta sin fecha válida, saltando...");
+                    continue;
+                }
 
-            if (cantidad > 0) {
-                // Si ya existe la fecha, sumar las cantidades
-                //datosGrafica.merge(fecha, cantidad, Integer::sum);
+                // Procesar detalles de la receta
+                if (receta.getDetalles() != null) {
+                    for (RecipeDetails detalle : receta.getDetalles()) {
+                        if (medicamento.equals(detalle
+                                .getNombre())) {
+                            String fechaStr = sdf.format(fechaReceta);
+                            int cantidad = detalle.getCantidad();
+
+                            cantidadPorFecha.merge(fechaStr, cantidad, Integer::sum);
+                            System.out.println("Agregado: " + fechaStr + " -> " + cantidad);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Error procesando receta: " + e.getMessage());
+                e.printStackTrace();
             }
         }
 
-        // Establecer rango de fechas
-        if (!datosGrafica.isEmpty()) {
-            fechaInicio = Collections.min(datosGrafica.keySet());
-            fechaFin = Collections.max(datosGrafica.keySet());
+        System.out.println("Datos agrupados por fecha: " + cantidadPorFecha.size() + " entradas");
+
+        // Convertir a DataPoints
+        for (Map.Entry<String, Integer> entry : cantidadPorFecha.entrySet()) {
+            try {
+                Date fecha = sdf.parse(entry.getKey());
+                dataPoints.add(new DataPoint(fecha, entry.getValue(), medicamento));
+                System.out.println("DataPoint creado: " + entry.getKey() + " -> " + entry.getValue());
+            } catch (ParseException e) {
+                System.err.println("Error al parsear fecha: " + entry.getKey());
+            }
         }
 
+        // Ordenar por fecha
+        dataPoints.sort(Comparator.comparing(dp -> dp.fecha));
+
+        // Si no hay datos para el medicamento, agregar un punto con cantidad 0
+        if (dataPoints.isEmpty()) {
+            if (!medicamento.equals("Seleccione un medicamento...")) {
+                Date fechaActual = new Date();
+                dataPoints.add(new DataPoint(fechaActual, 0, medicamento));
+                System.out.println("No se encontraron datos, agregando punto con cantidad 0");
+            }
+        }
+
+        System.out.println("Total de puntos de datos: " + dataPoints.size());
         repaint();
     }
 
     /**
-     * Obtiene la cantidad del medicamento específico de una receta
+     * Obtiene una fecha válida de la receta, manejando diferentes tipos de datos
      */
-    private int obtenerCantidadMedicamento(Receta receta, String medicamento) {
+    private Date obtenerFechaValida(Receta receta) {
         try {
-            // Asumiendo que tienes un método para obtener detalles de la receta
-            if (receta.getDetalles() != null && receta.getDetalles().size() > 0) {
-                String codigoMed = receta.getDetalles().get(0).getCodigoMedicamento();
-                // Aquí podrías hacer una comparación más sofisticada o buscar por código
-                if (medicamento.equals(codigoMed)) {
-                    return receta.getDetalles().get(0).getCantidad();
+            // Intentar obtener la fecha directamente
+            Object fechaObj = receta.getFechaConfeccion();
+
+            if (fechaObj == null) {
+                System.out.println("Fecha de receta es null");
+                return new Date(); // Usar fecha actual como fallback
+            }
+
+            // Si ya es un Date, devolverlo
+            if (fechaObj instanceof Date) {
+                return (Date) fechaObj;
+            }
+
+            // Si es un String, intentar parsearlo
+            if (fechaObj instanceof String) {
+                String fechaStr = (String) fechaObj;
+                return parsearFechaString(fechaStr);
+            }
+
+            // Si es un java.sql.Date
+            if (fechaObj instanceof java.sql.Date) {
+                return new Date(((java.sql.Date) fechaObj).getTime());
+            }
+
+            // Si es un java.sql.Timestamp
+            if (fechaObj instanceof java.sql.Timestamp) {
+                return new Date(((java.sql.Timestamp) fechaObj).getTime());
+            }
+
+            // Si es un LocalDate o LocalDateTime (Java 8+)
+            if (fechaObj.getClass().getSimpleName().equals("LocalDate")) {
+                // Usar reflection para manejar LocalDate
+                try {
+                    Object epochDay = fechaObj.getClass().getMethod("toEpochDay").invoke(fechaObj);
+                    long days = (Long) epochDay;
+                    return new Date(days * 24 * 60 * 60 * 1000L);
+                } catch (Exception e) {
+                    System.err.println("Error convirtiendo LocalDate: " + e.getMessage());
                 }
             }
+
+            System.out.println("Tipo de fecha no reconocido: " + fechaObj.getClass().getName());
+            System.out.println("Valor: " + fechaObj.toString());
+
+            // Intentar parsear el toString()
+            return parsearFechaString(fechaObj.toString());
+
         } catch (Exception e) {
-            System.err.println("Error al obtener cantidad: " + e.getMessage());
+            System.err.println("Error obteniendo fecha válida: " + e.getMessage());
+            return new Date(); // Fallback a fecha actual
         }
-        return 0;
+    }
+
+    /**
+     * Intenta parsear diferentes formatos de fecha desde String
+     */
+    private Date parsearFechaString(String fechaStr) {
+        if (fechaStr == null || fechaStr.trim().isEmpty()) {
+            return new Date();
+        }
+
+        // Formatos comunes a intentar
+        String[] formatos = {
+                "yyyy-MM-dd",
+                "dd/MM/yyyy",
+                "MM/dd/yyyy",
+                "yyyy-MM-dd HH:mm:ss",
+                "dd/MM/yyyy HH:mm:ss",
+                "EEE MMM dd HH:mm:ss zzz yyyy" // Para formato como "Tue Jul 01 19:30:54 CST 2025"
+        };
+
+        for (String formato : formatos) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat(formato);
+                return sdf.parse(fechaStr);
+            } catch (ParseException e) {
+                // Continuar con el siguiente formato
+            }
+        }
+
+        System.err.println("No se pudo parsear la fecha: " + fechaStr);
+        return new Date(); // Fallback a fecha actual
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g.create();
 
-        Graphics2D g2d = (Graphics2D) g;
+        // Configurar renderizado suave
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        if (datosGrafica.isEmpty()) {
-            dibujarMensajeVacio(g2d);
+        int width = getWidth();
+        int height = getHeight();
+
+        // Área de dibujo del gráfico
+        int graphWidth = width - MARGIN_LEFT - MARGIN_RIGHT;
+        int graphHeight = height - MARGIN_TOP - MARGIN_BOTTOM;
+
+        if (dataPoints.isEmpty()) {
+            dibujarMensajeVacio(g2d, width, height);
+            g2d.dispose();
             return;
         }
 
-        // Calcular área de dibujo
-        int anchoGrafica = getWidth() - MARGEN_IZQUIERDO - MARGEN_DERECHO;
-        int altoGrafica = getHeight() - MARGEN_SUPERIOR - MARGEN_INFERIOR;
-
-        if (anchoGrafica <= 0 || altoGrafica <= 0) return;
-
-        // Obtener valores ordenados por fecha
-        List<Map.Entry<Date, Integer>> datosOrdenados = new ArrayList<>(datosGrafica.entrySet());
-        datosOrdenados.sort(Map.Entry.comparingByKey());
+        // Dibujar título
+        dibujarTitulo(g2d, width);
 
         // Calcular rangos
-        int maxCantidad = Collections.max(datosGrafica.values());
-        int minCantidad = 0;
+        int maxCantidad = dataPoints.stream().mapToInt(dp -> dp.cantidad).max().orElse(1);
+        maxCantidad = Math.max(maxCantidad, 1); // Evitar división por cero
 
-        // Dibujar componentes
-        dibujarTitulo(g2d);
-        dibujarEjes(g2d, anchoGrafica, altoGrafica, maxCantidad);
-        dibujarGrilla(g2d, anchoGrafica, altoGrafica, maxCantidad);
-        dibujarDatos(g2d, anchoGrafica, altoGrafica, datosOrdenados, maxCantidad, minCantidad);
-        dibujarEtiquetas(g2d, anchoGrafica, altoGrafica);
+        long minTime = dataPoints.stream().mapToLong(dp -> dp.fecha.getTime()).min().orElse(0);
+        long maxTime = dataPoints.stream().mapToLong(dp -> dp.fecha.getTime()).max().orElse(0);
+
+        // Si todas las fechas son iguales, expandir el rango
+        if (minTime == maxTime) {
+            long oneDay = 24 * 60 * 60 * 1000; // Un día en milisegundos
+            minTime -= oneDay;
+            maxTime += oneDay;
+        }
+
+        // Dibujar ejes y grid
+        dibujarEjesYGrid(g2d, graphWidth, graphHeight, maxCantidad, minTime, maxTime);
+
+        // Dibujar líneas de datos
+        dibujarLineasDatos(g2d, graphWidth, graphHeight, maxCantidad, minTime, maxTime);
+
+        // Dibujar puntos de datos
+        dibujarPuntosDatos(g2d, graphWidth, graphHeight, maxCantidad, minTime, maxTime);
+
+        g2d.dispose();
     }
 
-    private void dibujarMensajeVacio(Graphics2D g2d) {
-        g2d.setColor(Color.GRAY);
-        g2d.setFont(new Font("Arial", Font.PLAIN, 16));
-        FontMetrics fm = g2d.getFontMetrics();
-        String mensaje = "Sin datos para mostrar";
-        String submensaje = "Seleccione medicamento y fechas";
-
-        int x1 = (getWidth() - fm.stringWidth(mensaje)) / 2;
-        int y1 = getHeight() / 2 - 10;
-        int x2 = (getWidth() - fm.stringWidth(submensaje)) / 2;
-        int y2 = getHeight() / 2 + 15;
-
-        g2d.drawString(mensaje, x1, y1);
-        g2d.setFont(new Font("Arial", Font.PLAIN, 12));
-        g2d.drawString(submensaje, x2, y2);
-    }
-
-    private void dibujarTitulo(Graphics2D g2d) {
-        g2d.setColor(COLOR_EJES);
+    private void dibujarTitulo(Graphics2D g2d, int width) {
+        g2d.setColor(colorEjes);
         g2d.setFont(new Font("Arial", Font.BOLD, 16));
         FontMetrics fm = g2d.getFontMetrics();
 
-        String titulo = "Consumo de " + medicamentoSeleccionado;
-        if (fechaInicio != null && fechaFin != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            titulo += " (" + sdf.format(fechaInicio) + " - " + sdf.format(fechaFin) + ")";
+        String tituloCompleto = titulo;
+        if (!medicamentoSeleccionado.isEmpty() && !medicamentoSeleccionado.equals("Seleccione un medicamento...")) {
+            tituloCompleto += " - " + medicamentoSeleccionado;
         }
 
-        int x = (getWidth() - fm.stringWidth(titulo)) / 2;
-        g2d.drawString(titulo, x, 25);
+        int titleWidth = fm.stringWidth(tituloCompleto);
+        int titleX = (width - titleWidth) / 2;
+        g2d.drawString(tituloCompleto, titleX, 25);
     }
 
-    private void dibujarEjes(Graphics2D g2d, int anchoGrafica, int altoGrafica, int maxCantidad) {
-        g2d.setColor(COLOR_EJES);
-        g2d.setStroke(new BasicStroke(2));
-
-        // Eje Y
-        g2d.drawLine(MARGEN_IZQUIERDO, MARGEN_SUPERIOR,
-                MARGEN_IZQUIERDO, MARGEN_SUPERIOR + altoGrafica);
-
-        // Eje X
-        g2d.drawLine(MARGEN_IZQUIERDO, MARGEN_SUPERIOR + altoGrafica,
-                MARGEN_IZQUIERDO + anchoGrafica, MARGEN_SUPERIOR + altoGrafica);
-    }
-
-    private void dibujarGrilla(Graphics2D g2d, int anchoGrafica, int altoGrafica, int maxCantidad) {
-        g2d.setColor(COLOR_GRILLA);
-        g2d.setStroke(new BasicStroke(1));
-
-        // Líneas horizontales
-        for (int i = 1; i <= 5; i++) {
-            int y = MARGEN_SUPERIOR + altoGrafica - (i * altoGrafica / 5);
-            g2d.drawLine(MARGEN_IZQUIERDO, y, MARGEN_IZQUIERDO + anchoGrafica, y);
-        }
-
-        // Etiquetas del eje Y
-        g2d.setColor(COLOR_EJES);
-        g2d.setFont(new Font("Arial", Font.PLAIN, 10));
-        for (int i = 0; i <= 5; i++) {
-            int y = MARGEN_SUPERIOR + altoGrafica - (i * altoGrafica / 5);
-            int valor = (maxCantidad * i) / 5;
-
-            FontMetrics fm = g2d.getFontMetrics();
-            g2d.drawString(String.valueOf(valor),
-                    MARGEN_IZQUIERDO - fm.stringWidth(String.valueOf(valor)) - 10,
-                    y + 3);
-        }
-    }
-
-    private void dibujarDatos(Graphics2D g2d, int anchoGrafica, int altoGrafica,
-                              List<Map.Entry<Date, Integer>> datosOrdenados,
-                              int maxCantidad, int minCantidad) {
-
-        if (datosOrdenados.size() < 2) {
-            // Solo dibujar puntos si hay pocos datos
-            dibujarSoloPuntos(g2d, anchoGrafica, altoGrafica, datosOrdenados, maxCantidad);
-            return;
-        }
-
-        // Dibujar líneas conectoras
-        g2d.setColor(COLOR_LINEA);
-        g2d.setStroke(new BasicStroke(3));
-
-        for (int i = 0; i < datosOrdenados.size() - 1; i++) {
-            Point p1 = calcularPuntoEnGrafica(i, datosOrdenados, anchoGrafica, altoGrafica, maxCantidad);
-            Point p2 = calcularPuntoEnGrafica(i + 1, datosOrdenados, anchoGrafica, altoGrafica, maxCantidad);
-
-            g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
-        }
-
-        // Dibujar puntos
-        dibujarPuntos(g2d, anchoGrafica, altoGrafica, datosOrdenados, maxCantidad);
-    }
-
-    private void dibujarSoloPuntos(Graphics2D g2d, int anchoGrafica, int altoGrafica,
-                                   List<Map.Entry<Date, Integer>> datosOrdenados, int maxCantidad) {
-        dibujarPuntos(g2d, anchoGrafica, altoGrafica, datosOrdenados, maxCantidad);
-    }
-
-    private void dibujarPuntos(Graphics2D g2d, int anchoGrafica, int altoGrafica,
-                               List<Map.Entry<Date, Integer>> datosOrdenados, int maxCantidad) {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
-
-        for (int i = 0; i < datosOrdenados.size(); i++) {
-            Map.Entry<Date, Integer> entrada = datosOrdenados.get(i);
-            Point punto = calcularPuntoEnGrafica(i, datosOrdenados, anchoGrafica, altoGrafica, maxCantidad);
-
-            // Dibujar punto rojo
-            g2d.setColor(COLOR_PUNTOS);
-            g2d.fillOval(punto.x - 5, punto.y - 5, 10, 10);
-
-            // Borde blanco
-            g2d.setColor(Color.WHITE);
-            g2d.setStroke(new BasicStroke(2));
-            g2d.drawOval(punto.x - 5, punto.y - 5, 10, 10);
-
-            // Valor encima del punto
-            g2d.setColor(COLOR_EJES);
-            g2d.setFont(new Font("Arial", Font.BOLD, 10));
-            FontMetrics fm = g2d.getFontMetrics();
-            String valor = String.valueOf(entrada.getValue());
-            g2d.drawString(valor, punto.x - fm.stringWidth(valor)/2, punto.y - 10);
-
-            // Fecha debajo del eje X
-            g2d.setFont(new Font("Arial", Font.PLAIN, 9));
-            fm = g2d.getFontMetrics();
-            String fecha = sdf.format(entrada.getKey());
-            g2d.drawString(fecha, punto.x - fm.stringWidth(fecha)/2,
-                    MARGEN_SUPERIOR + altoGrafica + 20);
-        }
-    }
-
-    private Point calcularPuntoEnGrafica(int indice, List<Map.Entry<Date, Integer>> datos,
-                                         int anchoGrafica, int altoGrafica, int maxCantidad) {
-
-        int x = MARGEN_IZQUIERDO + (indice * anchoGrafica / Math.max(1, datos.size() - 1));
-        if (datos.size() == 1) {
-            x = MARGEN_IZQUIERDO + anchoGrafica / 2; // Centrar si solo hay un dato
-        }
-
-        int cantidad = datos.get(indice).getValue();
-        int y = MARGEN_SUPERIOR + altoGrafica - (cantidad * altoGrafica / Math.max(1, maxCantidad));
-
-        return new Point(x, y);
-    }
-
-    private void dibujarEtiquetas(Graphics2D g2d, int anchoGrafica, int altoGrafica) {
-        g2d.setColor(COLOR_EJES);
-        g2d.setFont(new Font("Arial", Font.PLAIN, 12));
+    private void dibujarMensajeVacio(Graphics2D g2d, int width, int height) {
+        g2d.setColor(Color.GRAY);
+        g2d.setFont(new Font("Arial", Font.ITALIC, 14));
         FontMetrics fm = g2d.getFontMetrics();
 
-        // Etiqueta eje X
-        String etiquetaX = "Fecha";
-        int xEtiqueta = MARGEN_IZQUIERDO + anchoGrafica / 2 - fm.stringWidth(etiquetaX) / 2;
-        g2d.drawString(etiquetaX, xEtiqueta, getHeight() - 15);
+        String mensaje = "Seleccione un medicamento y rango de fechas para ver el gráfico";
+        int messageWidth = fm.stringWidth(mensaje);
+        int messageX = (width - messageWidth) / 2;
+        int messageY = height / 2;
 
-        // Etiqueta eje Y (rotada)
-        Graphics2D g2dRotado = (Graphics2D) g2d.create();
-        g2dRotado.rotate(-Math.PI / 2, 20, MARGEN_SUPERIOR + altoGrafica / 2);
-        String etiquetaY = "Cantidad";
-        g2dRotado.drawString(etiquetaY, 20 - fm.stringWidth(etiquetaY) / 2,
-                MARGEN_SUPERIOR + altoGrafica / 2 + fm.getHeight() / 2);
-        g2dRotado.dispose();
+        g2d.drawString(mensaje, messageX, messageY);
+    }
+
+    private void dibujarEjesYGrid(Graphics2D g2d, int graphWidth, int graphHeight, int maxCantidad, long minTime, long maxTime) {
+        // Dibujar grid vertical (fechas)
+        g2d.setColor(colorGrid);
+        g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{2}, 0));
+
+        int numVerticalLines = 5;
+        for (int i = 0; i <= numVerticalLines; i++) {
+            int x = MARGIN_LEFT + (i * graphWidth / numVerticalLines);
+            g2d.draw(new Line2D.Double(x, MARGIN_TOP, x, MARGIN_TOP + graphHeight));
+        }
+
+        // Dibujar grid horizontal (cantidades)
+        int numHorizontalLines = 5;
+        for (int i = 0; i <= numHorizontalLines; i++) {
+            int y = MARGIN_TOP + (i * graphHeight / numHorizontalLines);
+            g2d.draw(new Line2D.Double(MARGIN_LEFT, y, MARGIN_LEFT + graphWidth, y));
+        }
+
+        // Dibujar ejes principales
+        g2d.setColor(colorEjes);
+        g2d.setStroke(new BasicStroke(2));
+
+        // Eje Y (cantidades)
+        g2d.draw(new Line2D.Double(MARGIN_LEFT, MARGIN_TOP, MARGIN_LEFT, MARGIN_TOP + graphHeight));
+
+        // Eje X (fechas)
+        g2d.draw(new Line2D.Double(MARGIN_LEFT, MARGIN_TOP + graphHeight, MARGIN_LEFT + graphWidth, MARGIN_TOP + graphHeight));
+
+        // Etiquetas del eje Y
+        g2d.setFont(new Font("Arial", Font.PLAIN, 11));
+        for (int i = 0; i <= numHorizontalLines; i++) {
+            int cantidad = maxCantidad - (i * maxCantidad / numHorizontalLines);
+            int y = MARGIN_TOP + (i * graphHeight / numHorizontalLines);
+
+            String label = String.valueOf(cantidad);
+            FontMetrics fm = g2d.getFontMetrics();
+            int labelWidth = fm.stringWidth(label);
+            g2d.drawString(label, MARGIN_LEFT - labelWidth - 10, y + 5);
+        }
+
+        // Etiquetas del eje X
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
+        for (int i = 0; i <= numVerticalLines; i++) {
+            long time = minTime + (long)((double)i * (maxTime - minTime) / numVerticalLines);
+            Date fecha = new Date(time);
+            String label = sdf.format(fecha);
+
+            int x = MARGIN_LEFT + (i * graphWidth / numVerticalLines);
+            FontMetrics fm = g2d.getFontMetrics();
+            int labelWidth = fm.stringWidth(label);
+            g2d.drawString(label, x - labelWidth / 2, MARGIN_TOP + graphHeight + 20);
+        }
+
+        // Etiquetas de los ejes
+        g2d.setFont(new Font("Arial", Font.BOLD, 12));
+        FontMetrics fm = g2d.getFontMetrics();
+
+        // Etiqueta eje Y
+        String labelY = "Cantidad";
+        g2d.rotate(-Math.PI / 2);
+        g2d.drawString(labelY, -(MARGIN_TOP + graphHeight / 2 + fm.stringWidth(labelY) / 2), 20);
+        g2d.rotate(Math.PI / 2);
+
+        // Etiqueta eje X
+        String labelX = "Fecha";
+        int labelXWidth = fm.stringWidth(labelX);
+        g2d.drawString(labelX, MARGIN_LEFT + graphWidth / 2 - labelXWidth / 2, MARGIN_TOP + graphHeight + 50);
+    }
+
+    private void dibujarLineasDatos(Graphics2D g2d, int graphWidth, int graphHeight, int maxCantidad, long minTime, long maxTime) {
+        if (dataPoints.size() < 2) return;
+
+        g2d.setColor(colorLinea);
+        g2d.setStroke(new BasicStroke(3));
+
+        for (int i = 0; i < dataPoints.size() - 1; i++) {
+            DataPoint current = dataPoints.get(i);
+            DataPoint next = dataPoints.get(i + 1);
+
+            int x1 = MARGIN_LEFT + (int)((double)(current.fecha.getTime() - minTime) * graphWidth / (maxTime - minTime));
+            int y1 = MARGIN_TOP + graphHeight - (current.cantidad * graphHeight / maxCantidad);
+
+            int x2 = MARGIN_LEFT + (int)((double)(next.fecha.getTime() - minTime) * graphWidth / (maxTime - minTime));
+            int y2 = MARGIN_TOP + graphHeight - (next.cantidad * graphHeight / maxCantidad);
+
+            g2d.draw(new Line2D.Double(x1, y1, x2, y2));
+        }
+    }
+
+    private void dibujarPuntosDatos(Graphics2D g2d, int graphWidth, int graphHeight, int maxCantidad, long minTime, long maxTime) {
+        g2d.setColor(colorPunto);
+
+        for (DataPoint dp : dataPoints) {
+            int x = MARGIN_LEFT + (int)((double)(dp.fecha.getTime() - minTime) * graphWidth / (maxTime - minTime));
+            int y = MARGIN_TOP + graphHeight - (dp.cantidad * graphHeight / maxCantidad);
+
+            // Dibujar punto
+            g2d.fill(new Ellipse2D.Double(x - 4, y - 4, 8, 8));
+
+            // Dibujar valor sobre el punto
+            g2d.setColor(colorEjes);
+            g2d.setFont(new Font("Arial", Font.PLAIN, 10));
+            String valor = String.valueOf(dp.cantidad);
+            FontMetrics fm = g2d.getFontMetrics();
+            int valorWidth = fm.stringWidth(valor);
+            g2d.drawString(valor, x - valorWidth / 2, y - 8);
+
+            g2d.setColor(colorPunto);
+        }
+    }
+
+    // Métodos públicos para configuración
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+        repaint();
+    }
+
+    public void setColorLinea(Color color) {
+        this.colorLinea = color;
+        repaint();
+    }
+
+    public void setColorPunto(Color color) {
+        this.colorPunto = color;
+        repaint();
+    }
+
+    public String getMedicamentoSeleccionado() {
+        return medicamentoSeleccionado;
+    }
+
+    public int getNumeroDataPoints() {
+        return dataPoints.size();
     }
 
     /**
-     * Limpia los datos de la gráfica
+     * Limpia todos los datos del gráfico
      */
     public void limpiar() {
-        datosGrafica.clear();
-        medicamentoSeleccionado = "";
-        fechaInicio = null;
-        fechaFin = null;
+        this.dataPoints.clear();
+        this.medicamentoSeleccionado = "";
         repaint();
     }
 }
