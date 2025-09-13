@@ -131,7 +131,7 @@
             </medico>
             <fechaConfeccion>11/09/2025</fechaConfeccion>
             <fechaRetiro>20/09/2025</fechaRetiro>
-            <estado>CONFECCIONADA</estado>
+            <estado>LISTA</estado>
             <detalles>
                 <detalle>
                     <nombre>Cataflan</nombre>
@@ -194,7 +194,7 @@
             </medico>
             <fechaConfeccion>12/09/2025</fechaConfeccion>
             <fechaRetiro>04/11/2025</fechaRetiro>
-            <estado>CONFECCIONADA</estado>
+            <estado>LISTA</estado>
             <detalles>
                 <detalle>
                     <nombre>Acetaminofen</nombre>
@@ -250,7 +250,7 @@
             </medico>
             <fechaConfeccion>12/09/2025</fechaConfeccion>
             <fechaRetiro>10/12/2024</fechaRetiro>
-            <estado>CONFECCIONADA</estado>
+            <estado>LISTA</estado>
             <detalles>
                 <detalle>
                     <nombre>Acetaminofen</nombre>
@@ -278,7 +278,7 @@
             </medico>
             <fechaConfeccion>12/09/2025</fechaConfeccion>
             <fechaRetiro>12/11/2025</fechaRetiro>
-            <estado>CONFECCIONADA</estado>
+            <estado>ENTREGADA</estado>
             <detalles>
                 <detalle>
                     <nombre>Enantyum</nombre>
