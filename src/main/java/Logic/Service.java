@@ -225,6 +225,9 @@ public class Service {
     public void createDetalle(RecipeDetails detalle, String recetaId) throws Exception {
         detallesDao.create(detalle, recetaId);
     }
+    public void updateDetalle(RecipeDetails detalle) throws Exception {
+        detallesDao.update(detalle);
+    }
 
     public List<RecipeDetails> findDetallesByReceta(String recetaId) throws Exception {
         return detallesDao.findByRecetaId(recetaId);

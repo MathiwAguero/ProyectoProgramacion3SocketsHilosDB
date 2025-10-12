@@ -57,7 +57,9 @@ public class Farmaceutas implements PropertyChangeListener {
                 String id = textField1.getText().trim();
                 if (!id.isEmpty()) {
                     try {
-                        controller.delete(id);
+                        Farmaceuta borror=new Farmaceuta();
+                        borror.setId(id);
+                        controller.delete(borror);
                         JOptionPane.showMessageDialog(Farmaceutas,  "FARMACEUTA ELIMINADO", "", JOptionPane.INFORMATION_MESSAGE );
                         LimpiarCampos();
                     } catch (Exception ex) {

@@ -34,6 +34,20 @@ public class RecipeDetailsDao {
             throw new Exception("No se pudo crear el detalle de receta");
         }
     }
+    public void update(RecipeDetails detalle) throws Exception {
+        String sql = "UPDATE receta_detalles SET receta_id=?, codigoMedicamento=?,nombre=?," +
+                "cantidad=?,indicaciones=?,duracionTratamiento=? WHERE receta_id=?";
+        PreparedStatement stm = db.prepareStatement(sql);
+        stm.setString(1, detalle.getCodigoMedicamento());
+        stm.setString(2, detalle.getNombre());
+        stm.setInt(3, detalle.getCantidad());
+        stm.setString(4, detalle.getIndicaciones());
+        stm.setInt(5, detalle.getDuracionTratamiento());
+        int count = db.executeUpdate(stm);
+        if (count == 0) {
+            throw new Exception("No se pudo actualizar el detalle de receta");
+        }
+    }
 
     /**
      * Lee un detalle específico por su ID
@@ -138,4 +152,18 @@ public class RecipeDetailsDao {
             return null;
         }
     }
+    public boolean exists(RecipeDetails detalle) throws Exception {
+        try{
+            String sql = "SELECT * FROM receta_detalles rd WHERE codigoMedicamento = ?";
+            PreparedStatement stm = db.prepareStatement(sql);
+            stm.setString(1, detalle.getCodigoMedicamento());
+            ResultSet rs = db.executeQuery(stm);
+            if (rs.next()) {
+                return rs.getInt(1)>0;
+            }
+
+        }catch(SQLException e){}
+        return false;
+    }
+
 }

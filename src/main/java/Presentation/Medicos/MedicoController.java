@@ -3,6 +3,7 @@ package Presentation.Medicos;
 import Logic.Listas.Factory;
 import Logic.Entities.Medico;
 import Logic.Exceptions.DataAccessException;
+import Logic.Service;
 import Presentation.Medicos.MedicoController;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class MedicoController {
 
     private void cargarDatosIniciales() {
         try {
-            List<Medico> medicos = Factory.get().medico().obtenerTodos();
+            List<Medico> medicos = Service.getInstance().findAllMedicos();
             model.setList(medicos);
             model.setCurrent(new Medico());
         } catch (Exception e) {
@@ -32,21 +33,23 @@ public class MedicoController {
 
     public void create(Medico medico) throws DataAccessException {
         try {
-            if(Factory.get().medico().existeId(medico.getId())) {
-                Factory.get().medico().actualizar(medico);
+            if(Service.getInstance().existsFarmaceuta(medico.getId())) {
+                Service.getInstance().update(medico);
             } else {
-                Factory.get().medico().insertar(medico);
+                Service.getInstance().create(medico);
             }
             model.setCurrent(new Medico());
-            model.setList(Factory.get().medico().obtenerTodos());
+            model.setList(Service.getInstance().findAllMedicos());
         } catch (DataAccessException x) {
             throw new DataAccessException("Error al guardar el medico" + x.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
     public void read(String id) throws DataAccessException {
         try {
-            Medico encontrado =  Factory.get().medico().obtenerPorId(id);
+            Medico encontrado =  Service.getInstance().readMedico(id);
             if (encontrado == null) {
                 throw new DataAccessException("Medico no encontrado");
             }
@@ -56,17 +59,21 @@ public class MedicoController {
             m.setId(id);
             model.setCurrent(m);
             throw ex;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public void delete(String id) throws DataAccessException {
-        Factory.get().medico().eliminar(id);
+    public void delete(String id) throws Exception {
+        Medico med= new Medico();
+        med.setId(id);
+        Service.getInstance().delete(med);
         model.setCurrent(new Medico());
-        model.setList(Factory.get().medico().obtenerTodos());
+        model.setList(Service.getInstance().findAllMedicos());
     }
 
-    public void search(String search) throws DataAccessException {
-        List<Medico> general = Factory.get().medico().obtenerTodos();
+    public void search(String search) throws Exception {
+        List<Medico> general = Service.getInstance().findAllMedicos();
         if (search == null || search.trim().isEmpty()) {
             model.setList(general);
         } else {
@@ -77,8 +84,8 @@ public class MedicoController {
     }
 
 
-    public void clear() {
+    public void clear() throws Exception {
         model.setCurrent(new Medico());
-        model.setList(Factory.get().medico().obtenerTodos());
+        model.setList(Service.getInstance().findAllMedicos());
     }
 }

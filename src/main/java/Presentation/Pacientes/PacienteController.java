@@ -3,6 +3,7 @@ package Presentation.Pacientes;
 import Logic.Listas.Factory;
 import Logic.Entities.Paciente;
 import Logic.Exceptions.DataAccessException;
+import Logic.Service;
 import Presentation.Prescripcion.Filtros.PrescribirBuscarPacien;
 
 
@@ -33,7 +34,7 @@ public class PacienteController {
 
     private void cargarDatosIniciales() {
         try {
-            List<Paciente> pacientes = Factory.get().paciente().obtenerTodos();
+            List<Paciente> pacientes = Service.getInstance().findAllPacientes();
             model.setList(pacientes);
             model.setCurrent(new Paciente());
         } catch (Exception e) {
@@ -41,23 +42,23 @@ public class PacienteController {
         }
     }
 
-    public void create(Paciente paciente) throws DataAccessException {
+    public void create(Paciente paciente) throws Exception {
         try {
-            if(Factory.get().paciente().existeId(paciente.getId())) {
-                Factory.get().paciente().actualizar(paciente);
+            if(Service.getInstance().existsPaciente(paciente.getId())) {
+                Service.getInstance().update(paciente);
             } else {
-                Factory.get().paciente().insertar(paciente);
+                Service.getInstance().create(paciente);
             }
             model.setCurrent(new Paciente());
-            model.setList(Factory.get().paciente().obtenerTodos());
+            model.setList(Service.getInstance().findAllPacientes());
         } catch (DataAccessException x) {
             throw new DataAccessException("Error al guardar el paciente" + x.getMessage());
         }
     }
 
-    public void read(String id) throws DataAccessException {
+    public void read(String id) throws Exception {
         try {
-            Paciente encontrado =  Factory.get().paciente().obtenerPorId(id);
+            Paciente encontrado =  Service.getInstance().readPaciente(id);
             if (encontrado == null) {
                 throw new DataAccessException("Paciente no encontrado");
             }
@@ -70,14 +71,16 @@ public class PacienteController {
         }
     }
 
-    public void delete(String id) throws DataAccessException {
-        Factory.get().paciente().eliminar(id);
+    public void delete(String id) throws Exception {
+        Paciente paciente= new Paciente();
+        paciente.setId(id);
+        Service.getInstance().delete(paciente);
         model.setCurrent(new Paciente());
-        model.setList(Factory.get().paciente().obtenerTodos());
+        model.setList(Service.getInstance().findAllPacientes());
     }
 
-    public void search(String search) throws DataAccessException {
-        List<Paciente> general = Factory.get().paciente().obtenerTodos();
+    public void search(String search) throws Exception {
+        List<Paciente> general = Service.getInstance().findAllPacientes();
         if (search == null || search.trim().isEmpty()) {
             model.setList(general);
         } else {
@@ -87,8 +90,8 @@ public class PacienteController {
         }
     }
 
-    public void searchComboBox(String criterio, String search) throws DataAccessException {
-        List<Paciente> general = Factory.get().paciente().obtenerTodos();
+    public void searchComboBox(String criterio, String search) throws Exception {
+        List<Paciente> general = Service.getInstance().findAllPacientes();
         if (search == null || search.trim().isEmpty()) {
             model.setList(general);
             return;
@@ -106,8 +109,8 @@ public class PacienteController {
         }
     }
 
-    public void clear() {
+    public void clear() throws Exception {
         model.setCurrent(new Paciente());
-        model.setList(Factory.get().paciente().obtenerTodos());
+        model.setList(Service.getInstance().findAllPacientes());
     }
 }

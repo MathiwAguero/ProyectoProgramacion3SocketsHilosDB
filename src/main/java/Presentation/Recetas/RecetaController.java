@@ -4,6 +4,7 @@ import Logic.Entities.EstadoReceta;
 import Logic.Listas.Factory;
 import Logic.Entities.Receta;
 import Logic.Exceptions.DataAccessException;
+import Logic.Service;
 import Presentation.Dashboard.Dashboard;
 import Presentation.Despacho.Despacho;
 import com.toedter.calendar.JDateChooser;
@@ -52,7 +53,7 @@ public class RecetaController {
 
     private void cargarDatosIniciales() {
         try {
-            List<Receta> recetas = Factory.get().receta().obtenerTodos();
+            List<Receta> recetas = Service.getInstance().findAllRecetas();
             model.setList(recetas);
             model.setCurrent(new Receta());
         } catch (Exception e) {
@@ -60,23 +61,23 @@ public class RecetaController {
         }
     }
 
-    public void create(Receta receta) throws DataAccessException {
+    public void create(Receta receta) throws Exception {
         try {
-            if (Factory.get().receta().existeId(receta.getId())) {
-                Factory.get().receta().actualizar(receta);
+            if (Service.getInstance().existsReceta(receta.getId())) {
+                Service.getInstance().update(receta);
             } else {
-                Factory.get().receta().insertar(receta);
+                Service.getInstance().create(receta);
             }
             model.setCurrent(new Receta());
-            model.setList(Factory.get().receta().obtenerTodos());
+            model.setList(Service.getInstance().findAllRecetas());
         } catch (DataAccessException x) {
             throw new DataAccessException("Error al guardar la receta" + x.getMessage());
         }
     }
 
-    public void read(String id) throws DataAccessException {
+    public void read(String id) throws Exception {
         try {
-            Receta encontrado = Factory.get().receta().obtenerPorId(id);
+            Receta encontrado = Service.getInstance().readReceta(id);
             if (encontrado == null) {
                 throw new DataAccessException("Receta no encontrada");
             }
@@ -89,14 +90,16 @@ public class RecetaController {
         }
     }
 
-    public void delete(String id) throws DataAccessException {
-        Factory.get().receta().eliminar(id);
+    public void delete(String id) throws Exception {
+        Receta rec= new Receta();
+        rec.setId(id);
+        Service.getInstance().delete(rec);
         model.setCurrent(new Receta());
-        model.setList(Factory.get().receta().obtenerTodos());
+        model.setList(Service.getInstance().findAllRecetas());
     }
 
-    public void search(String search) throws DataAccessException {
-        List<Receta> general = Factory.get().receta().obtenerTodos();
+    public void search(String search) throws Exception {
+        List<Receta> general = Service.getInstance().findAllRecetas();
         if (search == null || search.trim().isEmpty()) {
             model.setList(general);
         } else {
@@ -107,22 +110,22 @@ public class RecetaController {
         }
     }
 
-    public void clear() {
+    public void clear() throws Exception {
         model.setCurrent(new Receta());
-        model.setList(Factory.get().receta().obtenerTodos());
+        model.setList(Service.getInstance().findAllRecetas());
     }
 
-    public void actualizarEstado(String idReceta, EstadoReceta nuevo) throws DataAccessException {
+    public void actualizarEstado(String idReceta, EstadoReceta nuevo) throws Exception {
         if (idReceta == null) {
             throw new DataAccessException("ID de receta inválido.");
         }
 
-        Receta rec = Factory.get().receta().obtenerPorId(idReceta);
+        Receta rec = Service.getInstance().readReceta(idReceta);
 
         rec.setEstado(nuevo);
-        Factory.get().receta().actualizar(rec);
+        Service.getInstance().update(rec);
         model.setCurrent(rec);
-        model.setList(Factory.get().receta().obtenerTodos());
+        model.setList(Service.getInstance().findAllRecetas());
     }
     public List<Receta> FiltradasPorNombre(String nombre, List<Receta> recetas) throws DataAccessException {
         if (nombre == null || nombre.trim().isEmpty()) {

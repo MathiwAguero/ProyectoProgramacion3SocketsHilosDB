@@ -3,6 +3,7 @@ package Presentation.Farmaceutas;
 import Logic.Listas.Factory;
 import Logic.Entities.Farmaceuta;
 import Logic.Exceptions.DataAccessException;
+import Logic.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class FarmaceutaController {
 
     private void cargarDatosIniciales() {
         try {
-            List<Farmaceuta> farmaceutas = Factory.get().farmaceuta().obtenerTodos();
+            List<Farmaceuta> farmaceutas = Service.getInstance().findAllFarmaceutas();
             model.setList(farmaceutas);
             model.setCurrent(new Farmaceuta());
         } catch (Exception e) {
@@ -31,21 +32,21 @@ public class FarmaceutaController {
 
     public void create(Farmaceuta farmaceuta) throws DataAccessException {
         try {
-            if(Factory.get().farmaceuta().existeId(farmaceuta.getId())) {
-                Factory.get().farmaceuta().actualizar(farmaceuta);
+            if(Service.getInstance().existsFarmaceuta(farmaceuta.getId())) {
+                Service.getInstance().update(farmaceuta);
             } else {
-                Factory.get().farmaceuta().insertar(farmaceuta);
+                Service.getInstance().update(farmaceuta);
             }
             model.setCurrent(new Farmaceuta());
-            model.setList(Factory.get().farmaceuta().obtenerTodos());
-        } catch (DataAccessException x) {
+            model.setList(Service.getInstance().findAllFarmaceutas());
+        } catch (Exception x) {
             throw new DataAccessException("Error al guardar el farmaceuta" + x.getMessage());
         }
     }
 
     public void read(String id) throws DataAccessException {
         try {
-            Farmaceuta encontrado =  Factory.get().farmaceuta().obtenerPorId(id);
+            Farmaceuta encontrado =  Service.getInstance().readFarmaceuta(id);
             if (encontrado == null) {
                 throw new DataAccessException("Medico no encontrado");
             }
@@ -55,17 +56,19 @@ public class FarmaceutaController {
             m.setId(id);
             model.setCurrent(m);
             throw ex;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public void delete(String id) throws DataAccessException {
-        Factory.get().farmaceuta().eliminar(id);
+    public void delete(Farmaceuta id) throws Exception {
+       Service.getInstance().delete(id);
         model.setCurrent(new Farmaceuta());
-        model.setList(Factory.get().farmaceuta().obtenerTodos());
+        model.setList(Service.getInstance().findAllFarmaceutas());
     }
 
-    public void search(String search) throws DataAccessException {
-        List<Farmaceuta> general = Factory.get().farmaceuta().obtenerTodos();
+    public void search(String search) throws Exception {
+        List<Farmaceuta> general = Service.getInstance().findAllFarmaceutas();
         if (search == null || search.trim().isEmpty()) {
             model.setList(general);
         } else {
@@ -75,8 +78,8 @@ public class FarmaceutaController {
         }
     }
 
-    public void clear() {
+    public void clear() throws Exception {
         model.setCurrent(new Farmaceuta());
-        model.setList(Factory.get().farmaceuta().obtenerTodos());
+        model.setList(Service.getInstance().findAllFarmaceutas());
     }
 }
