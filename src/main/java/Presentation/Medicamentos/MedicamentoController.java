@@ -3,6 +3,7 @@ package Presentation.Medicamentos;
 import Logic.Listas.Factory;
 import Logic.Entities.Medicamento;
 import Logic.Exceptions.DataAccessException;
+import Logic.Service;
 import Presentation.Medicamentos.ModelMedicamentos;
 import Presentation.Medicamentos.Medicamentos;
 import Presentation.Medicamentos.MedicamentoController;
@@ -36,7 +37,7 @@ public class MedicamentoController {
 
     private void cargarDatosIniciales() {
         try {
-            List<Medicamento> medicamentos = Factory.get().medicamento().obtenerTodos();
+            List<Medicamento> medicamentos = Service.getInstance().findAllMedicamentos();
             model.setList(medicamentos);
             model.setCurrent(new Medicamento());
         } catch (Exception e) {
@@ -46,21 +47,23 @@ public class MedicamentoController {
 
     public void create(Medicamento medicamento) throws DataAccessException {
         try {
-            if(Factory.get().medicamento().existeId(medicamento.getCodigo())) {
-                Factory.get().medicamento().actualizar(medicamento);
+            if(Service.getInstance().existsMedicamento(medicamento.getCodigo())) {
+                Service.getInstance().update(medicamento);
             } else {
-                Factory.get().medicamento().insertar(medicamento);
+                Service.getInstance().create(medicamento);
             }
             model.setCurrent(new Medicamento());
-            model.setList(Factory.get().medicamento().obtenerTodos());
+            model.setList(Service.getInstance().findAllMedicamentos());
         } catch (DataAccessException x) {
             throw new DataAccessException("Error al guardar el medicamento" + x.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public void read(String id) throws DataAccessException {
+    public void read(String id) throws Exception {
         try {
-            Medicamento encontrado =  Factory.get().medicamento().obtenerPorId(id);
+            Medicamento encontrado = Service.getInstance().readMedicamento(id);
             if (encontrado == null) {
                 throw new DataAccessException("Medicamento no encontrado");
             }
@@ -73,14 +76,16 @@ public class MedicamentoController {
         }
     }
 
-    public void delete(String id) throws DataAccessException {
-        Factory.get().medicamento().eliminar(id);
+    public void delete(String id) throws Exception {
+        Medicamento med=new Medicamento();
+        med.setCodigo(id);
+        Service.getInstance().delete(med);
         model.setCurrent(new Medicamento());
-        model.setList(Factory.get().medicamento().obtenerTodos());
+        model.setList(Service.getInstance().findAllMedicamentos());
     }
 
-    public void search(String search) throws DataAccessException {
-        List<Medicamento> general = Factory.get().medicamento().obtenerTodos();
+    public void search(String search) throws Exception {
+        List<Medicamento> general = Service.getInstance().findAllMedicamentos();
         if (search == null || search.trim().isEmpty()) {
             model.setList(general);
         } else {
@@ -90,8 +95,8 @@ public class MedicamentoController {
         }
     }
 
-    public void searchComboBox(String criterio, String search) throws DataAccessException {
-        List<Medicamento> general = Factory.get().medicamento().obtenerTodos();
+    public void searchComboBox(String criterio, String search) throws Exception {
+        List<Medicamento> general = Service.getInstance().findAllMedicamentos();
         if (search == null || search.trim().isEmpty()) {
             model.setList(general);
             return;
@@ -109,8 +114,8 @@ public class MedicamentoController {
         }
     }
 
-    public void clear() {
+    public void clear() throws Exception {
         model.setCurrent(new Medicamento());
-        model.setList(Factory.get().medicamento().obtenerTodos());
+        model.setList(Service.getInstance().findAllMedicamentos());
     }
 }
