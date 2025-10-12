@@ -33,7 +33,7 @@ public class MedicoController {
 
     public void create(Medico medico) throws DataAccessException {
         try {
-            if(Service.getInstance().existsFarmaceuta(medico.getId())) {
+            if(Service.getInstance().existsMedico(medico.getId())) {
                 Service.getInstance().update(medico);
             } else {
                 Service.getInstance().create(medico);

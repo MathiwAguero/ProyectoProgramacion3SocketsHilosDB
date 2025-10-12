@@ -35,7 +35,7 @@ public class FarmaceutaController {
             if(Service.getInstance().existsFarmaceuta(farmaceuta.getId())) {
                 Service.getInstance().update(farmaceuta);
             } else {
-                Service.getInstance().update(farmaceuta);
+                Service.getInstance().create(farmaceuta);
             }
             model.setCurrent(new Farmaceuta());
             model.setList(Service.getInstance().findAllFarmaceutas());

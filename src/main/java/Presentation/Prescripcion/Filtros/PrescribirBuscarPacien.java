@@ -43,6 +43,8 @@ public class PrescribirBuscarPacien implements PropertyChangeListener  {
                     controller.searchComboBox(criterio, busqueda);
                 } catch (DataAccessException ex) {
                     JOptionPane.showMessageDialog(busquedaPaciente, "No se encontró nadie");
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });

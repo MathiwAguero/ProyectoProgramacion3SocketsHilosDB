@@ -44,6 +44,8 @@ public class PrescribirBuscarMedica implements PropertyChangeListener  {
                     controller.searchComboBox(criterio, busqueda);
                 } catch (DataAccessException ex) {
                     JOptionPane.showMessageDialog(busquedaMedica, "No se encontró ningún medicamento");
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });

@@ -16,7 +16,7 @@ public class Main {
         }
 
            SwingUtilities.invokeLater(() -> {
-                HospitalData.incializarDatos();
+                HospitalData.inicializarDatos();
                 System.out.println("Datos del Hospital inicializados");
                 JFrame ventana = new JFrame("Login");
                 Login loginView = new Login();
