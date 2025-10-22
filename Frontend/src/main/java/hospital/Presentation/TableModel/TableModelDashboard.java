@@ -1,6 +1,6 @@
 package hospital.Presentation.TableModel;
 
-import Logic.Entities.MedicamentosResumen;
+import hospital.Entities.Entities.*;
 
 import java.util.List;
 

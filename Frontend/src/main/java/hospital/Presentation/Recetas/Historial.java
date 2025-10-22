@@ -1,8 +1,9 @@
 package hospital.Presentation.Recetas;
 
-import Logic.Entities.Receta;
-import Logic.Listas.Factory;
-import Presentation.TableModel.TableModelRecetas;
+import hospital.Entities.Entities.*;
+import hospital.Entities.Entities.*;
+import hospital.Presentation.TableModel.TableModelRecetas;
+import hospital.logic.Service;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -48,7 +49,7 @@ public class Historial implements PropertyChangeListener {
                     return;
                 }
 
-                List<Receta> recetas = Factory.get().receta().obtenerTodos();
+                List<Receta> recetas = Service.instance().finadAllRecetas();
                 for (Receta rec : recetas) {
                     if (rec.getId() != null && rec.getId().toLowerCase().equals(busqueda)) {
                         String reporte = "Reporte de la receta:\n\n" +

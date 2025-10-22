@@ -1,6 +1,6 @@
 package hospital.Presentation.TableModel;
 
-import Logic.Entities.Farmaceuta;
+import hospital.Entities.Entities.*;
 import java.util.List;
 
 public class TableModelFarmaceutas extends AbstractTableModel<Farmaceuta> {

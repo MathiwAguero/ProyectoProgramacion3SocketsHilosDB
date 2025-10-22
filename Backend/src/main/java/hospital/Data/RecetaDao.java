@@ -1,6 +1,6 @@
 package hospital.Data;
 
-import Logic.Entities.*;
+import hospital.Entities.Entities.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

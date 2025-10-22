@@ -1,6 +1,6 @@
 package hospital.Presentation.TableModel;
 
-import Logic.Entities.Paciente;
+import hospital.Entities.Entities.*;
 import java.util.List;
 
 public class TableModelPacientes extends AbstractTableModel<Paciente> {

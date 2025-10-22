@@ -1,7 +1,5 @@
 package hospital.Entities.Entities;
 
-import Logic.Entities.*;
-import Logic.Exceptions.DataAccessException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;

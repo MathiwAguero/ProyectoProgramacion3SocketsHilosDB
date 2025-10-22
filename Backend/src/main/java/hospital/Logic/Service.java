@@ -1,11 +1,10 @@
 package hospital.Logic;
 
-import Data.*;
-import Logic.Entities.*;
+import hospital.Data.*;
+import hospital.Entities.Entities.*;
 
 import java.util.List;
 
-import static sun.security.util.KnownOIDs.Data;
 
 public class Service {
     private static Service instance;

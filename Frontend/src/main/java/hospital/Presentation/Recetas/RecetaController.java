@@ -1,12 +1,9 @@
 package hospital.Presentation.Recetas;
 
-import Logic.Entities.EstadoReceta;
-import Logic.Listas.Factory;
-import Logic.Entities.Receta;
-import Logic.Exceptions.DataAccessException;
-import Logic.Service;
-import Presentation.Dashboard.Dashboard;
-import Presentation.Despacho.Despacho;
+import hospital.Entities.Entities.*;
+
+import hospital.Presentation.Dashboard.Dashboard;
+import hospital.Presentation.Despacho.Despacho;
 import com.toedter.calendar.JDateChooser;
 
 import java.lang.reflect.Method;

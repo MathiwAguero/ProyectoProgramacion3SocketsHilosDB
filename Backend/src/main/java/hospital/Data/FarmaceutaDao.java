@@ -1,5 +1,5 @@
 package hospital.Data;
-import Logic.Entities.Farmaceuta;
+import hospital.Entities.Entities.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
