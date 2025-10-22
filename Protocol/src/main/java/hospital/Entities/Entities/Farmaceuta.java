@@ -1,0 +1,24 @@
+package hospital.Entities.Entities;
+
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Farmaceuta extends UsuarioBase implements Serializable {
+    public Farmaceuta() { super(); }
+    public Farmaceuta(String id, String clave, String nombre) {
+        super(id, clave, nombre, TipoUsuario.FARMECEUTA);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+
+    }
+    @Override
+    public int hashCode() {
+
+    }
+}

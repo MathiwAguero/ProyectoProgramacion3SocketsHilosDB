@@ -1,4 +1,4 @@
-package Presentation.Dashboard;
+package hospital.Presentation.Dashboard;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import Logic.Entities.GraficoPastel;

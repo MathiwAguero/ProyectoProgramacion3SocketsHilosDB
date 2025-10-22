@@ -1,4 +1,4 @@
-package Data;
+package hospital.Data;
 
 import Logic.Entities.Medicamento;
 
