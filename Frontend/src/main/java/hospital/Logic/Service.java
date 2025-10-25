@@ -475,4 +475,57 @@ public class Service {
     public void updateDetalle(RecipeDetails detalle) throws Exception {
         throw new Exception("NO IMPLEMENTADO");
     }
+
+    // ============ BÚSQUEDAS ADICIONALES DE RECETAS ============
+    public List<Receta> findRecetasByMedico(String medicoId) throws Exception {
+        os.writeInt(Protocol.RECETA_SEARCH_BY_PACIENTE); // Puedes crear RECETA_SEARCH_BY_MEDICO
+        os.writeObject(medicoId);
+        os.flush();
+        if (is.readInt() == Protocol.ERROR_NO_ERROR) {
+            return (List<Receta>) is.readObject();
+        }
+        else throw new Exception("ERROR AL BUSCAR RECETAS");
+    }
+
+    // ============ VALIDACIÓN DE USUARIOS ============
+    public boolean validarUsuario(String id, String clave) {
+        try {
+            authenticate(id, clave);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // ============ MÉTODOS AUXILIARES PARA COMPATIBILIDAD ============
+    public List<String> obtenerNombresMedicamentos() throws Exception {
+        List<Medicamento> todos = findAllMedicamentos();
+        return todos.stream()
+                .map(Medicamento::getNombre)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    public List<String> obtenerIdsMedicos() throws Exception {
+        List<Medico> todos = findAllMedicos();
+        return todos.stream()
+                .map(Medico::getId)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    public List<String> obtenerIdsPacientes() throws Exception {
+        List<Paciente> todos = findAllPacientes();
+        return todos.stream()
+                .map(Paciente::getId)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    // ============ SINGLETON MEJORADO ============
+    public static synchronized Service getInstance() {
+        if (theInstance == null) {
+            theInstance = new Service();
+        }
+        return theInstance;
+    }
+
+
 }

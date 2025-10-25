@@ -9,7 +9,7 @@ import java.util.List;
 public class Service {
     private static Service instance;
 
-    public static Service getInstance() {
+    public static synchronized Service getInstance() {
         if (instance == null) {
             instance = new Service();
         }
@@ -226,6 +226,7 @@ public class Service {
     public void createDetalle(RecipeDetails detalle, String recetaId) throws Exception {
         detallesDao.create(detalle, recetaId);
     }
+
     public void updateDetalle(RecipeDetails detalle) throws Exception {
         detallesDao.update(detalle);
     }
@@ -294,5 +295,68 @@ public class Service {
 
     public void deleteMensaje(int id) throws Exception {
         mensajeDao.delete(id);
+    }
+
+    // ============ RECETAS - BÚSQUEDAS ADICIONALES ============
+    public List<Receta> findRecetasByMedico(String medicoId) throws Exception {
+        return recetaDao.findByMedicoId(medicoId);
+    }
+
+    // ============ DETALLES - OPERACIONES COMPLETAS ============
+    public void updateDetalle(RecipeDetails detalle, String recetaId) throws Exception {
+        // Primero obtenemos la receta
+        Receta receta = recetaDao.read(recetaId);
+        if (receta == null) {
+            throw new Exception("Receta no encontrada");
+        }
+
+        // Buscamos el detalle a actualizar
+        List<RecipeDetails> detalles = receta.getDetalles();
+        boolean encontrado = false;
+
+        for (int i = 0; i < detalles.size(); i++) {
+            if (detalles.get(i).getCodigoMedicamento().equals(detalle.getCodigoMedicamento())) {
+                detalles.set(i, detalle);
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            throw new Exception("Detalle no encontrado en la receta");
+        }
+
+        // Actualizamos la receta completa
+        receta.setDetalles(detalles);
+        recetaDao.update(receta);
+    }
+
+    public void deleteDetalle(String codigoMedicamento, String recetaId) throws Exception {
+        Receta receta = recetaDao.read(recetaId);
+        if (receta == null) {
+            throw new Exception("Receta no encontrada");
+        }
+
+        List<RecipeDetails> detalles = receta.getDetalles();
+        boolean removed = detalles.removeIf(d ->
+                d.getCodigoMedicamento().equals(codigoMedicamento)
+        );
+
+        if (!removed) {
+            throw new Exception("Detalle no encontrado en la receta");
+        }
+
+        receta.setDetalles(detalles);
+        recetaDao.update(receta);
+    }
+
+    // ============ VALIDACIONES ============
+    public boolean validarUsuario(String id, String clave) throws Exception {
+        try {
+            UsuarioBase usuario = usuarioDao.authenticate(id, clave);
+            return usuario != null;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

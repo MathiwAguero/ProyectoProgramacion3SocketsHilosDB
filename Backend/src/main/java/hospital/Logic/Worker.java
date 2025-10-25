@@ -147,10 +147,10 @@ public class Worker extends Thread {
                     case Protocol.RECETA_SEARCH_ALL:
                         handleRecetaSearchAll();
                         break;
-                    case Protocol.RECETA_SEARCH_BY_PACIENTE:
+                    case Protocol.RECETA_SEARCH_BY_PACIENTE:  // ← ESTO FALTABA
                         handleRecetaSearchByPaciente();
                         break;
-                    case Protocol.RECETA_SEARCH_BY_ESTADO:
+                    case Protocol.RECETA_SEARCH_BY_ESTADO:    // ← ESTO FALTABA
                         handleRecetaSearchByEstado();
                         break;
 
@@ -158,7 +158,7 @@ public class Worker extends Thread {
                     case Protocol.USUARIO_LOGIN:
                         handleUsuarioLogin();
                         break;
-                    case Protocol.USUARIO_CHANGE_PASSWORD:
+                    case Protocol.USUARIO_CHANGE_PASSWORD:    // ← ESTO FALTABA
                         handleUsuarioChangePassword();
                         break;
                     case Protocol.USUARIO_SEARCH_ACTIVE:

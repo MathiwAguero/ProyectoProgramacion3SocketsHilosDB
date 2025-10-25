@@ -101,7 +101,6 @@ public class PrescribirMed implements PropertyChangeListener {
                     r.setFechaConfeccion(new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date()));
                     r.setDetalles(new ArrayList<>(model.getList()));
                     r.setFechaRetiro(new java.text.SimpleDateFormat("dd/MM/yyyy").format(JDateChooser1.getDate()));
-                    r.setFechaRecoleccion(JDateChooser1);
                     r.setEstado(EstadoReceta.CONFECCIONADA);
 
                     Receta guardada = controller.create(r);
