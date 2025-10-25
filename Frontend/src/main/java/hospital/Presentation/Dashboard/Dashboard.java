@@ -2,7 +2,6 @@ package hospital.Presentation.Dashboard;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import hospital.Entities.Entities.*;
-import hospital.Logic.Service;
 import hospital.Presentation.Recetas.RecetaController;
 import hospital.Logic.Exceptions.*;
 import hospital.Logic.Listas.*;

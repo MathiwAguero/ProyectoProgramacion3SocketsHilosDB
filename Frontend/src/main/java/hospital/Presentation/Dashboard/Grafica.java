@@ -1,12 +1,12 @@
-package hospital.Entities.Entities;
+package hospital.Presentation.Dashboard;
+
+import hospital.Entities.Entities.Receta;
+import hospital.Entities.Entities.RecipeDetails;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Ellipse2D;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.*;

@@ -1,32 +1,21 @@
 package hospital.Entities.Entities;
 
-import com.toedter.calendar.JDateChooser;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlTransient;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlElementWrapper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Receta implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private Paciente paciente;
     private Medico medico;
     private String fechaConfeccion;
     private String fechaRetiro;
     private EstadoReceta estado;
-
-    @XmlElementWrapper(name = "detalles")
-    @XmlElement(name = "detalle")
     private List<RecipeDetails> detalles;
-
-    @XmlTransient
-    private JDateChooser fechaRecoleccion; // no serializable por JAXB
 
     public Receta() {
         this.id = "";
@@ -50,58 +39,129 @@ public class Receta implements Serializable {
         this.detalles = (detalles != null) ? detalles : new ArrayList<>();
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-    public Paciente getPaciente() { return paciente; }
-    public void setPaciente(Paciente paciente) { this.paciente = paciente; }
-    public Medico getMedico() { return medico; }
-    public void setMedico(Medico medico) { this.medico = medico; }
-    public String getFechaConfeccion() { return fechaConfeccion; }
-    public void setFechaConfeccion(String fechaConfeccion) { this.fechaConfeccion = (fechaConfeccion != null) ? fechaConfeccion : ""; }
-    public String getFechaRetiro() { return fechaRetiro; }
-    public void setFechaRetiro(String fechaRetiro) { this.fechaRetiro = (fechaRetiro != null) ? fechaRetiro : ""; }
-    public EstadoReceta getEstado() { return estado; }
-    public void setEstado(EstadoReceta estado) { this.estado = (estado != null) ? estado : EstadoReceta.PROCESO; }
-    public List<RecipeDetails> getDetalles() { return detalles; }
-    public void setDetalles(List<RecipeDetails> detalles) { this.detalles = (detalles != null) ? detalles : new ArrayList<>(); }
+    // ==================== GETTERS Y SETTERS ====================
 
-    public JDateChooser getFechaRecoleccion() { return fechaRecoleccion; }
-    public void setFechaRecoleccion(JDateChooser fechaRecoleccion) { /* intencionalmente vacío para JAXB */ }
-
-    public int getCantidad() {
-        int cantidad = 0;
-        for (int i = 0; i < detalles.size(); i++) cantidad += detalles.get(i).getCantidad();
-        return cantidad;
+    public String getId() {
+        return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
+
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    public String getFechaConfeccion() {
+        return fechaConfeccion;
+    }
+
+    public void setFechaConfeccion(String fechaConfeccion) {
+        this.fechaConfeccion = (fechaConfeccion != null) ? fechaConfeccion : "";
+    }
+
+    public String getFechaRetiro() {
+        return fechaRetiro;
+    }
+
+    public void setFechaRetiro(String fechaRetiro) {
+        this.fechaRetiro = (fechaRetiro != null) ? fechaRetiro : "";
+    }
+
+    public EstadoReceta getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoReceta estado) {
+        this.estado = (estado != null) ? estado : EstadoReceta.PROCESO;
+    }
+
+    public List<RecipeDetails> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<RecipeDetails> detalles) {
+        this.detalles = (detalles != null) ? detalles : new ArrayList<>();
+    }
+
+    // ==================== MÉTODOS AUXILIARES ====================
+
+    /**
+     * Calcula la cantidad total de medicamentos en la receta
+     */
+    public int getCantidad() {
+        if (detalles == null) return 0;
+        return detalles.stream()
+                .mapToInt(RecipeDetails::getCantidad)
+                .sum();
+    }
+
+    /**
+     * Genera un texto con todos los detalles de la receta
+     */
     public String mostarListaDetalles() {
-        if (detalles == null || detalles.isEmpty()) return "Sin detalles.";
+        if (detalles == null || detalles.isEmpty()) {
+            return "Sin detalles.";
+        }
+
         StringBuilder sb = new StringBuilder();
         for (RecipeDetails d : detalles) {
-            String nombre = (d.getNombre() != null && !d.getNombre().isBlank()) ? d.getNombre() : "No se asigno medicamento";
+            String nombre = (d.getNombre() != null && !d.getNombre().isBlank())
+                    ? d.getNombre()
+                    : "No se asignó medicamento";
+
             sb.append("Medicamento: ").append(nombre)
                     .append("\nCantidad: ").append(d.getCantidad())
                     .append("\nIndicaciones: ").append(d.getIndicaciones())
+                    .append("\nDuración: ").append(d.getDuracionTratamiento()).append(" días")
                     .append("\n\n");
         }
         return sb.toString().trim();
     }
 
+    /**
+     * Agrega un detalle a la lista de medicamentos
+     */
     public void agregarDetalle(RecipeDetails detalle) {
         if (detalle == null) return;
-        if (this.detalles == null) this.detalles = new ArrayList<>();
+        if (this.detalles == null) {
+            this.detalles = new ArrayList<>();
+        }
         this.detalles.add(detalle);
     }
 
+    // ==================== EQUALS Y HASHCODE ====================
+
     @Override
     public int hashCode() {
-        return Objects.hash(this.getId());
+        return Objects.hash(id);
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null||getClass()!=obj.getClass()) return false;
-        Admin other = (Admin) obj;
-        return Objects.equals(this.getId(), other.getId());
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Receta other = (Receta) obj;
+        return Objects.equals(id, other.id);
+    }
+
+    @Override
+    public String toString() {
+        return "Receta{id='" + id + "', paciente=" +
+                (paciente != null ? paciente.getNombre() : "null") +
+                ", estado=" + estado + "}";
     }
 }
