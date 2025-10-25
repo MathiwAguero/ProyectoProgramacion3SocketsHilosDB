@@ -172,7 +172,7 @@ public class Worker extends Thread {
 
                     // ============ DESCONEXIÓN ============
                     case Protocol.DISCONNECT:
-                        stop();
+                        detener();
                         srv.remove(this);
                         return;
 
@@ -184,7 +184,7 @@ public class Worker extends Thread {
 
             } catch (IOException e) {
                 System.err.println("Cliente desconectado inesperadamente");
-                stop();
+                detener();
             } catch (Exception e) {
                 System.err.println("Error procesando petición: " + e.getMessage());
                 e.printStackTrace();
@@ -685,7 +685,7 @@ public class Worker extends Thread {
     }
 
     // ==================== CONTROL ====================
-    public void stop() {
+    public void detener() {
         continuar = false;
         try {
             if (s != null && !s.isClosed()) {

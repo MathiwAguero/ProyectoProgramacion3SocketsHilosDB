@@ -3,8 +3,8 @@ package hospital.Presentation.CambioClave;
 import javax.swing.*;
 
 import Logic.Exceptions.DataAccessException;
-import Logic.Services.ServiceLogin;
-import Logic.Entities.UsuarioBase;
+
+import hospital.Entities.Entities.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

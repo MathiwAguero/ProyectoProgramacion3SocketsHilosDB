@@ -1,8 +1,7 @@
 package hospital.Data;
 
-import Logic.Service;
-import Logic.Exceptions.DataAccessException;
-import Logic.Entities.*;
+import hospital.Logic.Service;
+import hospital.Entities.Entities.*;
 
 public class HospitalData {
 
