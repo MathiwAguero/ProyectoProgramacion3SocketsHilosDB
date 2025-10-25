@@ -22,7 +22,7 @@ public class UsuariosController {
     private void cargarDatosIniciales() {
         try {
             // CAMBIO: Factory → Service
-            List<UsuarioBase> usuarios = Service.getInstance().findAllUsuarios();
+            List<UsuarioBase> usuarios = Service.instance().findAllUsuarios();
             model.setList(usuarios);
             model.setCurrent(new UsuarioBase());
         } catch (Exception e) {
@@ -40,16 +40,16 @@ public class UsuariosController {
             // Nota: Service no tiene método exists para usuarios,
             // así que intentamos leer primero
             try {
-                Service.getInstance().readUsuario(usuario.getId());
+                Service.instance().readUsuario(usuario.getId());
                 // Si existe, actualizamos
-                Service.getInstance().update(usuario);
+                Service.instance().update(usuario);
             } catch (Exception e) {
                 // Si no existe, creamos
-                Service.getInstance().create(usuario);
+                Service.instance().create(usuario);
             }
 
             model.setCurrent(new UsuarioBase());
-            model.setList(Service.getInstance().findAllUsuarios());
+            model.setList(Service.instance().findAllUsuarios());
 
         } catch (Exception x) {
             throw new DataAccessException("Error al guardar el usuario: " + x.getMessage());
@@ -63,7 +63,7 @@ public class UsuariosController {
             }
 
             // CAMBIO: Usa Service
-            UsuarioBase encontrado = Service.getInstance().readUsuario(id);
+            UsuarioBase encontrado = Service.instance().readUsuario(id);
 
             if (encontrado == null) {
                 throw new DataAccessException("Usuario no encontrado");
@@ -88,10 +88,10 @@ public class UsuariosController {
             // CAMBIO: Service requiere objeto completo
             UsuarioBase usuario = new UsuarioBase();
             usuario.setId(id);
-            Service.getInstance().delete(usuario);
+            Service.instance().delete(usuario);
 
             model.setCurrent(new UsuarioBase());
-            model.setList(Service.getInstance().findAllUsuarios());
+            model.setList(Service.instance().findAllUsuarios());
 
         } catch (Exception e) {
             throw new DataAccessException("Error al eliminar usuario: " + e.getMessage());
@@ -101,7 +101,7 @@ public class UsuariosController {
     public void search(String search) throws DataAccessException {
         try {
             // CAMBIO: Usa Service
-            List<UsuarioBase> general = Service.getInstance().findAllUsuarios();
+            List<UsuarioBase> general = Service.instance().findAllUsuarios();
 
             if (search == null || search.trim().isEmpty()) {
                 model.setList(general);
@@ -120,7 +120,7 @@ public class UsuariosController {
     public void clear() {
         try {
             model.setCurrent(new UsuarioBase());
-            model.setList(Service.getInstance().findAllUsuarios());
+            model.setList(Service.instance().findAllUsuarios());
         } catch (Exception e) {
             System.err.println("Error al limpiar: " + e.getMessage());
         }
@@ -135,7 +135,7 @@ public class UsuariosController {
                 throw new DataAccessException("Credenciales inválidas");
             }
 
-            return Service.getInstance().authenticate(id, clave);
+            return Service.instance().authenticate(id, clave);
 
         } catch (Exception e) {
             throw new DataAccessException("Error de autenticación: " + e.getMessage());
@@ -147,7 +147,7 @@ public class UsuariosController {
      */
     public List<UsuarioBase> getUsuariosActivos() throws DataAccessException {
         try {
-            return Service.getInstance().findUsuariosActivos();
+            return Service.instance().findUsuariosActivos();
         } catch (Exception e) {
             throw new DataAccessException("Error obteniendo usuarios activos: " + e.getMessage());
         }
@@ -162,8 +162,8 @@ public class UsuariosController {
                 throw new DataAccessException("ID no válido");
             }
 
-            Service.getInstance().setUsuarioActivo(id, activo);
-            model.setList(Service.getInstance().findAllUsuarios());
+            Service.instance().setUsuarioActivo(id, activo);
+            model.setList(Service.instance().findAllUsuarios());
 
         } catch (Exception e) {
             throw new DataAccessException("Error cambiando estado: " + e.getMessage());

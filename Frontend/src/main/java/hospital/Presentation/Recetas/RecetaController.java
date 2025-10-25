@@ -67,7 +67,7 @@ public class RecetaController {
                 Service.instance().create(receta);
             }
             model.setCurrent(new Receta());
-            model.setList(Service.getInstance().findAllRecetas());
+            model.setList(Service.instance().findAllRecetas());
         } catch (DataAccessException x) {
             throw new DataAccessException("Error al guardar la receta" + x.getMessage());
         }
@@ -75,7 +75,7 @@ public class RecetaController {
 
     public void read(String id) throws Exception {
         try {
-            Receta encontrado = Service.getInstance().readReceta(id);
+            Receta encontrado = Service.instance().readReceta(id);
             if (encontrado == null) {
                 throw new DataAccessException("Receta no encontrada");
             }
@@ -91,13 +91,13 @@ public class RecetaController {
     public void delete(String id) throws Exception {
         Receta rec= new Receta();
         rec.setId(id);
-        Service.getInstance().delete(rec);
+        Service.instance().delete(rec);
         model.setCurrent(new Receta());
-        model.setList(Service.getInstance().findAllRecetas());
+        model.setList(Service.instance().findAllRecetas());
     }
 
     public void search(String search) throws Exception {
-        List<Receta> general = Service.getInstance().findAllRecetas();
+        List<Receta> general = Service.instance().findAllRecetas();
         if (search == null || search.trim().isEmpty()) {
             model.setList(general);
         } else {
@@ -110,7 +110,7 @@ public class RecetaController {
 
     public void clear() throws Exception {
         model.setCurrent(new Receta());
-        model.setList(Service.getInstance().findAllRecetas());
+        model.setList(Service.instance().findAllRecetas());
     }
 
     public void actualizarEstado(String idReceta, EstadoReceta nuevo) throws Exception {
@@ -118,12 +118,12 @@ public class RecetaController {
             throw new DataAccessException("ID de receta inválido.");
         }
 
-        Receta rec = Service.getInstance().readReceta(idReceta);
+        Receta rec = Service.instance().readReceta(idReceta);
 
         rec.setEstado(nuevo);
-        Service.getInstance().update(rec);
+        Service.instance().update(rec);
         model.setCurrent(rec);
-        model.setList(Service.getInstance().findAllRecetas());
+        model.setList(Service.instance().findAllRecetas());
     }
     public List<Receta> FiltradasPorNombre(String nombre, List<Receta> recetas) throws DataAccessException {
         if (nombre == null || nombre.trim().isEmpty()) {
