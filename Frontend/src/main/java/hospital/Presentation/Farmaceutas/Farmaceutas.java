@@ -1,6 +1,6 @@
 package hospital.Presentation.Farmaceutas;
 
-import hospital.Main;
+import hospital.Application;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Listas.Factory;
 import hospital.Presentation.TableModel.TableModelFarmaceutas;
@@ -161,7 +161,7 @@ public class Farmaceutas implements PropertyChangeListener {
         boolean valid = true;
         if (textField1.getText().trim().isEmpty()) {
             valid = false;
-            textField1.setBackground(Main.BACKGROUND_ERROR);
+            textField1.setBackground(Application.BACKGROUND_ERROR);
             textField1.setToolTipText("ID requerido");
         } else {
             textField1.setBackground(null);
@@ -169,7 +169,7 @@ public class Farmaceutas implements PropertyChangeListener {
         }
         if (textField2.getText().trim().isEmpty()) {
             valid = false;
-            textField2.setBackground(Main.BACKGROUND_ERROR);
+            textField2.setBackground(Application.BACKGROUND_ERROR);
             textField2.setToolTipText("Nombre requerido");
         } else {
             textField2.setBackground(null);

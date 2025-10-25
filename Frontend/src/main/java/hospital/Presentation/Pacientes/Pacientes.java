@@ -1,10 +1,8 @@
 package hospital.Presentation.Pacientes;
 
-import hospital.Main;
-import hospital.Presentation.Pacientes.PacienteController;
+import hospital.Application;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Listas.Factory;
-import hospital.Presentation.Pacientes.ModelPaciente;
 import hospital.Presentation.TableModel.TableModelPacientes;
 
 import javax.swing.*;
@@ -120,7 +118,7 @@ public class Pacientes implements PropertyChangeListener {
             boolean valid = true;
             if (textField1.getText().trim().isEmpty()) {
                 valid = false;
-                textField1.setBackground(Main.BACKGROUND_ERROR);
+                textField1.setBackground(Application.BACKGROUND_ERROR);
                 textField1.setToolTipText("ID requerido");
             } else {
                 textField1.setBackground(null);
@@ -128,7 +126,7 @@ public class Pacientes implements PropertyChangeListener {
             }
             if (textField2.getText().trim().isEmpty()) {
                 valid = false;
-                textField2.setBackground(Main.BACKGROUND_ERROR);
+                textField2.setBackground(Application.BACKGROUND_ERROR);
                 textField2.setToolTipText("Nombre requerido");
             } else {
                 textField2.setBackground(null);
@@ -136,7 +134,7 @@ public class Pacientes implements PropertyChangeListener {
             }
             if (textField3.getText().trim().isEmpty()) {
                 valid = false;
-                textField3.setBackground(Main.BACKGROUND_ERROR);
+                textField3.setBackground(Application.BACKGROUND_ERROR);
                 textField3.setToolTipText("Numero telefonico requerido");
             } else {
                 textField3.setBackground(null);
@@ -144,7 +142,7 @@ public class Pacientes implements PropertyChangeListener {
             }
             if (textField4.getText().trim().isEmpty()) {
                 valid = false;
-                textField4.setBackground(Main.BACKGROUND_ERROR);
+                textField4.setBackground(Application.BACKGROUND_ERROR);
                 textField4.setToolTipText("Fecha de nacimiento requerido");
             } else {
                 textField4.setBackground(null);

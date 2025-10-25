@@ -1,7 +1,6 @@
 package hospital.Presentation.Medicamentos;
 
-import hospital.Main;
-import hospital.Presentation.Medicamentos.MedicamentoController;
+import hospital.Application;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Listas.Factory;
 import hospital.Presentation.TableModel.TableModelMedicamentos;
@@ -157,7 +156,7 @@ public class Medicamentos implements PropertyChangeListener  {
         boolean valid = true;
         if(textField1.getText().isEmpty()){
             valid = false;
-            textField1.setBackground(Main.BACKGROUND_ERROR);
+            textField1.setBackground(Application.BACKGROUND_ERROR);
             textField1.setToolTipText("Codigo requerido");
         } else {
             textField1.setBackground(null);
@@ -165,7 +164,7 @@ public class Medicamentos implements PropertyChangeListener  {
         }
         if(textField2.getText().isEmpty()){
             valid = false;
-            textField2.setBackground(Main.BACKGROUND_ERROR);
+            textField2.setBackground(Application.BACKGROUND_ERROR);
             textField2.setToolTipText("Nombre requerido");
         } else {
             textField2.setBackground(null);
@@ -173,7 +172,7 @@ public class Medicamentos implements PropertyChangeListener  {
         }
         if(textField3.getText().isEmpty()){
             valid = false;
-            textField3.setBackground(Main.BACKGROUND_ERROR);
+            textField3.setBackground(Application.BACKGROUND_ERROR);
             textField3.setToolTipText("Presentacion del medicamento requerido");
         } else {
             textField3.setBackground(null);

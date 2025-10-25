@@ -7,7 +7,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import hospital.Main;
+import hospital.Application;
 import hospital.Logic.Listas.Factory;
 import hospital.Entities.Entities.*;
 import hospital.Presentation.TableModel.TableModelMedicos;
@@ -153,7 +153,7 @@ public class Medicos implements PropertyChangeListener {
         boolean valid = true;
         if (textField1.getText().trim().isEmpty()) {
             valid = false;
-            textField1.setBackground(Main.BACKGROUND_ERROR);
+            textField1.setBackground(Application.BACKGROUND_ERROR);
             textField1.setToolTipText("ID requerido");
         } else {
             textField1.setBackground(null);
@@ -161,7 +161,7 @@ public class Medicos implements PropertyChangeListener {
         }
         if (textField2.getText().trim().isEmpty()) {
             valid = false;
-            textField2.setBackground(Main.BACKGROUND_ERROR);
+            textField2.setBackground(Application.BACKGROUND_ERROR);
             textField2.setToolTipText("Nombre requerido");
         } else {
             textField2.setBackground(null);
@@ -169,7 +169,7 @@ public class Medicos implements PropertyChangeListener {
         }
         if (textField3.getText().trim().isEmpty()) {
             valid = false;
-            textField3.setBackground(Main.BACKGROUND_ERROR);
+            textField3.setBackground(Application.BACKGROUND_ERROR);
             textField3.setToolTipText("Especialidad requerida");
         } else {
             textField3.setBackground(null);
