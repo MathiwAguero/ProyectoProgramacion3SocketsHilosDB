@@ -1,11 +1,9 @@
 package hospital.Presentation.CambioClave;
 
 import javax.swing.*;
-
-import Logic.Exceptions.DataAccessException;
-
 import hospital.Entities.Entities.*;
-
+import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.Services.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

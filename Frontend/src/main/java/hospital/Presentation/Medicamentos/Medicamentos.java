@@ -1,10 +1,10 @@
 package hospital.Presentation.Medicamentos;
 
-import Application.Main;
-import Presentation.Medicamentos.MedicamentoController;
-import Logic.Entities.Medicamento;
-import Logic.Listas.Factory;
-import Presentation.TableModel.TableModelMedicamentos;
+import hospital.Main;
+import hospital.Presentation.Medicamentos.MedicamentoController;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Listas.Factory;
+import hospital.Presentation.TableModel.TableModelMedicamentos;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -1,11 +1,11 @@
 package hospital.Presentation.Pacientes;
 
-import Application.Main;
-import Presentation.Pacientes.PacienteController;
-import Logic.Entities.Paciente;
-import Logic.Listas.Factory;
-import Presentation.Pacientes.ModelPaciente;
-import Presentation.TableModel.TableModelPacientes;
+import hospital.Main;
+import hospital.Presentation.Pacientes.PacienteController;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Listas.Factory;
+import hospital.Presentation.Pacientes.ModelPaciente;
+import hospital.Presentation.TableModel.TableModelPacientes;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -1,8 +1,8 @@
 package hospital.Presentation.Detalles;
 
-import Logic.Service;
-import Logic.Entities.RecipeDetails;
-import Logic.Exceptions.DataAccessException;
+import hospital.Logic.Service;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Exceptions.DataAccessException;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,6 +1,6 @@
 package hospital.Presentation.Detalles;
-import Presentation.AbstractModel.AbstractModel;
-import Logic.Entities.RecipeDetails;
+import hospital.Presentation.AbstractModel.AbstractModel;
+import hospital.Entities.Entities.*;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;

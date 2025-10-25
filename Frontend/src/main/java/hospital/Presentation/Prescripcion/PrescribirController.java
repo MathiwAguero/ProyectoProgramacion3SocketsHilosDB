@@ -1,9 +1,9 @@
 package hospital.Presentation.Prescripcion;
 
-import Logic.Service;
-import Logic.Entities.Receta;
-import Logic.Exceptions.DataAccessException;
-import Presentation.Detalles.ModelDetails;
+import hospital.Logic.Service;
+import hospital.Logic.Exceptions.*;
+import hospital.Entities.Entities.*;
+import hospital.Presentation.Detalles.ModelDetails;
 
 import java.util.ArrayList;
 import java.util.List;

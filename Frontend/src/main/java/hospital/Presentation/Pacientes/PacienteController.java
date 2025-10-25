@@ -1,10 +1,10 @@
 package hospital.Presentation.Pacientes;
 
-import Logic.Listas.Factory;
-import Logic.Entities.Paciente;
-import Logic.Exceptions.DataAccessException;
-import Logic.Service;
-import Presentation.Prescripcion.Filtros.PrescribirBuscarPacien;
+import hospital.Logic.Listas.Factory;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.Service;
+import hospital.Presentation.Prescripcion.Filtros.PrescribirBuscarPacien;
 
 
 import java.util.List;

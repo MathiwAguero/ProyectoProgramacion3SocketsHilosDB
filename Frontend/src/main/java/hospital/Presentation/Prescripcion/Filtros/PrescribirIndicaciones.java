@@ -1,8 +1,8 @@
 package hospital.Presentation.Prescripcion.Filtros;
 
-import Presentation.Detalles.DetailsController;
-import Logic.Entities.RecipeDetails;
-import Presentation.Detalles.ModelDetails;
+import hospital.Presentation.Detalles.DetailsController;
+import hospital.Entities.Entities.*;
+import hospital.Presentation.Detalles.ModelDetails;
 
 import javax.swing.*;
 import java.awt.*;

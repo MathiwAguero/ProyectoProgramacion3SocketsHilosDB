@@ -1,13 +1,8 @@
 package hospital.Logic.Services;
 
-import Logic.Listas.MedicamentoList;
-import Logic.Listas.MedicoList;
-import Logic.Listas.PacienteList;
-import Logic.Listas.RecetaList;
-import Logic.Exceptions.DataAccessException;
-import Logic.Entities.EstadoReceta;
-import Logic.Entities.Receta;
-import Logic.Entities.RecipeDetails;
+import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.Listas.*;
+import hospital.Entities.Entities.*;
 
 import java.util.ArrayList;
 import java.util.List;

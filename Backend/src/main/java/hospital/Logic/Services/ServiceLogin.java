@@ -1,8 +1,8 @@
 package hospital.Logic.Services;
 
-import Logic.Listas.Factory;
-import Logic.Listas.ListUsers;
-import Logic.Exceptions.DataAccessException;
+import hospital.Logic.Listas.*;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Exceptions.*;
 import hospital.Entities.Entities.*;
 
 import java.util.List;

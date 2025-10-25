@@ -1,8 +1,8 @@
 package hospital.Presentation.Login;
 
-import Logic.Service;
-import Logic.Entities.UsuarioBase;
-import Logic.Exceptions.DataAccessException;
+import hospital.Logic.Service;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Exceptions.DataAccessException;
 
 import java.util.List;
 import java.util.stream.Collectors;

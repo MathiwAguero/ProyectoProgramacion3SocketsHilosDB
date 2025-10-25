@@ -3,8 +3,8 @@ package hospital.Data;
 import jakarta.xml.bind.*;
 import jakarta.xml.bind.annotation.*;
 
-import Logic.Entities.*;
-import Logic.Exceptions.DataAccessException;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Exceptions.*;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

@@ -1,14 +1,14 @@
 package hospital.Presentation.Medicamentos;
 
-import Logic.Listas.Factory;
-import Logic.Entities.Medicamento;
-import Logic.Exceptions.DataAccessException;
-import Logic.Service;
-import Presentation.Medicamentos.ModelMedicamentos;
-import Presentation.Medicamentos.Medicamentos;
-import Presentation.Medicamentos.MedicamentoController;
+import hospital.Logic.Listas.Factory;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.Service;
+import hospital.Presentation.Medicamentos.ModelMedicamentos;
+import hospital.Presentation.Medicamentos.Medicamentos;
+import hospital.Presentation.Medicamentos.MedicamentoController;
 
-import Presentation.Prescripcion.Filtros.PrescribirBuscarMedica;
+import hospital.Presentation.Prescripcion.Filtros.PrescribirBuscarMedica;
 
 import java.util.List;
 import java.util.stream.Collectors;

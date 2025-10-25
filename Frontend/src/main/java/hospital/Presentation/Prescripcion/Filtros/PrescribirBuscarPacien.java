@@ -1,10 +1,10 @@
 package hospital.Presentation.Prescripcion.Filtros;
 
-import Presentation.Pacientes.PacienteController;
-import Logic.Entities.Paciente;
-import Logic.Exceptions.DataAccessException;
-import Presentation.Pacientes.ModelPaciente;
-import Presentation.TableModel.TableModelPacientes;
+import hospital.Presentation.Pacientes.PacienteController;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Exceptions.*;
+import hospital.Presentation.Pacientes.ModelPaciente;
+import hospital.Presentation.TableModel.TableModelPacientes;
 
 import javax.swing.*;
 import java.awt.*;

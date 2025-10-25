@@ -12,9 +12,15 @@ public abstract class Base<T> {
     protected static XMLPersister xmlPersister = XMLPersister.instance();
     protected static XMLPersister.Data data;
 
-    public Base() throws DataAccessException {
-        if (data == null) {
-            data = xmlPersister.load();
+    public Base() {
+        try {
+            if (data == null) {
+                data = xmlPersister.load();
+            }
+        } catch (Exception e) {
+            System.err.println("Error inicializando Base: " + e.getMessage());
+
+            data = new XMLPersister.Data();
         }
     }
 

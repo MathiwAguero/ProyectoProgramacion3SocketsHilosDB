@@ -1,9 +1,9 @@
 package hospital.Presentation.Farmaceutas;
 
-import Logic.Listas.Factory;
-import Logic.Entities.Farmaceuta;
-import Logic.Exceptions.DataAccessException;
-import Logic.Service;
+import hospital.Logic.Listas.Factory;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;

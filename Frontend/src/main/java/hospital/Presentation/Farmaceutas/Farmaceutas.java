@@ -1,10 +1,10 @@
 package hospital.Presentation.Farmaceutas;
 
-import Application.Main;
-import Logic.Entities.Farmaceuta;
-import Logic.Listas.Factory;
-import Presentation.TableModel.TableModelFarmaceutas;
-import Presentation.TableModel.TableModelMedicos;
+import hospital.Main;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Listas.Factory;
+import hospital.Presentation.TableModel.TableModelFarmaceutas;
+import hospital.Presentation.TableModel.TableModelMedicos;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -1,7 +1,7 @@
 package hospital.Presentation.Dashboard;
 
-import Logic.Entities.MedicamentosResumen;
-import Presentation.AbstractModel.AbstractModel;
+import hospital.Entities.Entities.*;
+import hospital.Presentation.AbstractModel.*;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;

@@ -1,15 +1,15 @@
 package hospital.Presentation.Prescripcion;
 
-import Presentation.Prescripcion.Filtros.PrescribirBuscarMedica;
-import Presentation.Prescripcion.Filtros.PrescribirBuscarPacien;
-import Presentation.Medicamentos.MedicamentoController;
-import Presentation.Pacientes.PacienteController;
-import Presentation.Detalles.ModelDetails;
-import Presentation.Medicamentos.ModelMedicamentos;
-import Presentation.Pacientes.ModelPaciente;
-import Presentation.Recetas.ModelReceta;
-import Presentation.TableModel.TableModelDetails;
-import Logic.Entities.*;
+import hospital.Presentation.Prescripcion.Filtros.PrescribirBuscarMedica;
+import hospital.Presentation.Prescripcion.Filtros.PrescribirBuscarPacien;
+import hospital.Presentation.Medicamentos.MedicamentoController;
+import hospital.Presentation.Pacientes.PacienteController;
+import hospital.Presentation.Detalles.ModelDetails;
+import hospital.Presentation.Medicamentos.ModelMedicamentos;
+import hospital.Presentation.Pacientes.ModelPaciente;
+import hospital.Presentation.Recetas.ModelReceta;
+import hospital.Presentation.TableModel.TableModelDetails;
+import hospital.Entities.Entities.*;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;

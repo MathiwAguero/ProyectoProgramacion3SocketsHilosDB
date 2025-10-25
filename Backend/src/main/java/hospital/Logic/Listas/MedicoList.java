@@ -1,8 +1,7 @@
 package hospital.Logic.Listas;
 
-import Logic.Entities.Medico;
-import Logic.Exceptions.DataAccessException;
-
+import hospital.Entities.Entities.*;
+import hospital.Logic.Exceptions.*;
 import java.util.List;
 
 public class MedicoList extends Base<Medico> {

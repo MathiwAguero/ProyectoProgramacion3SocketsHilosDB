@@ -1,10 +1,10 @@
 package hospital.Presentation.Medicos;
 
-import Logic.Listas.Factory;
-import Logic.Entities.Medico;
-import Logic.Exceptions.DataAccessException;
-import Logic.Service;
-import Presentation.Medicos.MedicoController;
+import hospital.Logic.Listas.Factory;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.Service;
+import hospital.Presentation.Medicos.MedicoController;
 
 import java.util.List;
 import java.util.stream.Collectors;

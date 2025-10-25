@@ -7,10 +7,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import Application.Main;
-import Logic.Listas.Factory;
-import Logic.Entities.Medico;
-import Presentation.TableModel.TableModelMedicos;
+import hospital.Main;
+import hospital.Logic.Listas.Factory;
+import hospital.Entities.Entities.*;
+import hospital.Presentation.TableModel.TableModelMedicos;
 
 public class Medicos implements PropertyChangeListener {
     private JTextField textField1;

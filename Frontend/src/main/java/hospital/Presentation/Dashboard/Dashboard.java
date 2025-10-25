@@ -1,17 +1,14 @@
 package hospital.Presentation.Dashboard;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
-import Logic.Entities.GraficoPastel;
-import Logic.Entities.Grafica;
-import Logic.Service;
-import Presentation.Recetas.RecetaController;
-import Logic.Exceptions.DataAccessException;
-import Logic.Listas.Factory;
-import Logic.Listas.MedicamentosResumenList;
-import Presentation.Recetas.ModelReceta;
-import Presentation.TableModel.TableModelDashboard;
-import Logic.Entities.MedicamentosResumen;
-import Logic.Entities.Receta;
+import hospital.Entities.Entities.*;
+import hospital.Logic.Service;
+import hospital.Presentation.Recetas.RecetaController;
+import hospital.Logic.Exceptions.*;
+import hospital.Logic.Listas.*;
+import hospital.Presentation.Recetas.ModelReceta;
+import hospital.Presentation.TableModel.TableModelDashboard;
+
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
