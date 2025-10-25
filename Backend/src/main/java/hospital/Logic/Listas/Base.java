@@ -2,7 +2,7 @@
 package hospital.Logic.Listas;
 
 import hospital.Data.*;
-import hospital.Entities.*;
+import hospital.Entities.Entities.*;
 import hospital.Logic.Exceptions.DataAccessException;
 
 import java.util.List;

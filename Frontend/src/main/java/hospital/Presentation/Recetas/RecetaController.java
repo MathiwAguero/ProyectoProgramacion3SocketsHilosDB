@@ -51,7 +51,7 @@ public class RecetaController {
 
     private void cargarDatosIniciales() {
         try {
-            List<Receta> recetas = Service.getInstance().findAllRecetas();
+            List<Receta> recetas = Service.instance().findAllRecetas();
             model.setList(recetas);
             model.setCurrent(new Receta());
         } catch (Exception e) {
@@ -61,10 +61,10 @@ public class RecetaController {
 
     public void create(Receta receta) throws Exception {
         try {
-            if (Service.getInstance().existsReceta(receta.getId())) {
-                Service.getInstance().update(receta);
+            if (Service.instance().existsReceta(receta.getId())) {
+                Service.instance().update(receta);
             } else {
-                Service.getInstance().create(receta);
+                Service.instance().create(receta);
             }
             model.setCurrent(new Receta());
             model.setList(Service.getInstance().findAllRecetas());

@@ -1,4 +1,4 @@
-package hospital.logic;
+package hospital.Logic;
 
 import hospital.Entities.Entities.*;
 import java.io.ObjectInputStream;

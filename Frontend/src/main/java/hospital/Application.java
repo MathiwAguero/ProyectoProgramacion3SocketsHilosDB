@@ -43,7 +43,7 @@ public class Application {
         try {
             // Verificar conexión al servidor
             System.out.println("→ Conectando al servidor...");
-            hospital.logic.Service.instance();
+            hospital.Logic.Service.instance();
             System.out.println("✓ Conexión establecida correctamente");
             System.out.println();
 
@@ -112,7 +112,7 @@ public class Application {
 
             try {
                 // Cerrar conexión al servidor
-                hospital.logic.Service.instance().stop();
+                hospital.Logic.Service.instance().stop();
                 System.out.println("✓ Conexión cerrada correctamente");
             } catch (Exception e) {
                 System.err.println("⚠ Error al cerrar conexión: " + e.getMessage());
