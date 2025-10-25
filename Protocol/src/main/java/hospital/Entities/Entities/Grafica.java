@@ -2,14 +2,17 @@ package hospital.Entities.Entities;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Ellipse2D;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 
-public class Grafica extends JPanel {
+public class Grafica extends JPanel  {
     private List<DataPoint> dataPoints;
     private String medicamentoSeleccionado;
     private String titulo;
@@ -436,4 +439,6 @@ public class Grafica extends JPanel {
         this.medicamentoSeleccionado = "";
         repaint();
     }
+
+
 }

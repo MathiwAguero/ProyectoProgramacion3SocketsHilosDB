@@ -7,11 +7,13 @@ import jakarta.xml.bind.annotation.XmlTransient;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlElementWrapper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Receta {
+public class Receta implements Serializable {
     private String id;
     private Paciente paciente;
     private Medico medico;
@@ -89,5 +91,17 @@ public class Receta {
         if (detalle == null) return;
         if (this.detalles == null) this.detalles = new ArrayList<>();
         this.detalles.add(detalle);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getId());
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null||getClass()!=obj.getClass()) return false;
+        Admin other = (Admin) obj;
+        return Objects.equals(this.getId(), other.getId());
     }
 }

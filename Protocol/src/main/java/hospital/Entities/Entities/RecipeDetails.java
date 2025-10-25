@@ -3,8 +3,11 @@ package hospital.Entities.Entities;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAccessType;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RecipeDetails {
+public class RecipeDetails implements Serializable {
     private String nombre;
     private String codigoMedicamento;
     private int cantidad;
@@ -36,5 +39,16 @@ public class RecipeDetails {
         return "\n" + "Medicamento: " + codigoMedicamento + "\n" +
                 "Cantidad Medicamento: " + cantidad + "\n" +
                 "Indicaciones: " + indicaciones + "\n";
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getCodigoMedicamento());
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null||getClass()!=obj.getClass()) return false;
+        Admin other = (Admin) obj;
+        return Objects.equals(this.getCodigoMedicamento(),((RecipeDetails) obj).getCodigoMedicamento());
     }
 }

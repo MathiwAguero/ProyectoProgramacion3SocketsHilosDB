@@ -4,9 +4,12 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlSeeAlso;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({Admin.class, Medico.class, Farmaceuta.class})
-public class UsuarioBase {
+public class UsuarioBase implements Serializable {
     private String id;
     private String clave;
     private String nombre;
@@ -29,4 +32,16 @@ public class UsuarioBase {
     public void setNombre(String nombre) { this.nombre = nombre; }
     public TipoUsuario getTipo() { return tipo; }
     public void setTipo(TipoUsuario tipo) { this.tipo = tipo; }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getId());
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null||getClass()!=obj.getClass()) return false;
+        Admin other = (Admin) obj;
+        return Objects.equals(this.getId(), other.getId());
+    }
 }

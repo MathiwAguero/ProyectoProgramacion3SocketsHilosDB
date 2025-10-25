@@ -1,6 +1,9 @@
 package hospital.Entities.Entities;
 
-public class MedicamentosResumen {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class MedicamentosResumen implements Serializable {
     private String nombreMedicamento;
     private int cantidadTotal;
 
@@ -34,5 +37,16 @@ public class MedicamentosResumen {
                 "nombreMedicamento='" + nombreMedicamento + '\'' +
                 ", cantidadTotal=" + cantidadTotal +
                 '}';
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getNombreMedicamento());
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null||getClass()!=obj.getClass()) return false;
+        Admin other = (Admin) obj;
+        return Objects.equals(this.getNombreMedicamento(),((MedicamentosResumen) obj).getNombreMedicamento());
     }
 }
