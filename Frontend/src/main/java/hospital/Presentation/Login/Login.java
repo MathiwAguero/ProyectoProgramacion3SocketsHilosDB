@@ -1,6 +1,7 @@
 package hospital.Presentation.Login;
 
 import hospital.Logic.Listas.Factory;
+import hospital.Logic.Service;
 import hospital.Presentation.CambioClave.CambioClave;
 import hospital.Presentation.Despacho.Despacho;
 import hospital.Entities.Entities.*;
@@ -57,7 +58,12 @@ public class Login {
                     return;
                 }
                 ServiceLogin service = new ServiceLogin();
-                UsuarioBase usuario = Factory.get().usuario().obtenerPorId(id);
+                UsuarioBase usuario = null;
+                try {
+                    usuario = Service.getInstance().readUsuario(id);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
                 if (usuario == null) {
                     JOptionPane.showMessageDialog(Login, "No existe un usuario con ese ID.");
                     return;
