@@ -14,7 +14,7 @@ public class ServiceLogin {
 
     {
         try {
-            listUsers = Service.getInstance().findAllUsuarios();
+            listUsers = Service.getInstance().findUsuariosActivos();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -27,7 +27,7 @@ public class ServiceLogin {
         }
         UsuarioBase u = null;
         try {
-            u = Service.getInstance().readUsuario(id);
+            u = Service.getInstance().authenticate(id, clave);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -70,8 +70,5 @@ public class ServiceLogin {
         return aux;
     }
 
-    public List<UsuarioBase> obtenerTipo(TipoUsuario tipo) {
 
-        return listUsers.obtenerTodos().stream().filter(u -> u.getTipo() == tipo).collect(Collectors.toList());
-    }
 }

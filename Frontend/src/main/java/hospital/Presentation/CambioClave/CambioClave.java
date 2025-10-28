@@ -7,7 +7,8 @@ import hospital.Logic.Services.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CambioClave {
+public class
+CambioClave {
 
     private JPanel CambioClave;
     private JButton button1;

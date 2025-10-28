@@ -61,10 +61,10 @@ public class RecetaController {
 
     public void create(Receta receta) throws Exception {
         try {
-            if (Service.instance().existsReceta(receta.getId())) {
-                Service.instance().update(receta);
+            if (Service.getInstance().existsReceta(receta.getId())) {
+                Service.getInstance().update(receta);
             } else {
-                Service.instance().create(receta);
+                Service.getInstance().create(receta);
             }
             model.setCurrent(new Receta());
             model.setList(Service.instance().findAllRecetas());
@@ -146,7 +146,12 @@ public class RecetaController {
 
         if (fechaHasta.compareTo(fechaDesde) < 0) return new ArrayList<>();
 
-        List<Receta> recetas = model.getList();
+        List<Receta> recetas = null;
+        try {
+            recetas = Service.getInstance().findAllRecetas();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         List<Receta> filtro = recetas.stream()
                 .filter(x -> x.getFechaConfeccion() != null) // Solo recetas con fecha de entrega

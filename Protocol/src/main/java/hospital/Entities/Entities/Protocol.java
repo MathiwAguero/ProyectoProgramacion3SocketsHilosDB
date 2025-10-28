@@ -1,6 +1,7 @@
 package hospital.Entities.Entities;
 
-public class Protocol {
+public class
+Protocol {
     public static final String SERVER = "localhost";
     public static final int PORT = 5000;
 

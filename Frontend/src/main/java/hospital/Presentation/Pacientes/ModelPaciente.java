@@ -1,4 +1,5 @@
 package hospital.Presentation.Pacientes;
+import hospital.Logic.Service;
 import hospital.Presentation.AbstractModel.AbstractModel;
 import hospital.Entities.Entities.*;
 
@@ -35,7 +36,11 @@ public class ModelPaciente extends AbstractModel {
     }
 
     public List<Paciente> getList() {
-        return list;
+        try {
+            return Service.getInstance().findAllPacientes();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setList(List<Paciente> list) {

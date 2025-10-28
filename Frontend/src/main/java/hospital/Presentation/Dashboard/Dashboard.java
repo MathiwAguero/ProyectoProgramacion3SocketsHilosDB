@@ -2,6 +2,7 @@ package hospital.Presentation.Dashboard;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import hospital.Entities.Entities.*;
+import hospital.Logic.Service;
 import hospital.Presentation.Recetas.RecetaController;
 import hospital.Logic.Exceptions.*;
 import hospital.Logic.Listas.*;
@@ -49,8 +50,12 @@ public class Dashboard implements PropertyChangeListener  {
 
         // ComboBox medicamentos
         MedicamentoCombo.addItem("Seleccione un medicamento...");
-        for (String m : Factory.get().medicamento().obtenerNombres()) {
-            MedicamentoCombo.addItem(m);
+        try {
+            for (String m : Service.getInstance().obtenerNombresMedicamentos()) {
+                MedicamentoCombo.addItem(m);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
         // Acción al seleccionar medicamento
@@ -87,8 +92,12 @@ public class Dashboard implements PropertyChangeListener  {
             public void componentShown(ComponentEvent e) {
                 MedicamentoCombo.removeAllItems();
                 MedicamentoCombo.addItem("Seleccione un medicamento...");
-                for (String m : Factory.get().medicamento().obtenerNombres()) {
-                    MedicamentoCombo.addItem(m);
+                try {
+                    for (String m : Service.getInstance().obtenerNombresMedicamentos()) {
+                        MedicamentoCombo.addItem(m);
+                    }
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
                 }
                 integrarGraficaEnPanel();
             }
