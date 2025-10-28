@@ -208,13 +208,24 @@ public class Service {
     }
 
     // ============ RECETAS ============
-    public void create(Receta e) throws Exception {
-        os.writeInt(Protocol.RECETA_CREATE);
-        os.writeObject(e);
-        os.flush();
-        if (is.readInt() == Protocol.ERROR_NO_ERROR) {}
-        else throw new Exception("RECETA DUPLICADA");
-    }
+        public void create(Receta e) throws Exception {
+            os.writeInt(Protocol.RECETA_CREATE);
+            os.writeObject(e);
+            os.flush();
+
+            int resultado = is.readInt();
+            if (resultado == Protocol.ERROR_NO_ERROR) {
+                // Todo OK
+            } else {
+                // Intentar leer mensaje de error del servidor
+                try {
+                    String mensajeError = (String) is.readObject();
+                    throw new Exception(mensajeError);
+                } catch (ClassNotFoundException | ClassCastException ex) {
+                    throw new Exception("ERROR AL CREAR RECETA - ID puede estar duplicado");
+                }
+            }
+        }
 
     public Receta readReceta(String id) throws Exception {
         os.writeInt(Protocol.RECETA_READ);

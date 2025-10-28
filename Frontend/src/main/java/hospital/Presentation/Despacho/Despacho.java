@@ -1,4 +1,5 @@
 package hospital.Presentation.Despacho;
+import hospital.Logic.Service;
 import hospital.Presentation.Pacientes.ModelPaciente;
 import hospital.Presentation.Pacientes.PacienteController;
 import hospital.Presentation.Recetas.RecetaController;
@@ -142,7 +143,7 @@ public class Despacho implements PropertyChangeListener  {
 
     private void cargarRecetasPaciente(Paciente p) {
         try {
-            List<Receta> todas = Factory.get().receta().obtenerTodos();
+            List<Receta> todas = Service.getInstance().findAllRecetas();
             List<Receta> filtradas = new ArrayList<>();
             for (Receta r : todas) {
                 if (r.getPaciente() != null && r.getPaciente().getId() != null

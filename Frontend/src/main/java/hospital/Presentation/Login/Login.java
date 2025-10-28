@@ -160,7 +160,12 @@ public class Login {
                     }
                     case "MED": {
 
-                        Medico ingresado = Factory.get().medico().obtenerPorId(usuarioLogged.getId());
+                        Medico ingresado = null;
+                        try {
+                            ingresado = Service.getInstance().readMedico(usuarioLogged.getId());
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
                         Dashboard ventanaDashboard = new Dashboard();
                         PrescribirMed ventanaPrescribir = new PrescribirMed();
                         Historial ventanaHistorial = new Historial();

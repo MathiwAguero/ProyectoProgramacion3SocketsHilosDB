@@ -118,12 +118,12 @@ public class RecetaController {
             throw new DataAccessException("ID de receta inválido.");
         }
 
-        Receta rec = Service.instance().readReceta(idReceta);
+        Receta rec = Service.getInstance().readReceta(idReceta);
 
         rec.setEstado(nuevo);
-        Service.instance().update(rec);
+        Service.getInstance().update(rec);
         model.setCurrent(rec);
-        model.setList(Service.instance().findAllRecetas());
+        model.setList(Service.getInstance().findAllRecetas());
     }
     public List<Receta> FiltradasPorNombre(String nombre, List<Receta> recetas) throws DataAccessException {
         if (nombre == null || nombre.trim().isEmpty()) {

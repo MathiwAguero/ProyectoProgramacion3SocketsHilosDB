@@ -191,6 +191,9 @@ public class Service {
 
     // ============ RECETAS ============
     public void create(Receta receta) throws Exception {
+        if (existsReceta(receta.getId())) {
+            throw new Exception("RECETA DUPLICADA: " + receta.getId());
+        }
         recetaDao.create(receta);
     }
 

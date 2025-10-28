@@ -521,26 +521,26 @@ public class Worker extends Thread {
         try {
             Receta r = (Receta) is.readObject();
 
-            // ✓ DEBUGGING TEMPORAL
-            System.out.println("=== DEBUG RECETA CREATE ===");
+            // Debugging
+            System.out.println("=== RECETA CREATE ===");
             System.out.println("ID: " + r.getId());
             System.out.println("Paciente: " + (r.getPaciente() != null ? r.getPaciente().getId() : "NULL"));
             System.out.println("Médico: " + (r.getMedico() != null ? r.getMedico().getId() : "NULL"));
-            System.out.println("Fecha Confección: " + r.getFechaConfeccion());
-            System.out.println("Fecha Retiro: " + r.getFechaRetiro());
             System.out.println("Estado: " + r.getEstado());
-            System.out.println("Detalles: " + (r.getDetalles() != null ? r.getDetalles().size() : "NULL"));
+            System.out.println("Detalles: " + (r.getDetalles() != null ? r.getDetalles().size() : "0"));
 
             service.create(r);
             os.writeInt(Protocol.ERROR_NO_ERROR);
-            System.out.println("✓ Receta creada: " + r.getId());
+            System.out.println("✓ Receta creada exitosamente: " + r.getId());
 
         } catch (Exception ex) {
             System.err.println("✗ ERROR CREANDO RECETA:");
+            System.err.println("Tipo: " + ex.getClass().getName());
             System.err.println("Mensaje: " + ex.getMessage());
-            ex.printStackTrace();
 
+            // Enviar mensaje de error específico al cliente
             os.writeInt(Protocol.ERROR_ERROR);
+            os.writeObject(ex.getMessage()); // ← AÑADIR ESTO
         }
         os.flush();
     }
