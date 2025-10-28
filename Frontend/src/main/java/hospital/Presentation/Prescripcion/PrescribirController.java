@@ -40,7 +40,7 @@ public class PrescribirController {
             }
 
             // CAMBIO: Usa Service
-            if (receta.getId() != null && Service.getInstance().existsReceta(receta.getId())) {
+            if (Service.getInstance().existsReceta(receta.getId())) {
                 Service.getInstance().update(receta);
             } else {
                 Service.getInstance().create(receta);

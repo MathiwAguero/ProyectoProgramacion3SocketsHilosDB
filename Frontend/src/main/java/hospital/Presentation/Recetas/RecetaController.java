@@ -67,7 +67,7 @@ public class RecetaController {
                 Service.getInstance().create(receta);
             }
             model.setCurrent(new Receta());
-            model.setList(Service.instance().findAllRecetas());
+            model.setList(Service.getInstance().findAllRecetas());
         } catch (DataAccessException x) {
             throw new DataAccessException("Error al guardar la receta" + x.getMessage());
         }
@@ -179,13 +179,26 @@ public class RecetaController {
         if (fechaObj instanceof Date) {
             return (Date) fechaObj;
         } else if (fechaObj instanceof String) {
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                return sdf.parse((String) fechaObj);
-            } catch (ParseException e) {
-                System.err.println("Error parseando fecha string: " + fechaObj);
-                return null;
+            String fechaStr = (String) fechaObj;
+
+            // ✓ CAMBIO: Intentar primero formato SQL, luego formato display
+            SimpleDateFormat[] formatos = {
+                    new SimpleDateFormat("yyyy-MM-dd"),      // SQL format (nuevo)
+                    new SimpleDateFormat("dd/MM/yyyy"),      // Display format (viejo)
+                    new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            };
+
+            for (SimpleDateFormat formato : formatos) {
+                try {
+                    return formato.parse(fechaStr);
+                } catch (ParseException e) {
+                    // Intentar siguiente formato
+                }
             }
+
+            System.err.println("No se pudo parsear la fecha: " + fechaStr);
+            return null;
+
         } else if (fechaObj instanceof JDateChooser) {
             return ((JDateChooser) fechaObj).getDate();
         }

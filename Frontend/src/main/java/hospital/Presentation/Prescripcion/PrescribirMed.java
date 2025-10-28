@@ -18,7 +18,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class PrescribirMed implements PropertyChangeListener {
 
@@ -98,9 +100,16 @@ public class PrescribirMed implements PropertyChangeListener {
                     r.setId(id);
                     r.setPaciente(pacienteSeleccionado);
                     r.setMedico(medicoActual);
-                    r.setFechaConfeccion(new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date()));
+                    SimpleDateFormat sqlFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    r.setFechaConfeccion(sqlFormat.format(new Date()));
+
+                    if (JDateChooser1.getDate() != null) {
+                        r.setFechaRetiro(sqlFormat.format(JDateChooser1.getDate()));
+                    } else {
+                        r.setFechaRetiro("");
+                    }
+
                     r.setDetalles(new ArrayList<>(model.getList()));
-                    r.setFechaRetiro(new java.text.SimpleDateFormat("dd/MM/yyyy").format(JDateChooser1.getDate()));
                     r.setEstado(EstadoReceta.CONFECCIONADA);
 
                     Receta guardada = controller.create(r);
