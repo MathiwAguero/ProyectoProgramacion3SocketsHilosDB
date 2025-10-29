@@ -91,7 +91,9 @@ public class FarmaceutaController implements ThreadListener {
 
     @Override
     public void deliver_message(String message) {
-        try { search(new Farmaceuta().getId()); } catch (Exception e) { }
+        try {
+            model.setList(Service.getInstance().findAllFarmaceutas()); // ✅ Refresca TODA la lista
+        } catch (Exception e) { }
         System.out.println(message);
     }
 }

@@ -97,7 +97,9 @@ public class MedicoController implements ThreadListener {
 
     @Override
     public void deliver_message(String message) {
-        try { search(new Medico().getId()); } catch (Exception e) { }
+        try {
+            model.setList(Service.getInstance().findAllMedicos()); // ✅ Refresca TODA la lista
+        } catch (Exception e) { }
         System.out.println(message);
     }
-}
+    }

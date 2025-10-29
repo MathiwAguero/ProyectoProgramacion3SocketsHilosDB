@@ -10,13 +10,19 @@ import java.net.Socket;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DetailsController {
+public class DetailsController implements ThreadListener{
     ModelDetails model;
-
+    SocketListener socketListener;
     public DetailsController(ModelDetails model) {
         this.model = model;
         cargarDatosIniciales();
-
+        try {
+            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
+            socketListener.start();
+            System.out.println("✓ SocketListener iniciado en DetailsController");
+        } catch (Exception e) {
+            System.err.println("✗ Error iniciando SocketListener: " + e.getMessage());
+        }
     }
 
     private void cargarDatosIniciales() {
@@ -133,4 +139,28 @@ public class DetailsController {
     }
 
 
+    @Override
+    public void deliver_message(String message) {
+        try {
+            // Recargar todos los detalles cuando hay cambios
+            List<RecipeDetails> detalles = Service.getInstance().findAllDetalles();
+            model.setList(detalles);
+
+            System.out.println("📩 Detalles refrescados: " + message);
+            System.out.println("   Total detalles actualizados: " + detalles.size());
+
+        } catch (Exception e) {
+            System.err.println("✗ Error refrescando detalles: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Detener el SocketListener al cerrar
+     */
+    public void stop() {
+        if (socketListener != null) {
+            socketListener.stop();
+            System.out.println("✓ SocketListener detenido");
+        }
+    }
 }

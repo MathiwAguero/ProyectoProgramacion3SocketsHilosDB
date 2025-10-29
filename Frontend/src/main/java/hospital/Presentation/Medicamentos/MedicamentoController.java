@@ -132,7 +132,9 @@ public class MedicamentoController implements ThreadListener {
 
     @Override
     public void deliver_message(String message) {
-        try { search(new Medicamento().getCodigo()); } catch (Exception e) { }
+        try {
+            model.setList(Service.getInstance().findAllMedicamentos()); // ✅ Refresca TODA la lista
+        } catch (Exception e) { }
         System.out.println(message);
     }
 }

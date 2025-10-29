@@ -11,17 +11,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PrescribirController  {
+public class PrescribirController implements ThreadListener {
     PrescribirMed view;
     ModelDetails model;
-
+    SocketListener socketListener;
     public PrescribirController(PrescribirMed view, ModelDetails model) {
         this.view = view;
         this.model = model;
         view.setController(this);
         view.setModel(model);
         cargarDatosIniciales();
-
+        try {
+            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
+            socketListener.start();
+            System.out.println("✓ SocketListener iniciado en DetailsController");
+        } catch (Exception e) {
+            System.err.println("✗ Error iniciando SocketListener: " + e.getMessage());
+        }
     }
 
     private void cargarDatosIniciales() {
@@ -181,4 +187,28 @@ public class PrescribirController  {
         return true;
     }
 
+    @Override
+    public void deliver_message(String message) {
+        try {
+            // Recargar todos los detalles cuando hay cambios
+            List<RecipeDetails> detalles = Service.getInstance().findAllDetalles();
+            model.setList(detalles);
+
+            System.out.println("📩 Detalles refrescados: " + message);
+            System.out.println("   Total detalles actualizados: " + detalles.size());
+
+        } catch (Exception e) {
+            System.err.println("✗ Error refrescando detalles: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Detener el SocketListener al cerrar
+     */
+    public void stop() {
+        if (socketListener != null) {
+            socketListener.stop();
+            System.out.println("✓ SocketListener detenido");
+        }
+    }
 }

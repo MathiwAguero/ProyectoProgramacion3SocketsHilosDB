@@ -222,7 +222,9 @@ public class RecetaController implements ThreadListener {
 
     @Override
     public void deliver_message(String message) {
-        try { search(new Receta().getId()); } catch (Exception e) { }
+        try {
+            model.setList(Service.getInstance().findAllRecetas()); // ✅ Refresca TODA la lista
+        } catch (Exception e) { }
         System.out.println(message);
     }
 }
