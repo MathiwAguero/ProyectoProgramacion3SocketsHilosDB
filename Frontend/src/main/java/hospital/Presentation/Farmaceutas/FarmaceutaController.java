@@ -4,20 +4,26 @@ import hospital.Logic.Listas.Factory;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Exceptions.DataAccessException;
 import hospital.Logic.Service;
+import hospital.Logic.SocketListener;
+import hospital.Presentation.ThreadListener;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FarmaceutaController {
+public class FarmaceutaController implements ThreadListener {
     Farmaceutas view;
     ModelFarmaceuta model;
-
+    SocketListener socketListener;
     public FarmaceutaController(Farmaceutas view, ModelFarmaceuta model) {
         this.view = view;
         this.model = model;
         view.setController(this);
         view.setModel(model);
         cargarDatosIniciales();
+        try {
+            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
+            socketListener.start();
+        } catch (Exception e) {}
     }
 
     private void cargarDatosIniciales() {
@@ -81,5 +87,11 @@ public class FarmaceutaController {
     public void clear() throws Exception {
         model.setCurrent(new Farmaceuta());
         model.setList(Service.getInstance().findAllFarmaceutas());
+    }
+
+    @Override
+    public void deliver_message(String message) {
+        try { search(new Farmaceuta().getId()); } catch (Exception e) { }
+        System.out.println(message);
     }
 }

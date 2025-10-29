@@ -4,20 +4,22 @@ import hospital.Logic.Listas.Factory;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Exceptions.DataAccessException;
 import hospital.Logic.Service;
+import hospital.Logic.SocketListener;
 import hospital.Presentation.Medicamentos.ModelMedicamentos;
 import hospital.Presentation.Medicamentos.Medicamentos;
 import hospital.Presentation.Medicamentos.MedicamentoController;
 
 import hospital.Presentation.Prescripcion.Filtros.PrescribirBuscarMedica;
+import hospital.Presentation.ThreadListener;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MedicamentoController {
+public class MedicamentoController implements ThreadListener {
     Medicamentos view;
     ModelMedicamentos model;
     PrescribirBuscarMedica panel;
-
+    SocketListener socketListener;
 
     public MedicamentoController(Medicamentos view, ModelMedicamentos model) {
         this.view = view;
@@ -26,6 +28,10 @@ public class MedicamentoController {
         view.setModel(model);
         cargarDatosIniciales();
 
+        try {
+            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
+            socketListener.start();
+        } catch (Exception e) {}
     }
 
     public MedicamentoController(PrescribirBuscarMedica view, ModelMedicamentos model) {
@@ -33,6 +39,11 @@ public class MedicamentoController {
         view.setController(this);
         view.setModel(model);
         cargarDatosIniciales();
+        try {
+            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
+            socketListener.start();
+        } catch (Exception e) {}
+
     }
 
     private void cargarDatosIniciales() {
@@ -117,5 +128,11 @@ public class MedicamentoController {
     public void clear() throws Exception {
         model.setCurrent(new Medicamento());
         model.setList(Service.getInstance().findAllMedicamentos());
+    }
+
+    @Override
+    public void deliver_message(String message) {
+        try { search(new Medicamento().getCodigo()); } catch (Exception e) { }
+        System.out.println(message);
     }
 }

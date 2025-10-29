@@ -18,15 +18,24 @@ public class Service {
     ObjectOutputStream os;
     ObjectInputStream is;
 
+    String sid;
+
     public Service() {
         try {
             s = new Socket(Protocol.SERVER, Protocol.PORT);
             os = new ObjectOutputStream(s.getOutputStream());
             is = new ObjectInputStream(s.getInputStream());
+
+            os.writeInt(Protocol.SYNC);
+            os.flush();
+            sid = (String) is.readObject();
         } catch (Exception e) {
             System.err.println("Error conectando al servidor: " + e.getMessage());
             System.exit(-1);
         }
+    }
+    public String getSid() {
+        return sid;
     }
 
     // ============ PACIENTES ============

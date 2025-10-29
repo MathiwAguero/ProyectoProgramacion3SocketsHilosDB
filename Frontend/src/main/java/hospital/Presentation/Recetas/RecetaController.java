@@ -3,10 +3,14 @@ package hospital.Presentation.Recetas;
 import hospital.Entities.Entities.*;
 
 import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.SocketListener;
 import hospital.Presentation.Dashboard.Dashboard;
 import hospital.Presentation.Despacho.Despacho;
 import com.toedter.calendar.JDateChooser;
 import hospital.Logic.Service;
+import hospital.Presentation.ThreadListener;
+
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,12 +19,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RecetaController {
+public class RecetaController implements ThreadListener {
     Dashboard viewDashboard;
     Historial viewHistorial;
     ModelReceta model;
     Despacho viewDespacho;
-
+    SocketListener socketListener;
     // Constructor usado por Dashboard
     public RecetaController(Dashboard viewDashboard, ModelReceta model) {
         this.viewDashboard = viewDashboard;
@@ -28,6 +32,10 @@ public class RecetaController {
         viewDashboard.setController(this);
         viewDashboard.setModel(model);
         cargarDatosIniciales();
+        try {
+            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
+            socketListener.start();
+        } catch (Exception e) {}
     }
 
     // Constructor usado por Historial
@@ -210,5 +218,11 @@ public class RecetaController {
             System.err.println("No se pudo obtener fecha de: " + fechaObj.getClass());
             return null;
         }
+    }
+
+    @Override
+    public void deliver_message(String message) {
+        try { search(new Receta().getId()); } catch (Exception e) { }
+        System.out.println(message);
     }
 }

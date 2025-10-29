@@ -17,25 +17,27 @@ public class Worker extends Thread {
     Service service;
     ObjectOutputStream os;
     ObjectInputStream is;
+    String sid;
+    Socket as;
+    ObjectOutputStream aos;
+    ObjectInputStream ais;
     boolean continuar;
 
-    public Worker(Server srv, Socket s, Service service) {
-        try {
-            this.srv = srv;
-            this.s = s;
-            this.service = service;
-
-            // IMPORTANTE: Crear ObjectOutputStream ANTES que ObjectInputStream
-            os = new ObjectOutputStream(s.getOutputStream());
-            os.flush(); // Limpiar headers
-            is = new ObjectInputStream(s.getInputStream());
-
-            System.out.println("Worker inicializado correctamente");
-
-        } catch (IOException ex) {
-            System.err.println("Error inicializando Worker: " + ex.getMessage());
-        }
+    public Worker(Server srv, Socket s, Service service,
+                  ObjectOutputStream os, ObjectInputStream is, String sid) {
+        this.srv = srv;
+        this.s = s;
+        this.service = service;
+        this.os = os;
+        this.is = is;
+        this.sid = sid; // 🆕
     }
+    public void setAs(Socket as, ObjectOutputStream aos, ObjectInputStream ais) {
+        this.as = as;
+        this.aos = aos;
+        this.ais = ais;
+    }
+
 
     @Override
     public void run() {
@@ -51,12 +53,14 @@ public class Worker extends Thread {
                     // ============ PACIENTES ============
                     case Protocol.PACIENTE_CREATE:
                         handlePacienteCreate();
+                        srv.deliver_message(this, "Nueva receta creada");
                         break;
                     case Protocol.PACIENTE_READ:
                         handlePacienteRead();
                         break;
                     case Protocol.PACIENTE_UPDATE:
                         handlePacienteUpdate();
+                        srv.deliver_message(this, "Nueva receta creada");
                         break;
                     case Protocol.PACIENTE_DELETE:
                         handlePacienteDelete();
@@ -71,12 +75,14 @@ public class Worker extends Thread {
                     // ============ MEDICOS ============
                     case Protocol.MEDICO_CREATE:
                         handleMedicoCreate();
+                        srv.deliver_message(this, "Nueva receta creada");
                         break;
                     case Protocol.MEDICO_READ:
                         handleMedicoRead();
                         break;
                     case Protocol.MEDICO_UPDATE:
                         handleMedicoUpdate();
+                        srv.deliver_message(this, "Nueva receta creada");
                         break;
                     case Protocol.MEDICO_DELETE:
                         handleMedicoDelete();
@@ -91,12 +97,14 @@ public class Worker extends Thread {
                     // ============ FARMACEUTAS ============
                     case Protocol.FARMACEUTA_CREATE:
                         handleFarmaceutaCreate();
+                        srv.deliver_message(this, "Nueva receta creada");
                         break;
                     case Protocol.FARMACEUTA_READ:
                         handleFarmaceutaRead();
                         break;
                     case Protocol.FARMACEUTA_UPDATE:
                         handleFarmaceutaUpdate();
+                        srv.deliver_message(this, "Nueva receta creada");
                         break;
                     case Protocol.FARMACEUTA_DELETE:
                         handleFarmaceutaDelete();
@@ -111,12 +119,14 @@ public class Worker extends Thread {
                     // ============ MEDICAMENTOS ============
                     case Protocol.MEDICAMENTO_CREATE:
                         handleMedicamentoCreate();
+                        srv.deliver_message(this, "Nueva receta creada");
                         break;
                     case Protocol.MEDICAMENTO_READ:
                         handleMedicamentoRead();
                         break;
                     case Protocol.MEDICAMENTO_UPDATE:
                         handleMedicamentoUpdate();
+                        srv.deliver_message(this, "Nueva receta creada");
                         break;
                     case Protocol.MEDICAMENTO_DELETE:
                         handleMedicamentoDelete();
@@ -131,12 +141,14 @@ public class Worker extends Thread {
                     // ============ RECETAS ============
                     case Protocol.RECETA_CREATE:
                         handleRecetaCreate();
+                        srv.deliver_message(this, "Nueva receta creada");
                         break;
                     case Protocol.RECETA_READ:
                         handleRecetaRead();
                         break;
                     case Protocol.RECETA_UPDATE:
                         handleRecetaUpdate();
+                        srv.deliver_message(this, "Nueva receta creada");
                         break;
                     case Protocol.RECETA_DELETE:
                         handleRecetaDelete();
@@ -710,5 +722,17 @@ public class Worker extends Thread {
             System.err.println("Error cerrando socket: " + e.getMessage());
         }
         System.out.println("Worker detenido");
+    }
+
+    public synchronized void deliver_message(String message) {
+        if (as != null) {
+            try {
+                aos.writeInt(Protocol.DELIVER_MESSAGE);
+                aos.writeObject(message);
+                aos.flush();
+            } catch (Exception e) {
+                System.err.println("Error enviando mensaje: " + e.getMessage());
+            }
+        }
     }
 }

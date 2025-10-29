@@ -66,7 +66,9 @@ Protocol {
 
     // Operaciones de ADMINS
     public static final int ADMIN_SEARCH_ALL = 801;
-
+    public static final int SYNC = 10;
+    public static final int ASYNC = 11;
+    public static final int DELIVER_MESSAGE = 13;
     // Operaciones de DASHBOARD
     public static final int DASHBOARD_GET_STATS = 901;
 

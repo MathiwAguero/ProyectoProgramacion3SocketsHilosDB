@@ -3,13 +3,15 @@ package hospital.Presentation.Prescripcion;
 import hospital.Logic.Service;
 import hospital.Logic.Exceptions.*;
 import hospital.Entities.Entities.*;
+import hospital.Logic.SocketListener;
 import hospital.Presentation.Detalles.ModelDetails;
+import hospital.Presentation.ThreadListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PrescribirController {
+public class PrescribirController  {
     PrescribirMed view;
     ModelDetails model;
 
@@ -19,6 +21,7 @@ public class PrescribirController {
         view.setController(this);
         view.setModel(model);
         cargarDatosIniciales();
+
     }
 
     private void cargarDatosIniciales() {
@@ -177,4 +180,5 @@ public class PrescribirController {
 
         return true;
     }
+
 }

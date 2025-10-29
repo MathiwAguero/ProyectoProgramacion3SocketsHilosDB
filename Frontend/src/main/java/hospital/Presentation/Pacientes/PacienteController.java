@@ -4,24 +4,29 @@ import hospital.Logic.Listas.Factory;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Exceptions.DataAccessException;
 import hospital.Logic.Service;
+import hospital.Logic.SocketListener;
 import hospital.Presentation.Prescripcion.Filtros.PrescribirBuscarPacien;
+import hospital.Presentation.ThreadListener;
 
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PacienteController {
+public class PacienteController implements ThreadListener {
     Pacientes panelview;
     ModelPaciente model;
     PrescribirBuscarPacien panel;
-
+    SocketListener socketListener;
     public PacienteController(Pacientes panelview, ModelPaciente model) {
         this.panelview = panelview;
         this.model = model;
         panelview.setController(this);
         panelview.setModel(model);
         cargarDatosIniciales();
-
+        try {
+            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
+            socketListener.start();
+        } catch (Exception e) {}
     }
     public PacienteController(PrescribirBuscarPacien panel, ModelPaciente model) {
         this.panel = panel;
@@ -29,8 +34,12 @@ public class PacienteController {
         panel.setController(this);
         panel.setModel(model);
         cargarDatosIniciales();
-
+        try {
+            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
+            socketListener.start();
+        } catch (Exception e) {}
     }
+
 
     private void cargarDatosIniciales() {
         try {
@@ -112,5 +121,11 @@ public class PacienteController {
     public void clear() throws Exception {
         model.setCurrent(new Paciente());
         model.setList(Service.getInstance().findAllPacientes());
+    }
+
+    @Override
+    public void deliver_message(String message) {
+        try { search(new Paciente().getId()); } catch (Exception e) { }
+        System.out.println(message);
     }
 }

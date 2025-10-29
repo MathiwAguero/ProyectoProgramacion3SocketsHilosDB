@@ -4,21 +4,27 @@ import hospital.Logic.Listas.Factory;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Exceptions.DataAccessException;
 import hospital.Logic.Service;
+import hospital.Logic.SocketListener;
 import hospital.Presentation.Medicos.MedicoController;
+import hospital.Presentation.ThreadListener;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MedicoController {
+public class MedicoController implements ThreadListener {
     Medicos view;
     ModelMedico model;
-
+    SocketListener socketListener;
     public MedicoController(Medicos view, ModelMedico model) {
         this.view = view;
         this.model = model;
         view.setController(this);
         view.setModel(model);
         cargarDatosIniciales();
+        try {
+            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
+            socketListener.start();
+        } catch (Exception e) {}
     }
 
     private void cargarDatosIniciales() {
@@ -87,5 +93,11 @@ public class MedicoController {
     public void clear() throws Exception {
         model.setCurrent(new Medico());
         model.setList(Service.getInstance().findAllMedicos());
+    }
+
+    @Override
+    public void deliver_message(String message) {
+        try { search(new Medico().getId()); } catch (Exception e) { }
+        System.out.println(message);
     }
 }

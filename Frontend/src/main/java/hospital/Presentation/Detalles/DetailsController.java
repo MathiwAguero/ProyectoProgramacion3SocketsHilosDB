@@ -3,7 +3,10 @@ package hospital.Presentation.Detalles;
 import hospital.Logic.Service;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.SocketListener;
+import hospital.Presentation.ThreadListener;
 
+import java.net.Socket;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +16,7 @@ public class DetailsController {
     public DetailsController(ModelDetails model) {
         this.model = model;
         cargarDatosIniciales();
+
     }
 
     private void cargarDatosIniciales() {
@@ -127,4 +131,6 @@ public class DetailsController {
             System.err.println("Error al limpiar: " + e.getMessage());
         }
     }
+
+
 }

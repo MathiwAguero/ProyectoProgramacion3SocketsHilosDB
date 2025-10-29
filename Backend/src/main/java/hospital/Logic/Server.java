@@ -3,11 +3,15 @@ package hospital.Logic;
 import hospital.Entities.Entities.Protocol;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static java.lang.String.join;
 
 public class Server {
     ServerSocket ss;
@@ -35,25 +39,39 @@ public class Server {
         boolean continuar = true;
         Socket s;
         Worker worker;
-
+        String sid;
         while (continuar) {
             try {
                 s = ss.accept();
                 System.out.println("\n>>> Nueva conexión establecida desde: " +
                         s.getInetAddress().getHostAddress());
+                ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
+                ObjectInputStream is = new ObjectInputStream(s.getInputStream());
+                int type = is.readInt();
 
-                worker = new Worker(this, s, service);
-                workers.add(worker);
+                switch (type) {
+                    case Protocol.SYNC:
+                        sid = s.getRemoteSocketAddress().toString();
+                        System.out.println("SYNC: " + sid);
 
-                System.out.println(">>> Total de clientes conectados: " + workers.size());
+                        worker = new Worker(this, s, service, os, is, sid);
+                        workers.add(worker);
+                        worker.start();
 
-                worker.start();
+                        os.writeObject(sid); // Enviar Session ID
+                        break;
 
-            } catch (IOException ex) {
-                System.err.println("Error aceptando cliente: " + ex.getMessage());
-            } catch (Exception ex) {
-                System.err.println("Error inesperado: " + ex.getMessage());
-                ex.printStackTrace();
+                    case Protocol.ASYNC:
+                        sid = (String) is.readObject();
+                        System.out.println("ASYNC: " + sid);
+                        join(s, os, is, sid);
+                        break;
+                }
+
+                os.flush();
+
+            } catch (IOException | ClassNotFoundException ex) {
+                System.err.println("Error: " + ex.getMessage());
             }
         }
     }
@@ -71,6 +89,20 @@ public class Server {
             }
         } catch (IOException e) {
             System.err.println("Error cerrando servidor: " + e.getMessage());
+        }
+    }
+
+    public void join(Socket as, ObjectOutputStream aos, ObjectInputStream ais, String sid) {
+        for (Worker w : workers) {
+            if (w.sid.equals(sid)) {
+                w.setAs(as, aos, ais);
+                break;
+            }
+        }
+    }
+    public void deliver_message(Worker from, String message) {
+        for (Worker w : workers) {
+            if (w != from) w.deliver_message(message);
         }
     }
 }
