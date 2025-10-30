@@ -135,6 +135,7 @@ public class Medicos implements PropertyChangeListener {
             }
         }
         this.medico.revalidate();
+        this.medico.repaint();
     }
 
     public Medico take() {

@@ -5,6 +5,7 @@ import hospital.Presentation.ThreadListener;
 
 import javax.management.NotificationListener;
 import javax.swing.*;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -47,23 +48,20 @@ public class SocketListener {
         while (condition) {
             try {
                 method = ais.readInt();
-
                 switch (method) {
                     case Protocol.DELIVER_MESSAGE:
-                        String message = (String) ais.readObject();
-                        SwingUtilities.invokeLater(new  Runnable(){
-                            public void run(){ listener.deliver_message(message); }
-                            }
-                        );
+                        try {
+                            String message = (String) ais.readObject();
+                            SwingUtilities.invokeLater(new Runnable() {
+                                public void run() { listener.deliver_message(message);} });
+                        } catch (ClassNotFoundException ex) {}
                         break;
                 }
-            } catch (Exception ex) {
-                condition = false;
-            }
+            } catch (IOException ex) { condition = false; }
         }
-
         try {
-            if (as != null) as.close();
-        } catch (Exception e) {}
+            as.shutdownOutput();
+            as.close();
+        } catch (IOException e) {}
     }
 }
