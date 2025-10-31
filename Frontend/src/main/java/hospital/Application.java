@@ -44,7 +44,7 @@ public class Application {
             System.out.println("→ Conectando al servidor...");
             hospital.Logic.Service.instance();
             System.out.println("✓ Conexión establecida correctamente");
-            hospital.Logic.GlobalSocket.init();
+
             System.out.println();
 
             // Crear ventana principal de login
