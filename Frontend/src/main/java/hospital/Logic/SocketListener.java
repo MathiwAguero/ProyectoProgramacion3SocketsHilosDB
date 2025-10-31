@@ -34,7 +34,9 @@ public class SocketListener {
     private Thread t;
 
     public void start() {
-        t = new Thread(() -> listen());
+        t = new Thread(new Runnable() {  public void run() {
+            listen();
+        } });
         condition = true;
         t.start();
     }
@@ -47,7 +49,10 @@ public class SocketListener {
         int method;
         while (condition) {
             try {
+                System.out.println("Esperando mensaje...");
+
                 method = ais.readInt();
+                System.out.println("Recibido método: " + method);
                 switch (method) {
                     case Protocol.DELIVER_MESSAGE:
                         try {

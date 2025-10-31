@@ -24,7 +24,6 @@ public class Application {
             System.err.println("No se pudo cargar Nimbus Look and Feel");
         }
 
-        // Ejecutar en el Event Dispatch Thread
         SwingUtilities.invokeLater(() -> {
             try {
                 initializeApplication();
@@ -45,6 +44,7 @@ public class Application {
             System.out.println("→ Conectando al servidor...");
             hospital.Logic.Service.instance();
             System.out.println("✓ Conexión establecida correctamente");
+            hospital.Logic.GlobalSocket.init();
             System.out.println();
 
             // Crear ventana principal de login
@@ -59,18 +59,18 @@ public class Application {
                 }
             });
 
-            // Crear vista de login
+
             Login loginView = new Login();
             ModelUsuarios loginModel = new ModelUsuarios();
             UsuariosController loginController = new UsuariosController(loginView, loginModel);
 
-            // Configurar ventana
+
             window.setContentPane(loginView.getLogin());
             window.setSize(650, 450);
             window.setLocationRelativeTo(null);
             window.setResizable(false);
 
-            // Cargar icono (opcional)
+
             try {
                 ImageIcon icon = new ImageIcon(
                         Application.class.getResource("/Images/Hospital.jpg")

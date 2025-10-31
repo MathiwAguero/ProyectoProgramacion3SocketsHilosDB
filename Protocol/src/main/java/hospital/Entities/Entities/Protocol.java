@@ -4,7 +4,7 @@ public class
 Protocol {
     public static final String SERVER = "localhost";
     public static final int PORT = 5000;
-
+    public static final int ASYNC_PORT = 3001;
     // Códigos de error
     public static final int ERROR_NO_ERROR = 0;
     public static final int ERROR_ERROR = 1;

@@ -21,7 +21,7 @@ public class FarmaceutaController implements ThreadListener {
         view.setModel(model);
         cargarDatosIniciales();
         try {
-            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
+            socketListener = new SocketListener(this, ((Service)Service.instance()).getSid());
             socketListener.start();
         } catch (Exception e) {}
     }
@@ -74,12 +74,16 @@ public class FarmaceutaController implements ThreadListener {
     }
 
     public void search(String search) throws Exception {
+        model.setSearchFilter(search);
+
         List<Farmaceuta> general = Service.getInstance().findAllFarmaceutas();
         if (search == null || search.trim().isEmpty()) {
             model.setList(general);
         } else {
-            List<Farmaceuta> filtro = general.stream().filter(m -> m.getNombre() != null && m.getNombre().toLowerCase()
-                    .contains(search.toLowerCase())).collect(Collectors.toList());
+            List<Farmaceuta> filtro = general.stream()
+                    .filter(m -> m.getNombre() != null &&
+                            m.getNombre().toLowerCase().contains(search.toLowerCase()))
+                    .collect(Collectors.toList());
             model.setList(filtro);
         }
     }
@@ -92,7 +96,7 @@ public class FarmaceutaController implements ThreadListener {
     @Override
     public void deliver_message(String message) {
         try {
-            model.setList(Service.getInstance().findAllFarmaceutas()); // ✅ Refresca TODA la lista
+            search(model.getSearchFilter());
         } catch (Exception e) { }
         System.out.println(message);
     }

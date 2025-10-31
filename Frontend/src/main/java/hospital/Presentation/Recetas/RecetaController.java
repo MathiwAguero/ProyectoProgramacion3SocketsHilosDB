@@ -25,6 +25,7 @@ public class RecetaController implements ThreadListener {
     ModelReceta model;
     Despacho viewDespacho;
     SocketListener socketListener;
+
     // Constructor usado por Dashboard
     public RecetaController(Dashboard viewDashboard, ModelReceta model) {
         this.viewDashboard = viewDashboard;
@@ -33,9 +34,10 @@ public class RecetaController implements ThreadListener {
         viewDashboard.setModel(model);
         cargarDatosIniciales();
         try {
-            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
+            socketListener = new SocketListener(this, ((Service) Service.getInstance()).getSid());
             socketListener.start();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     // Constructor usado por Historial
@@ -45,6 +47,11 @@ public class RecetaController implements ThreadListener {
         viewHistorial.setController(this);
         viewHistorial.setModel(model);
         cargarDatosIniciales();
+        try {
+            socketListener = new SocketListener(this, ((Service) Service.getInstance()).getSid());
+            socketListener.start();
+        } catch (Exception e) {
+        }
     }
 
     //Constructor usado por despacho
@@ -54,6 +61,11 @@ public class RecetaController implements ThreadListener {
         viewDespacho.setController(this);
         viewDespacho.setModel(model);
         cargarDatosIniciales();
+        try {
+            socketListener = new SocketListener(this, ((Service) Service.getInstance()).getSid());
+            socketListener.start();
+        } catch (Exception e) {
+        }
     }
 
 
@@ -97,7 +109,7 @@ public class RecetaController implements ThreadListener {
     }
 
     public void delete(String id) throws Exception {
-        Receta rec= new Receta();
+        Receta rec = new Receta();
         rec.setId(id);
         Service.instance().delete(rec);
         model.setCurrent(new Receta());
@@ -105,7 +117,7 @@ public class RecetaController implements ThreadListener {
     }
 
     public void search(String search) throws Exception {
-        List<Receta> general = Service.instance().findAllRecetas();
+        List<Receta> general = Service.getInstance().findAllRecetas();
         if (search == null || search.trim().isEmpty()) {
             model.setList(general);
         } else {
@@ -133,6 +145,7 @@ public class RecetaController implements ThreadListener {
         model.setCurrent(rec);
         model.setList(Service.getInstance().findAllRecetas());
     }
+
     public List<Receta> FiltradasPorNombre(String nombre, List<Receta> recetas) throws DataAccessException {
         if (nombre == null || nombre.trim().isEmpty()) {
             return new ArrayList<>();
@@ -223,8 +236,12 @@ public class RecetaController implements ThreadListener {
     @Override
     public void deliver_message(String message) {
         try {
-            model.setList(Service.getInstance().findAllRecetas()); // ✅ Refresca TODA la lista
-        } catch (Exception e) { }
-        System.out.println(message);
+            System.out.println("[DEBUG] Mensaje recibido: " + message);
+            System.out.println("[DEBUG] Lista antes de actualizar: " + model.getList().size());
+            search(null);
+            System.out.println("[DEBUG] Lista después de actualizar: " + model.getList().size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

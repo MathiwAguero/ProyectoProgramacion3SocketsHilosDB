@@ -9,13 +9,14 @@ import java.util.List;
 public class ModelFarmaceuta extends AbstractModel {
     Farmaceuta current;
     List<Farmaceuta> list;
-
+    String searchFilter;
     public static final String CURRENT = "current";
     public static final String LIST = "list";
-
+    public static final String FILTER = "filter";
     public ModelFarmaceuta() {
         current = new Farmaceuta();
         list = new ArrayList<Farmaceuta>();
+        searchFilter = "";
     }
 
     @Override
@@ -41,5 +42,15 @@ public class ModelFarmaceuta extends AbstractModel {
     public void setList(List<Farmaceuta> list) {
         this.list = list;
         firePropertyChange(LIST);
+    }
+
+    public String getSearchFilter() {
+        return searchFilter;
+    }
+
+
+    public void setSearchFilter(String searchFilter) {
+        this.searchFilter = searchFilter;
+        firePropertyChange(FILTER);
     }
 }

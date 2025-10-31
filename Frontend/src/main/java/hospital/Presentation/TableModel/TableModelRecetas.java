@@ -52,6 +52,9 @@ public class TableModelRecetas extends AbstractTableModel<Receta> {
         colNames[FECHACONFECC] = "FECHA CONFECCIÓN";
         colNames[DETALLES]     = "DETALLES";
     }
-
+    public void setRows(List<Receta> rows) {
+        this.rows = rows;
+        fireTableDataChanged();
+    }
 }
 

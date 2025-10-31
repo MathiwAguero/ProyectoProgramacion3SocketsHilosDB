@@ -53,7 +53,7 @@ public class Worker extends Thread {
                     // ============ PACIENTES ============
                     case Protocol.PACIENTE_CREATE:
                         handlePacienteCreate();
-                        srv.deliver_message(this, "Nueva receta creada");
+                        srv.deliver_message(this, "Nuevo paciente creado");
                         break;
                     case Protocol.PACIENTE_READ:
                         handlePacienteRead();

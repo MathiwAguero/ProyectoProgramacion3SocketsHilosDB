@@ -126,7 +126,7 @@ public class PacienteController implements ThreadListener {
     @Override
     public void deliver_message(String message) {
         try {
-            model.setList(Service.getInstance().findAllPacientes()); // ✅ Refresca TODA la lista
+            search(new Paciente().getId());
         } catch (Exception e) { }
         System.out.println(message);
     }

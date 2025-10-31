@@ -145,6 +145,7 @@ public class Farmaceutas implements PropertyChangeListener {
             }
         }
         this.Farmaceutas.revalidate();
+        this.Farmaceutas.repaint();
     }
 
     public Farmaceuta take() {

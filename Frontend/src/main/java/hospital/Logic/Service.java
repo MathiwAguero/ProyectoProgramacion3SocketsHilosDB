@@ -18,6 +18,10 @@ public class Service {
     ObjectOutputStream os;
     ObjectInputStream is;
 
+
+    Socket as;
+    ObjectInputStream ais;
+    ObjectOutputStream aos;
     String sid;
 
     public Service() {
