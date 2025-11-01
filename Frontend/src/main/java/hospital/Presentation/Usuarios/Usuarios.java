@@ -60,7 +60,7 @@ public class Usuarios implements PropertyChangeListener {
             }
         });
 
-        // Botón Recibir - Muestra historial de mensajes
+
         recibirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -102,7 +102,7 @@ public class Usuarios implements PropertyChangeListener {
                         "Cerrar"
                 );
 
-                // Si presionó "Limpiar Historial"
+
                 if (option == 1) {
                     int confirm = JOptionPane.showConfirmDialog(
                             panelUsuarios,

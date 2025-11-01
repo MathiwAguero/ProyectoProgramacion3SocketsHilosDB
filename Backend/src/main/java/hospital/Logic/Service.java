@@ -25,7 +25,7 @@ public class Service {
     private RecetaDao recetaDao;
     private RecipeDetailsDao detallesDao;
     private UsuarioDao usuarioDao;
-    private MensajeDao mensajeDao;
+
 
     private Service() {
         try {
@@ -37,7 +37,7 @@ public class Service {
             recetaDao = new RecetaDao();
             detallesDao = new RecipeDetailsDao();
             usuarioDao = new UsuarioDao();
-            mensajeDao = new MensajeDao();
+
         } catch (Exception e) {
             System.err.println("Error inicializando Service: " + e.getMessage());
             System.exit(-1);
@@ -279,26 +279,6 @@ public class Service {
         usuarioDao.updateClave(id, nuevaClave);
     }
 
-    // ============ MENSAJES ============
-    public void enviarMensaje(Mensaje mensaje) throws Exception {
-        mensajeDao.create(mensaje);
-    }
-
-    public List<Mensaje> findMensajesByDestinatario(String destinatarioId) throws Exception {
-        return mensajeDao.findByDestinatario(destinatarioId);
-    }
-
-    public List<Mensaje> findMensajesNoLeidos(String destinatarioId) throws Exception {
-        return mensajeDao.findNoLeidos(destinatarioId);
-    }
-
-    public void marcarMensajeComoLeido(int id) throws Exception {
-        mensajeDao.marcarComoLeido(id);
-    }
-
-    public void deleteMensaje(int id) throws Exception {
-        mensajeDao.delete(id);
-    }
 
     // ============ RECETAS - BÚSQUEDAS ADICIONALES ============
     public List<Receta> findRecetasByMedico(String medicoId) throws Exception {

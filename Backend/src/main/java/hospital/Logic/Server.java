@@ -132,9 +132,7 @@ public class Server {
         System.out.println("→ Notificado: Usuario " + userId + " offline");
     }
 
-    /**
-     * Obtiene lista de IDs de usuarios online
-     */
+
     public List<String> getOnlineUserIds() {
         List<String> onlineIds = new ArrayList<>();
         for (Worker w : workers) {
