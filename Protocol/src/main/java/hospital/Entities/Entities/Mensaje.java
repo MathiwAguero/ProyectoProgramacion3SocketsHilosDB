@@ -8,6 +8,7 @@ public class Mensaje implements Serializable {
     public Mensaje() {}
 
 
+
     public String getMensaje() {
         return mensaje;
     }

@@ -28,6 +28,9 @@ import  hospital.Presentation.Prescripcion.PrescribirMed;
 import hospital.Presentation.Recetas.Historial;
 import hospital. Presentation.Recetas.ModelReceta;
 import hospital. Presentation.Recetas.RecetaController;
+import hospital.Presentation.Usuarios.ControllerUsuariosMensaje;
+import hospital.Presentation.Usuarios.ModelUsuariosMensaje;
+import hospital.Presentation.Usuarios.Usuarios;
 
 import javax.swing.*;
 import java.awt.*;
@@ -117,6 +120,12 @@ public class Login {
                     return;
                 }
 
+                // ========== CREAR PANEL DE MENSAJERÍA ==========
+                Usuarios ventanaUsuarios = new Usuarios();
+                ModelUsuariosMensaje modelUsuarios = new ModelUsuariosMensaje();
+                new ControllerUsuariosMensaje(ventanaUsuarios, modelUsuarios);
+
+                // ========== CREAR TABS SEGÚN EL ROL ==========
                 JTabbedPane tabs = new JTabbedPane();
 
                 switch (leerCaracter) {
@@ -144,9 +153,10 @@ public class Login {
                         ModelReceta modelRecetaDashboard = new ModelReceta();
                         ModelMedicamentosResumen modelMedicamentosResumen = new ModelMedicamentosResumen();
                         ventanaDashboard.setModelR(modelMedicamentosResumen);
-                        RecetaController rc =new RecetaController(ventanaDashboard, modelRecetaDashboard);
+                        RecetaController rc = new RecetaController(ventanaDashboard, modelRecetaDashboard);
                         ventanaDashboard.setController(rc);
-                        ModelReceta modelRecetaHistorial =  new  ModelReceta();
+
+                        ModelReceta modelRecetaHistorial = new ModelReceta();
                         new RecetaController(ventanaHistorial, modelRecetaHistorial);
 
                         tabs.addTab("Medicos", ventanaMed.getMedico());
@@ -158,14 +168,15 @@ public class Login {
                         tabs.addTab("Acerca de", ventanaAcerdaDe.getPanel());
                         break;
                     }
-                    case "MED": {
 
+                    case "MED": {
                         Medico ingresado = null;
                         try {
                             ingresado = Service.getInstance().readMedico(usuarioLogged.getId());
                         } catch (Exception ex) {
                             throw new RuntimeException(ex);
                         }
+
                         Dashboard ventanaDashboard = new Dashboard();
                         PrescribirMed ventanaPrescribir = new PrescribirMed();
                         Historial ventanaHistorial = new Historial();
@@ -175,10 +186,12 @@ public class Login {
                         ModelReceta modelRecetaDashboard = new ModelReceta();
                         ModelReceta modelRecetaHistorial = new ModelReceta();
                         ModelMedicamentosResumen modelMedicamentosResumen = new ModelMedicamentosResumen();
+
                         new PrescribirController(ventanaPrescribir, modelDetailsPrescribir);
                         new RecetaController(ventanaHistorial, modelRecetaHistorial);
+
                         ventanaDashboard.setModelR(modelMedicamentosResumen);
-                        RecetaController rc =new RecetaController(ventanaDashboard, modelRecetaDashboard);
+                        RecetaController rc = new RecetaController(ventanaDashboard, modelRecetaDashboard);
                         ventanaDashboard.setController(rc);
 
                         ventanaPrescribir.setMedicoActual(ingresado);
@@ -187,10 +200,9 @@ public class Login {
                         tabs.addTab("Dashboard", ventanaDashboard.getDashboard());
                         tabs.addTab("Historial", ventanaHistorial.getHistorial());
                         tabs.addTab("Acerca de", ventanaAcercaDe.getPanel());
-
-
                         break;
                     }
+
                     case "FAR": {
                         Despacho ventanaDespacho = new Despacho();
                         Dashboard ventanaDashboard = new Dashboard();
@@ -200,8 +212,9 @@ public class Login {
                         ModelReceta modelRecetaDashboard = new ModelReceta();
                         ModelMedicamentosResumen modelMedicamentosResumen = new ModelMedicamentosResumen();
                         ventanaDashboard.setModelR(modelMedicamentosResumen);
-                        RecetaController rc =new RecetaController(ventanaDashboard, modelRecetaDashboard);
+                        RecetaController rc = new RecetaController(ventanaDashboard, modelRecetaDashboard);
                         ventanaDashboard.setController(rc);
+
                         ModelReceta modelRecetaHist = new ModelReceta();
                         new RecetaController(ventanaHistorial, modelRecetaHist);
 
@@ -214,15 +227,31 @@ public class Login {
                         tabs.addTab("Acerca de", ventanaAcercaDe.getPanel());
                         break;
                     }
+
                     default:
                         JOptionPane.showMessageDialog(Login, "Rol invalido. ADM / MED / FAR");
                         return;
                 }
-                //usuarioLogged = //medico logueado
-                JFrame ventanaPrincipal = new JFrame("Hospital - " + leerCaracter);
+
+                // ========== CREAR VENTANA CON LAYOUT DIVIDIDO ==========
+                JFrame ventanaPrincipal = new JFrame("Hospital - " + leerCaracter + " - " + usuarioLogged.getNombre());
                 ventanaPrincipal.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                ventanaPrincipal.setContentPane(tabs);
-                ventanaPrincipal.pack();
+
+                // Crear JSplitPane para dividir la ventana
+                JSplitPane splitPane = new JSplitPane(
+                        JSplitPane.HORIZONTAL_SPLIT,
+                        tabs,                           // Lado izquierdo: tabs
+                        ventanaUsuarios.getPanel()      // Lado derecho: mensajería
+                );
+
+                // Configurar el divisor
+                splitPane.setDividerLocation(800);  // Posición inicial del divisor
+                splitPane.setDividerSize(8);        // Grosor del divisor
+                splitPane.setResizeWeight(0.65);    // 65% para tabs, 35% para mensajería
+                splitPane.setContinuousLayout(true); // Redibuja mientras se arrastra
+
+                ventanaPrincipal.setContentPane(splitPane);
+                ventanaPrincipal.setSize(1400, 800);  // Ventana más grande para acomodar ambos paneles
                 ventanaPrincipal.setLocationRelativeTo(null);
                 ventanaPrincipal.setVisible(true);
 

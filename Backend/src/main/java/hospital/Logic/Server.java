@@ -105,4 +105,43 @@ public class Server {
             if (w != from) w.deliver_message(message);
         }
     }
+
+    /**
+     * Notifica a todos los clientes que un usuario se conectó
+     */
+    public void notifyUserOnline(String userId) {
+        String message = "USER_ONLINE:" + userId;
+        for (Worker w : workers) {
+            if (w != null && !userId.equals(w.getUsuarioId())) {
+                w.deliver_message(message);
+            }
+        }
+        System.out.println("→ Notificado: Usuario " + userId + " online");
+    }
+
+    /**
+     * Notifica a todos los clientes que un usuario se desconectó
+     */
+    public void notifyUserOffline(String userId) {
+        String message = "USER_OFFLINE:" + userId;
+        for (Worker w : workers) {
+            if (w != null && !userId.equals(w.getUsuarioId())) {
+                w.deliver_message(message);
+            }
+        }
+        System.out.println("→ Notificado: Usuario " + userId + " offline");
+    }
+
+    /**
+     * Obtiene lista de IDs de usuarios online
+     */
+    public List<String> getOnlineUserIds() {
+        List<String> onlineIds = new ArrayList<>();
+        for (Worker w : workers) {
+            if (w != null && w.getUsuarioId() != null) {
+                onlineIds.add(w.getUsuarioId());
+            }
+        }
+        return onlineIds;
+    }
 }

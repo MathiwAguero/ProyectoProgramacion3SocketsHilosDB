@@ -63,7 +63,9 @@ Protocol {
     public static final int MENSAJE_GET_UNREAD = 702;
     public static final int MENSAJE_MARK_READ = 703;
     public static final int MENSAJE_GET_BY_USER = 704;
-
+    public static final int USUARIO_GET_ONLINE = 606;
+    public static final int NOTIFICATION_USER_ONLINE = 1004;
+    public static final int NOTIFICATION_USER_OFFLINE = 1005;
     // Operaciones de ADMINS
     public static final int ADMIN_SEARCH_ALL = 801;
     public static final int SYNC = 10;

@@ -551,5 +551,35 @@ public class Service {
         return theInstance;
     }
 
+    /**
+     * Obtiene lista de usuarios online
+     */
+    public List<UsuarioBase> getUsuariosOnline() throws Exception {
+        os.writeInt(Protocol.USUARIO_GET_ONLINE);
+        os.flush();
+
+        if (is.readInt() == Protocol.ERROR_NO_ERROR) {
+            return (List<UsuarioBase>) is.readObject();
+        } else {
+            throw new Exception("ERROR AL OBTENER USUARIOS ONLINE");
+        }
+    }
+
+    /**
+     * Envía un mensaje a otro usuario
+     */
+    public void enviarMensaje(String destinatarioId, String mensaje) throws Exception {
+        os.writeInt(Protocol.MENSAJE_SEND);
+        os.writeObject(destinatarioId);
+        os.writeObject(mensaje);
+        os.flush();
+
+        int result = is.readInt();
+        String respuesta = (String) is.readObject();
+
+        if (result != Protocol.ERROR_NO_ERROR) {
+            throw new Exception(respuesta);
+        }
+    }
 
 }

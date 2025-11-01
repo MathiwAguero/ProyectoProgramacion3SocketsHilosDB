@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Worker extends Thread {
@@ -31,6 +32,14 @@ public class Worker extends Thread {
         this.os = os;
         this.is = is;
         this.sid = sid; // 🆕
+    }
+    private String usuarioId;
+    public void setUsuarioId(String usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public String getUsuarioId() {
+        return usuarioId;
     }
     public void setAs(Socket as, ObjectOutputStream aos, ObjectInputStream ais) {
         this.as = as;
@@ -187,6 +196,13 @@ public class Worker extends Thread {
                         detener();
                         srv.remove(this);
                         return;
+                    case Protocol.USUARIO_GET_ONLINE:
+                        handleUsuariosOnline();
+                        break;
+
+                    case Protocol.MENSAJE_SEND:
+                        handleMensajeEnviar();
+                        break;
 
                     default:
                         System.err.println("Operación desconocida: " + method);
@@ -660,9 +676,17 @@ public class Worker extends Thread {
             String id = (String) is.readObject();
             String clave = (String) is.readObject();
             UsuarioBase usuario = service.authenticate(id, clave);
+
+            // Registrar usuario en este worker
+            this.usuarioId = id;
+
             os.writeInt(Protocol.ERROR_NO_ERROR);
             os.writeObject(usuario);
-            System.out.println("✓ Login exitoso: " + id);
+
+            // Notificar a todos que este usuario está online
+            srv.notifyUserOnline(id);
+
+            System.out.println("✓ Login exitoso: " + id + " (Workers activos: " + srv.workers.size() + ")");
         } catch (Exception ex) {
             os.writeInt(Protocol.ERROR_ERROR);
             System.err.println("✗ Error en login: " + ex.getMessage());
@@ -712,17 +736,6 @@ public class Worker extends Thread {
     }
 
     // ==================== CONTROL ====================
-    public void detener() {
-        continuar = false;
-        try {
-            if (s != null && !s.isClosed()) {
-                s.close();
-            }
-        } catch (IOException e) {
-            System.err.println("Error cerrando socket: " + e.getMessage());
-        }
-        System.out.println("Worker detenido");
-    }
 
     public synchronized void deliver_message(String message) {
         if (as != null) {
@@ -734,5 +747,94 @@ public class Worker extends Thread {
                 System.err.println("Error enviando mensaje: " + e.getMessage());
             }
         }
+    }
+    private void handleUsuariosOnline() throws IOException {
+        try {
+            List<UsuarioBase> usuariosOnline = new ArrayList<>();
+
+            // Recorrer todos los workers y obtener sus usuarios
+            for (Worker w : srv.workers) {
+                if (w.usuarioId != null && !w.usuarioId.isEmpty()) {
+                    try {
+                        UsuarioBase usuario = Service.getInstance().readUsuario(w.usuarioId);
+                        if (usuario != null) {
+                            usuariosOnline.add(usuario);
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Error leyendo usuario " + w.usuarioId);
+                    }
+                }
+            }
+
+            os.writeInt(Protocol.ERROR_NO_ERROR);
+            os.writeObject(usuariosOnline);
+            System.out.println("✓ Usuarios online enviados: " + usuariosOnline.size());
+
+        } catch (Exception ex) {
+            os.writeInt(Protocol.ERROR_ERROR);
+            System.err.println("✗ Error obteniendo usuarios online: " + ex.getMessage());
+        }
+        os.flush();
+    }
+
+    /**
+     * Envía un mensaje a otro usuario
+     */
+    private void handleMensajeEnviar() throws IOException {
+        try {
+            String destinatarioId = (String) is.readObject();
+            String mensaje = (String) is.readObject();
+
+            if (this.usuarioId == null) {
+                os.writeInt(Protocol.ERROR_ERROR);
+                os.writeObject("No hay usuario logueado");
+                os.flush();
+                return;
+            }
+
+            // Buscar el worker del destinatario
+            Worker destinatario = null;
+            for (Worker w : srv.workers) {
+                if (destinatarioId.equals(w.usuarioId)) {
+                    destinatario = w;
+                    break;
+                }
+            }
+
+            if (destinatario == null) {
+                os.writeInt(Protocol.ERROR_ERROR);
+                os.writeObject("Usuario destinatario no está online");
+                os.flush();
+                return;
+            }
+
+            // Enviar mensaje al destinatario
+            destinatario.deliver_message(this.usuarioId + ": " + mensaje);
+
+            os.writeInt(Protocol.ERROR_NO_ERROR);
+            os.writeObject("Mensaje enviado correctamente");
+            System.out.println("✓ Mensaje enviado de " + this.usuarioId + " a " + destinatarioId);
+
+        } catch (Exception ex) {
+            os.writeInt(Protocol.ERROR_ERROR);
+            os.writeObject("Error enviando mensaje: " + ex.getMessage());
+            System.err.println("✗ Error enviando mensaje: " + ex.getMessage());
+        }
+        os.flush();
+    }
+    public void detener() {
+        if (usuarioId != null) {
+            srv.notifyUserOffline(usuarioId);
+        }
+
+        continuar = false;
+        try {
+            if (s != null && !s.isClosed()) {
+                s.close();
+            }
+        } catch (IOException e) {
+            System.err.println("Error cerrando socket: " + e.getMessage());
+        }
+        System.out.println("Worker detenido" + (usuarioId != null ? " (" + usuarioId + ")" : ""));
     }
 }

@@ -71,7 +71,7 @@ public class Application {
 
 
             window.setContentPane(loginView.getLogin());
-            window.setSize(650, 450);
+            window.setSize(600, 400);
             window.setLocationRelativeTo(null);
             window.setResizable(false);
 
