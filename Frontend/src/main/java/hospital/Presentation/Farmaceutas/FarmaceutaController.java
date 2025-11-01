@@ -3,6 +3,7 @@ package hospital.Presentation.Farmaceutas;
 import hospital.Logic.Listas.Factory;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.NotificationManager;
 import hospital.Logic.Service;
 import hospital.Logic.SocketListener;
 import hospital.Presentation.ThreadListener;
@@ -13,17 +14,13 @@ import java.util.stream.Collectors;
 public class FarmaceutaController implements ThreadListener {
     Farmaceutas view;
     ModelFarmaceuta model;
-    SocketListener socketListener;
     public FarmaceutaController(Farmaceutas view, ModelFarmaceuta model) {
         this.view = view;
         this.model = model;
         view.setController(this);
         view.setModel(model);
         cargarDatosIniciales();
-        try {
-            socketListener = new SocketListener(this, ((Service)Service.instance()).getSid());
-            socketListener.start();
-        } catch (Exception e) {}
+        NotificationManager.getInstance().register(this);
     }
 
     private void cargarDatosIniciales() {
@@ -99,5 +96,9 @@ public class FarmaceutaController implements ThreadListener {
             search(model.getSearchFilter());
         } catch (Exception e) { }
         System.out.println(message);
+    }
+    public void cleanup() {
+        NotificationManager.getInstance().unregister(this);
+        System.out.println("✓ MedicoController desregistrado");
     }
 }

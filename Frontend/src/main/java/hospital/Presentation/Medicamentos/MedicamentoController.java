@@ -3,6 +3,7 @@ package hospital.Presentation.Medicamentos;
 import hospital.Logic.Listas.Factory;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.NotificationManager;
 import hospital.Logic.Service;
 import hospital.Logic.SocketListener;
 import hospital.Presentation.Medicamentos.ModelMedicamentos;
@@ -19,7 +20,7 @@ public class MedicamentoController implements ThreadListener {
     Medicamentos view;
     ModelMedicamentos model;
     PrescribirBuscarMedica panel;
-    SocketListener socketListener;
+
 
     public MedicamentoController(Medicamentos view, ModelMedicamentos model) {
         this.view = view;
@@ -28,10 +29,7 @@ public class MedicamentoController implements ThreadListener {
         view.setModel(model);
         cargarDatosIniciales();
 
-        try {
-            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
-            socketListener.start();
-        } catch (Exception e) {}
+       NotificationManager.getInstance().register(this);
     }
 
     public MedicamentoController(PrescribirBuscarMedica view, ModelMedicamentos model) {
@@ -39,10 +37,7 @@ public class MedicamentoController implements ThreadListener {
         view.setController(this);
         view.setModel(model);
         cargarDatosIniciales();
-        try {
-            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
-            socketListener.start();
-        } catch (Exception e) {}
+       NotificationManager.getInstance().register(this);
 
     }
 
@@ -133,8 +128,12 @@ public class MedicamentoController implements ThreadListener {
     @Override
     public void deliver_message(String message) {
         try {
-            model.setList(Service.getInstance().findAllMedicamentos()); // ✅ Refresca TODA la lista
+           search(null);// ✅ Refresca TODA la lista
         } catch (Exception e) { }
         System.out.println(message);
+    }
+    public void cleanup() {
+        NotificationManager.getInstance().unregister(this);
+        System.out.println("✓ MedicoController desregistrado");
     }
 }

@@ -1,5 +1,6 @@
 package hospital.Presentation.Prescripcion;
 
+import hospital.Logic.NotificationManager;
 import hospital.Logic.Service;
 import hospital.Logic.Exceptions.*;
 import hospital.Entities.Entities.*;
@@ -14,20 +15,14 @@ import java.util.stream.Collectors;
 public class PrescribirController implements ThreadListener {
     PrescribirMed view;
     ModelDetails model;
-    SocketListener socketListener;
+
     public PrescribirController(PrescribirMed view, ModelDetails model) {
         this.view = view;
         this.model = model;
         view.setController(this);
         view.setModel(model);
         cargarDatosIniciales();
-        try {
-            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
-            socketListener.start();
-            System.out.println("✓ SocketListener iniciado en DetailsController");
-        } catch (Exception e) {
-            System.err.println("✗ Error iniciando SocketListener: " + e.getMessage());
-        }
+        NotificationManager.getInstance().register(this);
     }
 
     private void cargarDatosIniciales() {
@@ -190,25 +185,16 @@ public class PrescribirController implements ThreadListener {
     @Override
     public void deliver_message(String message) {
         try {
-            // Recargar todos los detalles cuando hay cambios
-            List<RecipeDetails> detalles = Service.getInstance().findAllDetalles();
-            model.setList(detalles);
 
-            System.out.println("📩 Detalles refrescados: " + message);
-            System.out.println("   Total detalles actualizados: " + detalles.size());
+            search(null);
 
         } catch (Exception e) {
             System.err.println("✗ Error refrescando detalles: " + e.getMessage());
         }
     }
 
-    /**
-     * Detener el SocketListener al cerrar
-     */
-    public void stop() {
-        if (socketListener != null) {
-            socketListener.stop();
-            System.out.println("✓ SocketListener detenido");
-        }
+    public void cleanup() {
+        NotificationManager.getInstance().unregister(this);
+        System.out.println("✓ MedicoController desregistrado");
     }
 }

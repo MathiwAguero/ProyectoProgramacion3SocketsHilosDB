@@ -3,6 +3,7 @@ package hospital.Presentation.Recetas;
 import hospital.Entities.Entities.*;
 
 import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.NotificationManager;
 import hospital.Logic.SocketListener;
 import hospital.Presentation.Dashboard.Dashboard;
 import hospital.Presentation.Despacho.Despacho;
@@ -24,7 +25,7 @@ public class RecetaController implements ThreadListener {
     Historial viewHistorial;
     ModelReceta model;
     Despacho viewDespacho;
-    SocketListener socketListener;
+
 
     // Constructor usado por Dashboard
     public RecetaController(Dashboard viewDashboard, ModelReceta model) {
@@ -33,11 +34,7 @@ public class RecetaController implements ThreadListener {
         viewDashboard.setController(this);
         viewDashboard.setModel(model);
         cargarDatosIniciales();
-        try {
-            socketListener = new SocketListener(this, ((Service) Service.getInstance()).getSid());
-            socketListener.start();
-        } catch (Exception e) {
-        }
+        NotificationManager.getInstance().register(this);
     }
 
     // Constructor usado por Historial
@@ -47,11 +44,7 @@ public class RecetaController implements ThreadListener {
         viewHistorial.setController(this);
         viewHistorial.setModel(model);
         cargarDatosIniciales();
-        try {
-            socketListener = new SocketListener(this, ((Service) Service.getInstance()).getSid());
-            socketListener.start();
-        } catch (Exception e) {
-        }
+        NotificationManager.getInstance().register(this);
     }
 
     //Constructor usado por despacho
@@ -61,11 +54,7 @@ public class RecetaController implements ThreadListener {
         viewDespacho.setController(this);
         viewDespacho.setModel(model);
         cargarDatosIniciales();
-        try {
-            socketListener = new SocketListener(this, ((Service) Service.getInstance()).getSid());
-            socketListener.start();
-        } catch (Exception e) {
-        }
+        NotificationManager.getInstance().register(this);
     }
 
 
@@ -243,5 +232,9 @@ public class RecetaController implements ThreadListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void cleanup() {
+        NotificationManager.getInstance().unregister(this);
+        System.out.println("✓ MedicoController desregistrado");
     }
 }

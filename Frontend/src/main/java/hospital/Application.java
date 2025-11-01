@@ -1,5 +1,6 @@
 package hospital;
 
+import hospital.Logic.NotificationManager;
 import hospital.Presentation.Login.Login;
 import hospital.Presentation.Login.ModelUsuarios;
 import hospital.Presentation.Login.UsuariosController;
@@ -44,6 +45,10 @@ public class Application {
             System.out.println("→ Conectando al servidor...");
             hospital.Logic.Service.instance();
             System.out.println("✓ Conexión establecida correctamente");
+            String sid = ((hospital.Logic.Service) hospital.Logic.Service.instance()).getSid();
+            System.out.println("→ Inicializando sistema de notificaciones...");
+            NotificationManager.getInstance().initialize(sid);
+            System.out.println("✓ Sistema de notificaciones activo");
 
             System.out.println();
 

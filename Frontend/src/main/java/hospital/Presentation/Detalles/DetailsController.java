@@ -1,5 +1,6 @@
 package hospital.Presentation.Detalles;
 
+import hospital.Logic.NotificationManager;
 import hospital.Logic.Service;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Exceptions.DataAccessException;
@@ -12,17 +13,12 @@ import java.util.stream.Collectors;
 
 public class DetailsController implements ThreadListener{
     ModelDetails model;
-    SocketListener socketListener;
+
     public DetailsController(ModelDetails model) {
         this.model = model;
         cargarDatosIniciales();
-        try {
-            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
-            socketListener.start();
-            System.out.println("✓ SocketListener iniciado en DetailsController");
-        } catch (Exception e) {
-            System.err.println("✗ Error iniciando SocketListener: " + e.getMessage());
-        }
+     NotificationManager.getInstance().register(this);
+
     }
 
     private void cargarDatosIniciales() {
@@ -143,11 +139,7 @@ public class DetailsController implements ThreadListener{
     public void deliver_message(String message) {
         try {
             // Recargar todos los detalles cuando hay cambios
-            List<RecipeDetails> detalles = Service.getInstance().findAllDetalles();
-            model.setList(detalles);
-
-            System.out.println("📩 Detalles refrescados: " + message);
-            System.out.println("   Total detalles actualizados: " + detalles.size());
+            search(null);
 
         } catch (Exception e) {
             System.err.println("✗ Error refrescando detalles: " + e.getMessage());
@@ -157,10 +149,9 @@ public class DetailsController implements ThreadListener{
     /**
      * Detener el SocketListener al cerrar
      */
-    public void stop() {
-        if (socketListener != null) {
-            socketListener.stop();
-            System.out.println("✓ SocketListener detenido");
-        }
+
+    public void cleanup() {
+        NotificationManager.getInstance().unregister(this);
+        System.out.println("✓ MedicoController desregistrado");
     }
 }

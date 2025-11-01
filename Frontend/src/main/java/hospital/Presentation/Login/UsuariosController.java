@@ -1,5 +1,6 @@
 package hospital.Presentation.Login;
 
+import hospital.Logic.NotificationManager;
 import hospital.Logic.Service;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Exceptions.DataAccessException;
@@ -12,17 +13,14 @@ import java.util.stream.Collectors;
 public class UsuariosController implements ThreadListener {
     Login view;
     ModelUsuarios model;
-    SocketListener socketListener;
+
     public UsuariosController(Login view, ModelUsuarios model) {
         this.view = view;
         this.model = model;
         view.setController(this);
         view.setModel(model);
         cargarDatosIniciales();
-        try {
-            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
-            socketListener.start();
-        } catch (Exception e) {}
+        NotificationManager.getInstance().register(this);
     }
 
     private void cargarDatosIniciales() {
@@ -179,8 +177,12 @@ public class UsuariosController implements ThreadListener {
     @Override
     public void deliver_message(String message) {
         try {
-            model.setList(Service.getInstance().findAllUsuarios()); // ✅ Refresca TODA la lista
+            search(null); // ✅ Refresca TODA la lista
         } catch (Exception e) { }
         System.out.println(message);
+    }
+    public void cleanup() {
+        NotificationManager.getInstance().unregister(this);
+        System.out.println("✓ MedicoController desregistrado");
     }
 }

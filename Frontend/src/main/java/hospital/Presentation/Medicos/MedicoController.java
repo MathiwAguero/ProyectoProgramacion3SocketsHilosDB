@@ -3,6 +3,7 @@ package hospital.Presentation.Medicos;
 import hospital.Logic.Listas.Factory;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.NotificationManager;
 import hospital.Logic.Service;
 import hospital.Logic.SocketListener;
 import hospital.Presentation.Medicos.MedicoController;
@@ -14,17 +15,14 @@ import java.util.stream.Collectors;
 public class MedicoController implements ThreadListener {
     Medicos view;
     ModelMedico model;
-    SocketListener socketListener;
+
     public MedicoController(Medicos view, ModelMedico model) {
         this.view = view;
         this.model = model;
         view.setController(this);
         view.setModel(model);
         cargarDatosIniciales();
-        try {
-            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
-            socketListener.start();
-        } catch (Exception e) {}
+        NotificationManager.getInstance().register(this);
     }
 
     private void cargarDatosIniciales() {
@@ -98,8 +96,12 @@ public class MedicoController implements ThreadListener {
     @Override
     public void deliver_message(String message) {
         try {
-            model.setList(Service.getInstance().findAllMedicos()); // ✅ Refresca TODA la lista
+            search(null); // ✅ Refresca TODA la lista
         } catch (Exception e) { }
         System.out.println(message);
+    }
+    public void cleanup() {
+        NotificationManager.getInstance().unregister(this);
+        System.out.println("✓ MedicoController desregistrado");
     }
     }

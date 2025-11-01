@@ -3,6 +3,7 @@ package hospital.Presentation.Pacientes;
 import hospital.Logic.Listas.Factory;
 import hospital.Entities.Entities.*;
 import hospital.Logic.Exceptions.DataAccessException;
+import hospital.Logic.NotificationManager;
 import hospital.Logic.Service;
 import hospital.Logic.SocketListener;
 import hospital.Presentation.Prescripcion.Filtros.PrescribirBuscarPacien;
@@ -16,17 +17,14 @@ public class PacienteController implements ThreadListener {
     Pacientes panelview;
     ModelPaciente model;
     PrescribirBuscarPacien panel;
-    SocketListener socketListener;
+
     public PacienteController(Pacientes panelview, ModelPaciente model) {
         this.panelview = panelview;
         this.model = model;
         panelview.setController(this);
         panelview.setModel(model);
         cargarDatosIniciales();
-        try {
-            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
-            socketListener.start();
-        } catch (Exception e) {}
+        NotificationManager.getInstance().register(this);
     }
     public PacienteController(PrescribirBuscarPacien panel, ModelPaciente model) {
         this.panel = panel;
@@ -34,10 +32,7 @@ public class PacienteController implements ThreadListener {
         panel.setController(this);
         panel.setModel(model);
         cargarDatosIniciales();
-        try {
-            socketListener = new SocketListener(this, ((Service)Service.getInstance()).getSid());
-            socketListener.start();
-        } catch (Exception e) {}
+       NotificationManager.getInstance().register(this);
     }
 
 
@@ -126,8 +121,12 @@ public class PacienteController implements ThreadListener {
     @Override
     public void deliver_message(String message) {
         try {
-            search(new Paciente().getId());
+            search(null);
         } catch (Exception e) { }
         System.out.println(message);
+    }
+    public void cleanup() {
+        NotificationManager.getInstance().unregister(this);
+        System.out.println("✓ MedicoController desregistrado");
     }
 }
