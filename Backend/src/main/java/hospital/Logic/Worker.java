@@ -860,4 +860,42 @@ public class Worker extends Thread {
 
         System.out.println("✓ Worker detenido" + (usuarioId != null ? " (" + usuarioId + ")" : ""));
     }
+    private void handleMensajeGetByUser() throws IOException {
+        try {
+            String otroUsuarioId = (String) is.readObject();
+
+            if (this.usuarioId == null) {
+                os.writeInt(Protocol.ERROR_ERROR);
+                os.writeObject(null);
+                os.flush();
+                return;
+            }
+
+            // ✅ OBTENER SOLO EL PRIMER MENSAJE NO LEÍDO
+            Mensaje mensaje = MensajeManager.getInstance()
+                    .obtenerPrimerMensajeNoLeido(otroUsuarioId, this.usuarioId);
+
+            if (mensaje != null) {
+                // Marcar este mensaje como leído
+                MensajeManager.getInstance().marcarMensajeComoLeido(mensaje.getId());
+
+                os.writeInt(Protocol.ERROR_NO_ERROR);
+                os.writeObject(mensaje);
+                System.out.println("✓ Mensaje #" + mensaje.getId() + " entregado de " +
+                        otroUsuarioId + " a " + this.usuarioId);
+            } else {
+                // No hay mensajes pendientes
+                os.writeInt(Protocol.ERROR_NO_ERROR);
+                os.writeObject(null);
+                System.out.println("✓ No hay mensajes pendientes de " + otroUsuarioId +
+                        " para " + this.usuarioId);
+            }
+
+        } catch (Exception ex) {
+            os.writeInt(Protocol.ERROR_ERROR);
+            os.writeObject(null);
+            System.err.println("✗ Error: " + ex.getMessage());
+        }
+        os.flush();
+    }
 }

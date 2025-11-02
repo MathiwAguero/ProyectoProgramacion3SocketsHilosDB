@@ -1,6 +1,8 @@
 package hospital.Presentation.Usuarios;
 
+import hospital.Entities.Entities.Mensaje;
 import hospital.Entities.Entities.UsuarioBase;
+import hospital.Logic.Service;
 import hospital.Presentation.TableModel.TableModelUsuarios;
 
 import javax.swing.*;
@@ -64,60 +66,63 @@ public class Usuarios implements PropertyChangeListener {
         recibirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (model == null) return;
+                UsuarioBase seleccionado = getUsuarioSeleccionado();
 
-                java.util.List<String> mensajes = model.getMensajes();
-
-                if (mensajes == null || mensajes.isEmpty()) {
+                if (seleccionado == null) {
                     JOptionPane.showMessageDialog(panelUsuarios,
-                            "No hay mensajes recibidos",
-                            "Mensajes",
-                            JOptionPane.INFORMATION_MESSAGE);
+                            "Seleccione un usuario de la tabla",
+                            "Atención",
+                            JOptionPane.WARNING_MESSAGE);
                     return;
                 }
 
+                try {
+                    // ✅ OBTENER SOLO EL PRIMER MENSAJE NO LEÍDO
+                    Mensaje mensaje = Service.getInstance()
+                            .obtenerPrimerMensajeDe(seleccionado.getId());
 
-                JTextArea textArea = new JTextArea(15, 40);
-                textArea.setEditable(false);
-                textArea.setLineWrap(true);
-                textArea.setWrapStyleWord(true);
-
-                StringBuilder sb = new StringBuilder();
-                for (String msg : mensajes) {
-                    sb.append(msg).append("\n\n");
-                }
-                textArea.setText(sb.toString());
-                textArea.setCaretPosition(0);
-
-                JScrollPane scrollPane = new JScrollPane(textArea);
-
-                int option = JOptionPane.showOptionDialog(
-                        panelUsuarios,
-                        scrollPane,
-                        "Mensajes Recibidos (" + mensajes.size() + ")",
-                        JOptionPane.OK_CANCEL_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE,
-                        null,
-                        new Object[]{"Cerrar", "Limpiar Historial"},
-                        "Cerrar"
-                );
+                    if (mensaje == null) {
+                        JOptionPane.showMessageDialog(panelUsuarios,
+                                "No hay más mensajes de " + seleccionado.getNombre(),
+                                "Sin mensajes",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
 
 
-                if (option == 1) {
-                    int confirm = JOptionPane.showConfirmDialog(
+                    String mensajeFormateado =
+
+                                    "De: " + seleccionado.getNombre() + "\n" +
+
+                                    mensaje.getMensaje();
+
+
+                    JTextArea textArea = new JTextArea(mensajeFormateado);
+                    textArea.setEditable(false);
+                    textArea.setLineWrap(true);
+                    textArea.setWrapStyleWord(true);
+                    textArea.setFont(new Font("Arial", Font.PLAIN, 14));
+                    textArea.setMargin(new java.awt.Insets(10, 10, 10, 10));
+
+                    JScrollPane scrollPane = new JScrollPane(textArea);
+                    scrollPane.setPreferredSize(new Dimension(400, 200));
+
+                    JOptionPane.showMessageDialog(
                             panelUsuarios,
-                            "¿Desea limpiar el historial de mensajes?",
-                            "Confirmar",
-                            JOptionPane.YES_NO_OPTION
+                            scrollPane,
+                            "Mensaje de " + seleccionado.getNombre(),
+                            JOptionPane.PLAIN_MESSAGE
                     );
 
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        controller.limpiarMensajes();
-                        JOptionPane.showMessageDialog(panelUsuarios,
-                                "Historial limpiado",
-                                "Éxito",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    }
+                    // Opcional: Mostrar si hay más mensajes
+                    System.out.println("✓ Mensaje mostrado. Presione 'Recibir' nuevamente si hay más.");
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(panelUsuarios,
+                            "Error: " + ex.getMessage(),
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    ex.printStackTrace();
                 }
             }
         });

@@ -582,4 +582,16 @@ public class Service {
         }
     }
 
+    public Mensaje obtenerPrimerMensajeDe(String otroUsuarioId) throws Exception {
+        os.writeInt(Protocol.MENSAJE_GET_BY_USER);
+        os.writeObject(otroUsuarioId);
+        os.flush();
+
+        if (is.readInt() == Protocol.ERROR_NO_ERROR) {
+            return (Mensaje) is.readObject();
+        } else {
+            throw new Exception("ERROR AL OBTENER MENSAJE");
+        }
+    }
+
 }

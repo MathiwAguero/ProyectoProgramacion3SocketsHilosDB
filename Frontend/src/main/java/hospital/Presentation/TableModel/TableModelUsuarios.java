@@ -34,7 +34,7 @@ public class TableModelUsuarios extends AbstractTableModel<UsuarioBase> {
 
     @Override
     protected void initColNames() {
-        colNames = new String[3];
+        colNames = new String[1];
         colNames[ID] = "ID Usuario";
 
     }
@@ -48,8 +48,5 @@ public class TableModelUsuarios extends AbstractTableModel<UsuarioBase> {
         }
     }
 
-    public void actualizarContador(Map<String, Integer> nuevoContador) {
-        this.contadorMensajes = nuevoContador;
-        fireTableDataChanged();
-    }
+
 }
