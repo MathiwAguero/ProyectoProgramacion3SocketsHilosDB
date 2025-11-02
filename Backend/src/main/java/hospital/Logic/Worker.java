@@ -73,6 +73,7 @@ public class Worker extends Thread {
                         break;
                     case Protocol.PACIENTE_DELETE:
                         handlePacienteDelete();
+                        srv.deliver_message(this, "Elimina receta creada");
                         break;
                     case Protocol.PACIENTE_SEARCH:
                         handlePacienteSearch();
@@ -95,6 +96,7 @@ public class Worker extends Thread {
                         break;
                     case Protocol.MEDICO_DELETE:
                         handleMedicoDelete();
+                        srv.deliver_message(this, "Elimina receta creada");
                         break;
                     case Protocol.MEDICO_SEARCH:
                         handleMedicoSearch();
@@ -117,6 +119,7 @@ public class Worker extends Thread {
                         break;
                     case Protocol.FARMACEUTA_DELETE:
                         handleFarmaceutaDelete();
+                        srv.deliver_message(this, "Elimina receta creada");
                         break;
                     case Protocol.FARMACEUTA_SEARCH:
                         handleFarmaceutaSearch();
@@ -139,6 +142,7 @@ public class Worker extends Thread {
                         break;
                     case Protocol.MEDICAMENTO_DELETE:
                         handleMedicamentoDelete();
+                        srv.deliver_message(this, "Elimina receta creada");
                         break;
                     case Protocol.MEDICAMENTO_SEARCH:
                         handleMedicamentoSearch();
@@ -161,6 +165,7 @@ public class Worker extends Thread {
                         break;
                     case Protocol.RECETA_DELETE:
                         handleRecetaDelete();
+                        srv.deliver_message(this, "Elimina receta creada");
                         break;
                     case Protocol.RECETA_SEARCH:
                         handleRecetaSearch();
@@ -213,11 +218,13 @@ public class Worker extends Thread {
             } catch (IOException e) {
                 System.err.println("Cliente desconectado inesperadamente");
                 detener();
+                return;
             } catch (Exception e) {
                 System.err.println("Error procesando petición: " + e.getMessage());
                 e.printStackTrace();
             }
         }
+
     }
 
     // ==================== PACIENTES ====================
@@ -753,8 +760,14 @@ public class Worker extends Thread {
             List<UsuarioBase> usuariosOnline = new ArrayList<>();
 
             // Recorrer todos los workers y obtener sus usuarios
+            // EXCEPTO el usuario que hace la petición
             for (Worker w : srv.workers) {
                 if (w.usuarioId != null && !w.usuarioId.isEmpty()) {
+                    // ✅ Excluir al usuario actual
+                    if (w.usuarioId.equals(this.usuarioId)) {
+                        continue; // Saltar este usuario
+                    }
+
                     try {
                         UsuarioBase usuario = Service.getInstance().readUsuario(w.usuarioId);
                         if (usuario != null) {
@@ -768,7 +781,8 @@ public class Worker extends Thread {
 
             os.writeInt(Protocol.ERROR_NO_ERROR);
             os.writeObject(usuariosOnline);
-            System.out.println("✓ Usuarios online enviados: " + usuariosOnline.size());
+            System.out.println("✓ Usuarios online enviados: " + usuariosOnline.size() +
+                    " (excluido: " + this.usuarioId + ")");
 
         } catch (Exception ex) {
             os.writeInt(Protocol.ERROR_ERROR);
@@ -823,18 +837,29 @@ public class Worker extends Thread {
         os.flush();
     }
     public void detener() {
-        if (usuarioId != null) {
+        // ✅ IMPORTANTE: Notificar ANTES de cerrar el socket
+        if (usuarioId != null && !usuarioId.isEmpty()) {
+            System.out.println("→ Notificando desconexión de: " + usuarioId);
             srv.notifyUserOffline(usuarioId);
         }
 
         continuar = false;
+
+        // Remover este worker de la lista del servidor
+        srv.remove(this);
+
         try {
             if (s != null && !s.isClosed()) {
                 s.close();
             }
+            // También cerrar socket asíncrono si existe
+            if (as != null && !as.isClosed()) {
+                as.close();
+            }
         } catch (IOException e) {
             System.err.println("Error cerrando socket: " + e.getMessage());
         }
-        System.out.println("Worker detenido" + (usuarioId != null ? " (" + usuarioId + ")" : ""));
+
+        System.out.println("✓ Worker detenido" + (usuarioId != null ? " (" + usuarioId + ")" : ""));
     }
 }

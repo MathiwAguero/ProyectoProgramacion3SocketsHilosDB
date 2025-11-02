@@ -54,7 +54,7 @@ public class Pacientes implements PropertyChangeListener {
         borrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String nombre = textField2.getText().trim();
+                String nombre = textField1.getText().trim();
 
                 if(!nombre.isEmpty()){
                     try {

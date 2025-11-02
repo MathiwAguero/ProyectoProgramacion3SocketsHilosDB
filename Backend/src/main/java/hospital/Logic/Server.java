@@ -123,13 +123,28 @@ public class Server {
      * Notifica a todos los clientes que un usuario se desconectó
      */
     public void notifyUserOffline(String userId) {
+        if (userId == null || userId.isEmpty()) {
+            return;
+        }
+
         String message = "USER_OFFLINE:" + userId;
+        int notificados = 0;
+
         for (Worker w : workers) {
-            if (w != null && !userId.equals(w.getUsuarioId())) {
+            // Solo notificar a workers que:
+            // 1. Tengan usuario asignado
+            // 2. No sean el usuario que se desconectó
+            if (w != null &&
+                    w.getUsuarioId() != null &&
+                    !userId.equals(w.getUsuarioId())) {
+
                 w.deliver_message(message);
+                notificados++;
             }
         }
-        System.out.println("→ Notificado: Usuario " + userId + " offline");
+
+        System.out.println("→ Notificado: Usuario " + userId + " offline (" +
+                notificados + " clientes notificados)");
     }
 
 
