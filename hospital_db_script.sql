@@ -97,7 +97,8 @@ CREATE TABLE IF NOT EXISTS mensajes (
 -- Insertar datos iniciales de Administradores
 INSERT INTO admin (id, clave, nombre) VALUES
 ('ADM-111', '1234', 'Nestor Zamora'),
-('ADM-222', '1111', 'Jose Sanchez');
+('ADM-222', '1111', 'Jose Sanchez'),
+('ADM-333','2222','Gregorio Villalobos');
 
 -- Insertar datos iniciales de Médicos
 INSERT INTO medicos (id, clave, nombre, especialidad) VALUES
