@@ -791,9 +791,7 @@ public class Worker extends Thread {
         os.flush();
     }
 
-    /**
-     * Envía un mensaje a otro usuario
-     */
+
     private void handleMensajeEnviar() throws IOException {
         try {
             String destinatarioId = (String) is.readObject();
@@ -822,7 +820,7 @@ public class Worker extends Thread {
                 return;
             }
 
-            // Enviar mensaje al destinatario
+
             destinatario.deliver_message(this.usuarioId + ": " + mensaje);
 
             os.writeInt(Protocol.ERROR_NO_ERROR);
@@ -837,7 +835,7 @@ public class Worker extends Thread {
         os.flush();
     }
     public void detener() {
-        // ✅ IMPORTANTE: Notificar ANTES de cerrar el socket
+
         if (usuarioId != null && !usuarioId.isEmpty()) {
             System.out.println("→ Notificando desconexión de: " + usuarioId);
             srv.notifyUserOffline(usuarioId);
@@ -845,14 +843,14 @@ public class Worker extends Thread {
 
         continuar = false;
 
-        // Remover este worker de la lista del servidor
+
         srv.remove(this);
 
         try {
             if (s != null && !s.isClosed()) {
                 s.close();
             }
-            // También cerrar socket asíncrono si existe
+
             if (as != null && !as.isClosed()) {
                 as.close();
             }
