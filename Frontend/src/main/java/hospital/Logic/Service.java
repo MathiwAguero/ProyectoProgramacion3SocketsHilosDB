@@ -569,6 +569,14 @@ public class Service {
      * Envía un mensaje a otro usuario
      */
     public void enviarMensaje(String destinatarioId, String mensaje) throws Exception {
+        if (destinatarioId == null || destinatarioId.trim().isEmpty()) {
+            throw new Exception("ID de destinatario inválido");
+        }
+
+        if (mensaje == null || mensaje.trim().isEmpty()) {
+            throw new Exception("El mensaje no puede estar vacío");
+        }
+
         os.writeInt(Protocol.MENSAJE_SEND);
         os.writeObject(destinatarioId);
         os.writeObject(mensaje);
@@ -580,6 +588,8 @@ public class Service {
         if (result != Protocol.ERROR_NO_ERROR) {
             throw new Exception(respuesta);
         }
+
+        System.out.println("✓ Mensaje enviado exitosamente");
     }
 
     public Mensaje obtenerPrimerMensajeDe(String otroUsuarioId) throws Exception {
@@ -593,5 +603,15 @@ public class Service {
             throw new Exception("ERROR AL OBTENER MENSAJE");
         }
     }
+    public int contarMensajesPendientes(String otroUsuarioId) throws Exception {
+        os.writeInt(Protocol.MENSAJE_COUNT_PENDING);
+        os.writeObject(otroUsuarioId);
+        os.flush();
 
+        if (is.readInt() == Protocol.ERROR_NO_ERROR) {
+            return is.readInt();
+        } else {
+            return 0;
+        }
+    }
 }

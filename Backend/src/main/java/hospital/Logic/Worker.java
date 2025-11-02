@@ -208,6 +208,9 @@ public class Worker extends Thread {
                     case Protocol.MENSAJE_SEND:
                         handleMensajeEnviar();
                         break;
+                    case Protocol.MENSAJE_GET_BY_USER:
+                        handleMensajeGetByUser();
+                        break;
 
                     default:
                         System.err.println("Operación desconocida: " + method);
@@ -684,7 +687,7 @@ public class Worker extends Thread {
             String clave = (String) is.readObject();
             UsuarioBase usuario = service.authenticate(id, clave);
 
-            // Registrar usuario en este worker
+            // ✅ REGISTRAR USUARIO EN ESTE WORKER
             this.usuarioId = id;
 
             os.writeInt(Protocol.ERROR_NO_ERROR);
@@ -693,7 +696,9 @@ public class Worker extends Thread {
             // Notificar a todos que este usuario está online
             srv.notifyUserOnline(id);
 
-            System.out.println("✓ Login exitoso: " + id + " (Workers activos: " + srv.workers.size() + ")");
+            System.out.println("✓ Login exitoso: " + id + " (usuarioId registrado en Worker)");
+            System.out.println("  Workers activos: " + srv.workers.size());
+
         } catch (Exception ex) {
             os.writeInt(Protocol.ERROR_ERROR);
             System.err.println("✗ Error en login: " + ex.getMessage());
@@ -801,10 +806,16 @@ public class Worker extends Thread {
                 os.writeInt(Protocol.ERROR_ERROR);
                 os.writeObject("No hay usuario logueado");
                 os.flush();
+                System.err.println("✗ Intento de envío sin usuario autenticado");
                 return;
             }
 
-            // Buscar el worker del destinatario
+            System.out.println("→ Enviando mensaje de " + this.usuarioId + " a " + destinatarioId);
+
+            // ✅ GUARDAR MENSAJE EN MEMORIA
+            MensajeManager.getInstance().guardarMensaje(this.usuarioId, destinatarioId, mensaje);
+
+            // ✅ BUSCAR SI EL DESTINATARIO ESTÁ ONLINE
             Worker destinatario = null;
             for (Worker w : srv.workers) {
                 if (destinatarioId.equals(w.usuarioId)) {
@@ -813,24 +824,23 @@ public class Worker extends Thread {
                 }
             }
 
-            if (destinatario == null) {
-                os.writeInt(Protocol.ERROR_ERROR);
-                os.writeObject("Usuario destinatario no está online");
-                os.flush();
-                return;
+            // ✅ NOTIFICAR AL DESTINATARIO SI ESTÁ ONLINE
+            if (destinatario != null) {
+                destinatario.deliver_message("NUEVO_MENSAJE:" + this.usuarioId);
+                System.out.println("✓ Destinatario " + destinatarioId + " notificado");
+            } else {
+                System.out.println("→ Destinatario " + destinatarioId + " no está online (mensaje guardado)");
             }
-
-
-            destinatario.deliver_message(this.usuarioId + ": " + mensaje);
 
             os.writeInt(Protocol.ERROR_NO_ERROR);
             os.writeObject("Mensaje enviado correctamente");
-            System.out.println("✓ Mensaje enviado de " + this.usuarioId + " a " + destinatarioId);
+            System.out.println("✓ Mensaje guardado: " + this.usuarioId + " → " + destinatarioId);
 
         } catch (Exception ex) {
             os.writeInt(Protocol.ERROR_ERROR);
             os.writeObject("Error enviando mensaje: " + ex.getMessage());
             System.err.println("✗ Error enviando mensaje: " + ex.getMessage());
+            ex.printStackTrace();
         }
         os.flush();
     }
@@ -868,8 +878,11 @@ public class Worker extends Thread {
                 os.writeInt(Protocol.ERROR_ERROR);
                 os.writeObject(null);
                 os.flush();
+                System.err.println("✗ Usuario no autenticado intentando recibir mensajes");
                 return;
             }
+
+            System.out.println("→ " + this.usuarioId + " solicitando mensaje de " + otroUsuarioId);
 
             // ✅ OBTENER SOLO EL PRIMER MENSAJE NO LEÍDO
             Mensaje mensaje = MensajeManager.getInstance()
@@ -887,14 +900,15 @@ public class Worker extends Thread {
                 // No hay mensajes pendientes
                 os.writeInt(Protocol.ERROR_NO_ERROR);
                 os.writeObject(null);
-                System.out.println("✓ No hay mensajes pendientes de " + otroUsuarioId +
+                System.out.println("→ No hay mensajes pendientes de " + otroUsuarioId +
                         " para " + this.usuarioId);
             }
 
         } catch (Exception ex) {
             os.writeInt(Protocol.ERROR_ERROR);
             os.writeObject(null);
-            System.err.println("✗ Error: " + ex.getMessage());
+            System.err.println("✗ Error obteniendo mensaje: " + ex.getMessage());
+            ex.printStackTrace();
         }
         os.flush();
     }

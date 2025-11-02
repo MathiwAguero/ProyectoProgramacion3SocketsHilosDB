@@ -76,7 +76,7 @@ Protocol {
 
     // Control de conexión
     public static final int DISCONNECT = 999;
-
+    public static final int MENSAJE_COUNT_PENDING = 705;
     // Notificaciones asíncronas (del servidor a los clientes)
     public static final int NOTIFICATION_USER_LOGIN = 1001;
     public static final int NOTIFICATION_USER_LOGOUT = 1002;

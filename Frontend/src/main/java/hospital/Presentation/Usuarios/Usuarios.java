@@ -92,7 +92,7 @@ public class Usuarios implements PropertyChangeListener {
 
                     String mensajeFormateado =
 
-                                    "De: " + seleccionado.getNombre() + "\n" +
+                            "De: " + seleccionado.getNombre() + "\n" +
 
                                     mensaje.getMensaje();
 
