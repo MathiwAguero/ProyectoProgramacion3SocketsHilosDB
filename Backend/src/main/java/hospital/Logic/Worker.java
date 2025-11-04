@@ -812,7 +812,7 @@ public class Worker extends Thread {
 
             System.out.println("→ Enviando mensaje de " + this.usuarioId + " a " + destinatarioId);
 
-            // ✅ GUARDAR MENSAJE EN MEMORIA
+
             MensajeManager.getInstance().guardarMensaje(this.usuarioId, destinatarioId, mensaje);
 
             // ✅ BUSCAR SI EL DESTINATARIO ESTÁ ONLINE
