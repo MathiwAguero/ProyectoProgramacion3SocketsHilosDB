@@ -417,7 +417,13 @@ public class Service {
     }
 
     public UsuarioBase readUsuario(String id) throws Exception {
-        throw new Exception("NO IMPLEMENTADO - usa authenticate()");
+        os.writeInt(Protocol.USUARIO_READ);  // Necesitas agregar esta constante
+        os.writeObject(id);
+        os.flush();
+        if (is.readInt() == Protocol.ERROR_NO_ERROR) {
+            return (UsuarioBase) is.readObject();
+        }
+        else throw new Exception("USUARIO NO EXISTE");
     }
 
     public void update(UsuarioBase usuario) throws Exception {

@@ -24,7 +24,7 @@ Protocol {
     public static final int MEDICO_DELETE = 204;
     public static final int MEDICO_SEARCH = 205;
     public static final int MEDICO_SEARCH_ALL = 206;
-
+    public static final int USUARIO_READ = 607;
     // Operaciones de FARMACEUTAS
     public static final int FARMACEUTA_CREATE = 301;
     public static final int FARMACEUTA_READ = 302;

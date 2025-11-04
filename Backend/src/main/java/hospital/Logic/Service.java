@@ -69,6 +69,7 @@ public class Service {
         pacienteDao.delete(paciente);
     }
 
+
     public List<Paciente> findAllPacientes() throws Exception {
         return pacienteDao.findAll();
     }

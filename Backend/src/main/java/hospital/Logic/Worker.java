@@ -179,6 +179,9 @@ public class Worker extends Thread {
                     case Protocol.RECETA_SEARCH_BY_ESTADO:    // ← ESTO FALTABA
                         handleRecetaSearchByEstado();
                         break;
+                    case Protocol.USUARIO_READ:
+                        handleUsuarioRead();
+                        break;
 
                     // ============ USUARIOS ============
                     case Protocol.USUARIO_LOGIN:
@@ -909,6 +912,19 @@ public class Worker extends Thread {
             os.writeObject(null);
             System.err.println("✗ Error obteniendo mensaje: " + ex.getMessage());
             ex.printStackTrace();
+        }
+        os.flush();
+    }
+    private void handleUsuarioRead() throws IOException {
+        try {
+            String id = (String) is.readObject();
+            UsuarioBase usuario = service.readUsuario(id);
+            os.writeInt(Protocol.ERROR_NO_ERROR);
+            os.writeObject(usuario);
+            System.out.println("✓ Usuario leído: " + id);
+        } catch (Exception ex) {
+            os.writeInt(Protocol.ERROR_ERROR);
+            System.err.println("✗ Error leyendo usuario: " + ex.getMessage());
         }
         os.flush();
     }
