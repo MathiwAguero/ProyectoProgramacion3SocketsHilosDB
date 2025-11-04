@@ -711,17 +711,17 @@ public class Worker extends Thread {
 
     private void handleUsuarioChangePassword() throws IOException {
         try {
-            String id = (String) is.readObject();
-            String nuevaClave = (String) is.readObject();
-            service.updateClave(id, nuevaClave);
+            UsuarioBase u = (UsuarioBase) is.readObject();
+            service.update(u);
             os.writeInt(Protocol.ERROR_NO_ERROR);
-            System.out.println("✓ Contraseña cambiada: " + id);
+            System.out.println("✓ Contraseña cambiada: " + u.getId());
         } catch (Exception ex) {
             os.writeInt(Protocol.ERROR_ERROR);
             System.err.println("✗ Error cambiando contraseña: " + ex.getMessage());
         }
         os.flush();
     }
+
 
     private void handleUsuarioSearchActive() throws IOException {
         try {

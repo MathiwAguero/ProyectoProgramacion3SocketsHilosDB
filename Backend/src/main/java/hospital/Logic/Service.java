@@ -252,9 +252,11 @@ public class Service {
         return usuarioDao.read(id);
     }
 
+
     public void update(UsuarioBase usuario) throws Exception {
         usuarioDao.update(usuario);
     }
+
 
     public void delete(UsuarioBase usuario) throws Exception {
         usuarioDao.delete(usuario);

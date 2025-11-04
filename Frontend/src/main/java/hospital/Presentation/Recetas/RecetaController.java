@@ -100,7 +100,7 @@ public class RecetaController implements ThreadListener {
     public void delete(String id) throws Exception {
         Receta rec = new Receta();
         rec.setId(id);
-        Service.instance().delete(rec);
+        Service.getInstance().delete(rec);
         model.setCurrent(new Receta());
         model.setList(Service.instance().findAllRecetas());
     }

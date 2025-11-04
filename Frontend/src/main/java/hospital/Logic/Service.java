@@ -426,9 +426,17 @@ public class Service {
         else throw new Exception("USUARIO NO EXISTE");
     }
 
-    public void update(UsuarioBase usuario) throws Exception {
-        throw new Exception("NO IMPLEMENTADO");
+    public void update(UsuarioBase u) throws Exception {
+        os.writeInt(Protocol.USUARIO_CHANGE_PASSWORD);
+        os.writeObject(u);
+        os.flush();
+
+        int status = is.readInt();
+        if (status != Protocol.ERROR_NO_ERROR) {
+            throw new Exception("Error actualizando la contraseña del usuario");
+        }
     }
+
 
     public void delete(UsuarioBase usuario) throws Exception {
         throw new Exception("NO IMPLEMENTADO");

@@ -52,7 +52,7 @@ public class Historial implements PropertyChangeListener {
 
                 List<Receta> recetas = null;
                 try {
-                    recetas = Service.instance().findAllRecetas();
+                    recetas = Service.getInstance().findAllRecetas();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
