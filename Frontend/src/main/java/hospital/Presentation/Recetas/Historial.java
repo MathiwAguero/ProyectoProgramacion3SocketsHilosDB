@@ -7,6 +7,8 @@ import hospital.Logic.Service;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -72,8 +74,41 @@ public class Historial implements PropertyChangeListener {
                 JOptionPane.showMessageDialog(Historial, "No se encontraron");
             }
         });
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    mostrarDetallesRecetaSeleccionada();
+                }
+            }
+        });
     }
+    private void mostrarDetallesRecetaSeleccionada() {
+        int row = table1.getSelectedRow();
+        if (row < 0) return;
 
+        int modelRow = table1.convertRowIndexToModel(row);
+        Receta receta = model.getList().get(modelRow);
+
+        // Llenar textField1 con el ID
+        textField1.setText(receta.getId());
+
+        // Mostrar detalles completos
+        String reporte = "Reporte de la receta:\n\n" +
+                "ID: " + receta.getId() + "\n" +
+                "Médico: " + (receta.getMedico() != null ? receta.getMedico().getNombre() : "No asignado") + "\n" +
+                "Paciente: " + (receta.getPaciente() != null ? receta.getPaciente().getNombre() : "No asignado") + "\n" +
+                "Estado: " + receta.getEstado() + "\n" +
+                "Fecha confección: " + receta.getFechaConfeccion() + "\n" +
+                "Fecha retiro: " + receta.getFechaRetiro() + "\n\n" +
+                "Detalles:\n" + receta.mostarListaDetalles();
+
+        JOptionPane.showMessageDialog(Historial, reporte,
+                "Detalles de Receta " + receta.getId(),
+                JOptionPane.INFORMATION_MESSAGE);
+
+        System.out.println("✓ Receta visualizada: " + receta.getId());
+    }
     public void setModel(ModelReceta model) {
         this.model = model;
         model.addPropertyChangeListener(this);

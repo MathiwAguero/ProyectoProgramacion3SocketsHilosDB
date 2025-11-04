@@ -9,6 +9,8 @@ import hospital.Presentation.TableModel.TableModelMedicos;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -103,9 +105,31 @@ public class Farmaceutas implements PropertyChangeListener {
                 JOptionPane.showMessageDialog(Farmaceutas, "No se encontraron a ese nombre");
             }
         });
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    cargarFarmaceutaSeleccionado();
+                }
+            }
+        });
+
+
 
     }
+    private void cargarFarmaceutaSeleccionado() {
+        int row = table1.getSelectedRow();
+        if (row < 0) return;
 
+        int modelRow = table1.convertRowIndexToModel(row);
+        Farmaceuta farmaceuta = model.getList().get(modelRow);
+
+        textField1.setText(farmaceuta.getId() != null ? farmaceuta.getId() : "");
+        textField2.setText(farmaceuta.getNombre() != null ? farmaceuta.getNombre() : "");
+
+        model.setCurrent(farmaceuta);
+        System.out.println("✓ Farmaceuta cargado: " + farmaceuta.getNombre());
+    }
     public void LimpiarCampos() {
         textField1.setText("");
         textField2.setText("");

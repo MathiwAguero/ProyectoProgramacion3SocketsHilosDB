@@ -43,7 +43,7 @@ public class MedicoDao {
         stm.setString(2,m.getNombre());
         stm.setString(3,m.getEspecialidad());
         stm.setString(4,m.getId());
-        stm.setString(5,m.getId());
+
         int count = db.executeUpdate(stm);
         if(count==0){
 

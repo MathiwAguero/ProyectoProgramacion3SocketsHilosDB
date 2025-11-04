@@ -8,6 +8,8 @@ import hospital.Presentation.TableModel.TableModelMedicamentos;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -102,8 +104,29 @@ public class Medicamentos implements PropertyChangeListener  {
                 }
             }
         });
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    cargarMedicamentoSeleccionado();
+                }
+            }
+        });
     }
+    private void cargarMedicamentoSeleccionado() {
+        int row = table1.getSelectedRow();
+        if (row < 0) return;
 
+        int modelRow = table1.convertRowIndexToModel(row);
+        Medicamento medicamento = model.getList().get(modelRow);
+
+        textField1.setText(medicamento.getCodigo() != null ? medicamento.getCodigo() : "");
+        textField2.setText(medicamento.getNombre() != null ? medicamento.getNombre() : "");
+        textField3.setText(medicamento.getPresentacion() != null ? medicamento.getPresentacion() : "");
+
+        model.setCurrent(medicamento);
+        System.out.println("✓ Medicamento cargado: " + medicamento.getNombre());
+    }
     public void setModel(ModelMedicamentos model) {
 
         this.model = model;

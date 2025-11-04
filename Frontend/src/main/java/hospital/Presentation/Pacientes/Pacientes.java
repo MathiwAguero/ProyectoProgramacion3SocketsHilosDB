@@ -8,6 +8,8 @@ import hospital.Presentation.TableModel.TableModelPacientes;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -100,6 +102,14 @@ public class Pacientes implements PropertyChangeListener {
                     }
                 }
                 JOptionPane.showMessageDialog(Pacientes, "No se encontraron pacientes a ese nombre");
+            }
+        });
+        table1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    cargarPacienteSeleccionado();
+                }
             }
         });
     }
@@ -201,6 +211,21 @@ public class Pacientes implements PropertyChangeListener {
         textField1.setText("");
         textField2.setText("");
         textField4.setText("");
+    }
+    private void cargarPacienteSeleccionado() {
+        int row = table1.getSelectedRow();
+        if (row < 0) return;
+
+        int modelRow = table1.convertRowIndexToModel(row);
+        Paciente paciente = model.getList().get(modelRow);
+
+        textField1.setText(paciente.getId() != null ? paciente.getId() : "");
+        textField2.setText(paciente.getNombre() != null ? paciente.getNombre() : "");
+        textField3.setText(paciente.getNumeroTelefonico() != null ? paciente.getNumeroTelefonico() : "");
+        textField4.setText(paciente.getFechaNacimiento() != null ? paciente.getFechaNacimiento() : "");
+
+        model.setCurrent(paciente);
+        System.out.println("✓ Paciente cargado: " + paciente.getNombre());
     }
 
 }
